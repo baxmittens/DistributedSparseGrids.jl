@@ -29,6 +29,12 @@ function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG
 	return nothing
 end
 
+function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},F<:Function}
+	asg = AHSG{N,HCP}(pointSetProperties,maxp)
+	init!(asg)
+	return asg
+end
+
 include("./AdaptiveSparseGrids/inplace_ops.jl")
 include("./AdaptiveSparseGrids/refinement.jl")
 include("./AdaptiveSparseGrids/scaling_basis.jl")
