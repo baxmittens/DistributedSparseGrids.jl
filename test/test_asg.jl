@@ -1,16 +1,16 @@
+using Distributed
+
 addprocs(150)
 worker_ids = workers()
 
-
+@everywhere begin
 using UnicodePlots
 using DistributedSparseGrids
 using StaticArrays
-using Distributed
-
-
 
 #fun(x,ID) = ones(10_000,10_000)
-@everywhere fun(x,ID) = ones(10,10)
+fun(x,ID) = ones(10,10)
+end
 
 N=5
 CT = Float64

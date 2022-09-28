@@ -5,7 +5,7 @@ import StaticArrays: SVector
 using Distributed
 using ProgressMeter
 
-
+include("./AdaptiveSparseGrids/inplace_ops.jl")
 include("./CollocationPoints.jl")
 
 abstract type AbstractSparseGrid{N} end
