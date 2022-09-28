@@ -1,25 +1,34 @@
-include(joinpath("/home","bittens","workspace","AdaptiveSparseGrids","src","AdaptiveSparseGrids.jl"))
-include(joinpath("/home","bittens","workspace","AdaptiveSparseGrids","src","testfuncs.jl"))
+addprocs(150)
+worker_ids = workers()
+
 
 using UnicodePlots
-fun(x,ID) = testfunc(x)
-fun(x) = testfunc(x)
+using DistributedSparseGrids
+using StaticArrays
+using Distributed
+
+
+
+#fun(x,ID) = ones(10_000,10_000)
+@everywhere fun(x,ID) = ones(10,10)
+
 N=5
 CT = Float64
-RT = Float64
-CPType = CollocationPoint{N,CT}
-HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+RT = Matrix{Float64}
+CPType = DistributedSparseGrids.CollocationPoint{N,CT}
+HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
 
 Maxp = 1
 maxlvl = 20
 nrefsteps = 10
 tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
-wasg = init(AHSG{N,HCPType},pointprobs,Maxp)
-_cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(wasg))
-for i = 1:nrefsteps; union!(_cpts,generate_next_level!(wasg)); end
+wasg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointprobs,Maxp)
+_cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(wasg))
+for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(wasg)); end
 
-#AdaptiveSparseGrids.__init_weights!(wasg, _cpts, fun)
+DistributedSparseGrids.init_weights!(wasg, _cpts, fun, worker_ids)
+DistributedSparseGrids.init_weights!(wasg, _cpts, fun)
 
 #for i = 1:nrefsteps
 	#@info "refstep $i"
@@ -32,3 +41,8 @@ for i = 1:nrefsteps; union!(_cpts,generate_next_level!(wasg)); end
 #end
 
 __init_weights!(wasg, fun)
+
+
+# normal and inplace variant
+# normal and distributed
+# normal and @threads variant

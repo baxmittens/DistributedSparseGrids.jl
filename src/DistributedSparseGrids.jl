@@ -1,5 +1,6 @@
 module DistributedSparseGrids
 
+using StaticArrays
 import StaticArrays: SVector
 using Distributed
 using ProgressMeter
