@@ -46,7 +46,7 @@ function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT
 	in_it = InterpolationIterator(asg,x,stoplevel)
 	for cpt_set in in_it
 		for hcpt in cpt_set
-			res .+= scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
+			res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
 		end
 	end
 	return res
@@ -80,6 +80,7 @@ function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP
 		Threads.@threads for hcpt in hcptar
 			ID = idstring(hcpt)
 			_fval = fun(coords(hcpt),ID)
+			set_fval!(hcpt,_fval)
 			if level(hcpt) > 1
 				_fval -= interp_below(asg,hcpt)
 			end
@@ -147,13 +148,11 @@ function distributed_init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::
 		hcptar = filter(x->level(x)==i,cpts)
 		Threads.@threads for hcpt in hcptar
 			ID = idstring(hcpt)
-			scalweight = deepcopy(_fval)
+			ret = deepcopy(fval(hcpt))
 			if level(hcpt) > 1
-				interp_below!(scalweight,asg,hcpt)
-				mul!(scalweight,-1.0)
-				minus!(scalweight,fval(hcpt))
+				ret -= interp_below(asg,hcpt)
 			end
-			set_scaling_weight!(hcpt,scalweight)
+			set_scaling_weight!(hcpt,ret)
 		end
 	end
 	return nothing
