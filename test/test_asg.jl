@@ -3,6 +3,7 @@ include(joinpath("/home","bittens","workspace","AdaptiveSparseGrids","src","test
 
 using UnicodePlots
 fun(x,ID) = testfunc(x)
+fun(x) = testfunc(x)
 N=5
 CT = Float64
 RT = Float64
@@ -16,15 +17,18 @@ tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
 wasg = init(AHSG{N,HCPType},pointprobs,Maxp)
 _cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(wasg))
-for i = 1:2; union!(_cpts,generate_next_level!(wasg)); end
-init_weights!(wasg, _cpts, fun)
+for i = 1:nrefsteps; union!(_cpts,generate_next_level!(wasg)); end
 
-for i = 1:nrefsteps
-	@info "refstep $i"
-	@time nchilds = generate_next_level!(wasg,tol,maxlvl)
-	@info "$(length(nchilds)) new CollocationPoints created"
-	if !isempty(nchilds)
-		@info "start init weights"
-		@time init_weights!(wasg, nchilds, fun)  
-	end
-end
+#AdaptiveSparseGrids.__init_weights!(wasg, _cpts, fun)
+
+#for i = 1:nrefsteps
+	#@info "refstep $i"
+	#@time nchilds = generate_next_level!(wasg,tol,maxlvl)
+	#@info "$(length(nchilds)) new CollocationPoints created"
+	#if !isempty(nchilds)
+		#@info "start init weights"
+		#@time init_weights!(wasg, nchilds, fun)  
+	#end
+#end
+
+__init_weights!(wasg, fun)
