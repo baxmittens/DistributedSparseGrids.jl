@@ -13,6 +13,7 @@ PlotlyJS = "f0f68f2c-4968-5e81-91da-67840de0976a"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 FastGaussQuadrature = "442a2c76-b920-505d-bb47-c5924d526838"
 
+
 [compat]
 StaticArrays = "^1.4.4"
 

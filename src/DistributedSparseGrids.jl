@@ -16,7 +16,7 @@ struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N
 	cpts::Vector{PointDict{N,HCP}}
 	pointSetProperties::SVector{N,Int}
 	function AdaptiveHierarchicalSparseGrid{N,HCP}(pointSetProperties::SVector{N,Int},maxp::Int) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
-		return new{N,HCP}(Vector{PointDict{N,HCP}}(),pointSetProperties,maxp)
+		return new{N,HCP}(Vector{PointDict{N,HCP}}(),pointSetProperties)
 	end
 end
 
@@ -32,7 +32,7 @@ end
 include("./AdaptiveSparseGrids/inplace_ops.jl")
 include("./AdaptiveSparseGrids/refinement.jl")
 include("./AdaptiveSparseGrids/scaling_basis.jl")
-include("./AdaptiveSparseGrids/wavelet_basis.jl")
+
 
 function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	rcp = first(asg).scaling_weight
@@ -46,11 +46,11 @@ function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT
 	return res
 end
 
-function interpolate!(res,asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+function interpolate!(res::RT, asg::SG, x::VCT, startlevel::Int=1, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	fill!(res,0.0)
 	tmp = zero(res)
 	in_it = InterpolationIterator(asg,x,stoplevel)
-	for cpt_set in in_it
+	for cpt_set in enumerate(in_it)
 		for hcpt in cpt_set
 			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, _maxp))
 			add!(res,tmp)
@@ -59,13 +59,13 @@ function interpolate!(res,asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where 
 	return nothing
 end
 
-function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	return interpolate(asg,coords(cpt),level(cpt)-1)
-end
-
 function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	interpolate!(retval,asg,coords(cpt),level(cpt)-1)
 	return nothing
+end
+
+function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	return interpolate(asg,coords(cpt),level(cpt)-1)
 end
 
 function init_weights!(asg::SG, fun::F, retval_proto) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}

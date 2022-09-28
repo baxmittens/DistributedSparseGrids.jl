@@ -18,12 +18,11 @@ RT = Matrix{Float64}
 CPType = DistributedSparseGrids.CollocationPoint{N,CT}
 HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
 
-Maxp = 1
 maxlvl = 20
-nrefsteps = 8
+nrefsteps = 2
 tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
-wasg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointprobs,Maxp)
+wasg = DistributedSparseGrids.init!(DistributedSparseGrids.AHSG{N,HCPType},pointprobs)
 _cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(wasg))
 for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(wasg)); end
 
@@ -53,7 +52,7 @@ function DistributedSparseGrids.init_weights!(asg::SG, cpts::Set{HCP}, fun::F, w
 	for i = 1:DistributedSparseGrids.numlevels(asg)
 		@info "Level $i"
 		hcptar = filter(x->DistributedSparseGrids.level(x)==i,allasg)
-		@showprogress for hcpt in hcptar	
+		Threads.@threads for hcpt in hcptar	
 			if DistributedSparseGrids.level(hcpt) > 1
 				ret = deepcopy(DistributedSparseGrids.fval(hcpt))
 				DistributedSparseGrids.interp_below!(ret,asg,hcpt)
