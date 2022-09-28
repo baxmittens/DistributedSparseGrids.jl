@@ -5,7 +5,6 @@ import StaticArrays: SVector
 using Distributed
 using ProgressMeter
 
-include("./AdaptiveSparseGrids/inplace_ops.jl")
 include("./CollocationPoints.jl")
 
 abstract type AbstractSparseGrid{N} end
@@ -16,7 +15,6 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
 	pointSetProperties::SVector{N,Int}
-	maxp::Int
 	function AdaptiveHierarchicalSparseGrid{N,HCP}(pointSetProperties::SVector{N,Int},maxp::Int) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
 		return new{N,HCP}(Vector{PointDict{N,HCP}}(),pointSetProperties,maxp)
 	end
@@ -24,115 +22,48 @@ end
 
 include("./AdaptiveSparseGrids/utils.jl")
 
-function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}, maxp::Int) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},F<:Function}
-	asg = AHSG{N,HCP}(pointSetProperties,maxp)
-	init!(asg)
-	return asg
-end
-
 function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG<:AbstractHierarchicalSparseGrid{N,HCP},F<:Function}
 	@assert isempty(asg.cpts)
 	rcp = root_point(HCP)
-	#ID = foldl(*,map(string,i_multi(rcp)))*"_"*foldl(*,map(string,pt_idx(rcp)))
-	#f = fun((coords(rcp),ID))
-	#set_scaling_weight!(rcp,f)
 	push!(asg,rcp)
 	return nothing
 end
 
+include("./AdaptiveSparseGrids/inplace_ops.jl")
 include("./AdaptiveSparseGrids/refinement.jl")
 include("./AdaptiveSparseGrids/scaling_basis.jl")
 include("./AdaptiveSparseGrids/wavelet_basis.jl")
-#include("./AdaptiveSparseGrids/plotting_plots.jl")
 
 function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	_maxp = maxporder(asg)
-	#res = zero(CT) #type has to be return type of fun
 	rcp = first(asg).scaling_weight
-	#RT = typeof(rcp)
-	#if RT <: Number
-	#	res = zero(RT)
-	#elseif RT <: AbstractArray
-	#	res = zeros(Float64,size(rcp))
-	#else
-	#	error()
-	#end
 	res = zero(rcp)
-	tmp = zero(rcp)
 	in_it = InterpolationIterator(asg,x,stoplevel)
 	for cpt_set in in_it
 		for hcpt in cpt_set
-			#restmp = scaling_weight(hcpt)* basis_fun(hcpt, x, _maxp)
-			#res += restmp
-			fill!(tmp,0.0)
-			add!(tmp,scaling_weight(hcpt))
-			mul!(tmp,basis_fun(hcpt, x, _maxp))
-			add!(res,tmp)
+			res .+= scaling_weight(hcpt) .* basis_fun(hcpt, x, _maxp)
 		end
 	end
 	return res
 end
 
 function interpolate!(res,asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	_maxp = maxporder(asg)
-	#res = zero(CT) #type has to be return type of fun
-	#rcp = first(asg).scaling_weight
-	#RT = typeof(rcp)
-	#if RT <: Number
-	#	res = zero(RT)
-	#elseif RT <: AbstractArray
-	#	res = zeros(Float64,size(rcp))
-	#else
-	#	error()
-	#end
-	#res = zero(rcp)
 	fill!(res,0.0)
 	tmp = zero(res)
 	in_it = InterpolationIterator(asg,x,stoplevel)
 	for cpt_set in in_it
 		for hcpt in cpt_set
 			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, _maxp))
-			#restmp = scaling_weight(hcpt) * basis_fun(hcpt, x, _maxp)
-			#for i = 2:N
-			#	restmp *= basis_fun(hcpt, i, x[i], _maxp)
-			#end
-			#println("interp_below cpt = ",getkey(hcpt)," scaling_weight = ",scaling_weight(hcpt)," restmp = ",restmp)
-			#res += restmp
-			#add!(res,interp_below(asg,hcpt))
 			add!(res,tmp)
 		end
 	end
 	return nothing
 end
 
-function interpolate_wavelet(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:WaveletCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	_maxp = maxporder(asg)
-	res = zero(CT) #type has to be return type of fun
-	#in_it = InterpolationIterator(asg,x,stoplevel)
-	#for cpt_set in in_it
-		#for hcpt in cpt_set
-		for hcpt in asg
-			if level(hcpt) <= stoplevel
-				res += hcpt.wavelet_weight * wavelet(asg, hcpt, x, _maxp)
-			end
-			#for i = 2:N
-			#	restmp *= wavelet(hcpt, i, x[i], _maxp)
-			#end
-			#res += restmp
-		end
-	#end
-	return res
-end
-
 function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	#if !isdefined(cpt, :interp_below)
-	#	cpt.interp_below = interpolate(asg,coords(cpt),level(cpt)-1)
-	#end
-	#return cpt.interp_below
 	return interpolate(asg,coords(cpt),level(cpt)-1)
 end
 
-function interp_below!(retval, asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	interpolate!(retval,asg,coords(cpt),level(cpt)-1)
 	return nothing
 end
@@ -242,27 +173,6 @@ function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, retval_proto) where {N, 
 	end
 	return nothing
 end
-
-#function init_weights!(asg::SG, fun::F, worker_ids::Vector{Int}) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
-#	hcpts = collect(asg)
-#	while !isempty(hcpts)
-#		@sync begin
-#			for pid in worker_ids
-#				if isempty(hcpts)
-#					break
-#				end
-#				hcpt = popfirst!(hcpts)
-#				@async begin
-#					ID = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt)))			
-#					fval = remotecall_fetch(fun, pid, (coords(hcpt),ID))
-#					int = interp_below(asg,hcpt)
-#					set_scaling_weight!(hcpt,fval-int)
-#				end
-#			end
-#		end
-#	end
-#	return nothing
-#end
 
 function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	@info "Starting $(length(asg)) simulatoin calls"
