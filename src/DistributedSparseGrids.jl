@@ -41,7 +41,7 @@ include("./AdaptiveSparseGrids/scaling_basis.jl")
 
 
 function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	rcp = first(asg).scaling_weight
+	rcp = scaling_weight(first(asg))
 	res = zero(rcp)
 	in_it = InterpolationIterator(asg,x,stoplevel)
 	for cpt_set in in_it
@@ -52,11 +52,11 @@ function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT
 	return res
 end
 
-function interpolate!(res::RT, asg::SG, x::VCT, startlevel::Int=1, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	fill!(res,0.0)
 	tmp = zero(res)
 	in_it = InterpolationIterator(asg,x,stoplevel)
-	for cpt_set in enumerate(in_it)
+	for cpt_set) in in_it
 		for hcpt in cpt_set
 			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, _maxp))
 			add!(res,tmp)
@@ -66,122 +66,60 @@ function interpolate!(res::RT, asg::SG, x::VCT, startlevel::Int=1, stoplevel::In
 end
 
 function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	interpolate!(retval,asg,coords(cpt),level(cpt)-1)
+	interpolate!(retval,asg,coords(cpt),1,level(cpt)-1)
 	return nothing
 end
 
 function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	return interpolate(asg,coords(cpt),level(cpt)-1)
+	return interpolate(asg,coords(cpt),1,level(cpt)-1)
+end
+
+function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
+	for i = 1:numlevels(asg)	# do it level-wise since interp_below operates on the l-1-level interpolator
+		hcptar = filter(x->level(x)==i,cpts)
+		Threads.@threads for hcpt in hcptar
+			ID = idstring(hcpt)
+			_fval = fun(coords(hcpt),ID)
+			if level(hcpt) > 1
+				_fval -= interp_below(asg,hcpt)
+			end
+			set_scaling_weight!(hcpt,_fval)
+		end
+	end
 end
 
 function init_weights!(asg::SG, fun::F, retval_proto) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	allasg = collect(asg)
+	init_weights!(asg, allasg, fun)
+	return nothing
+end
+
+function init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
+		hcptar = filter(x->level(x)==i,cpts)
 		Threads.@threads for hcpt in hcptar
-			ID = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt)))
-			_fval = fun(coords(hcpt),ID)
-			if level(hcpt) > 1
-				ret = deepcopy(retval_proto)
-				interp_below!(ret,asg,hcpt)
-				_fval -= ret
-			end
-			set_scaling_weight!(hcpt,_fval)
-		end
-	end
-	return nothing
-end
-
-function _init_weights!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
-	allasg = collect(asg)
-	for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
-		Threads.@threads for hcpt in hcptar			
-			_fval = fun(coords(hcpt))
-			if level(hcpt) > 1
-				_fval -= interp_below(asg,hcpt)
-			end
-			set_scaling_weight!(hcpt,_fval)
-		end
-	end
-	return nothing
-end
-
-function __init_weights!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
-	allasg = collect(asg)
-	for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
-		for hcpt in hcptar			
-			_fval = fun(coords(hcpt))
-			if level(hcpt) > 1
-				_fval -= interp_below(asg,hcpt)
-			end
-			set_scaling_weight!(hcpt,_fval)
-		end
-	end
-	return nothing
-end
-
-
-function init_weights!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
-	allasg = collect(asg)
-	for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
-		Threads.@threads for hcpt in hcptar
-			ID = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt)))
-			_fval = fun(coords(hcpt),ID)
-			if level(hcpt) > 1
-				_fval -= interp_below(asg,hcpt)
-			end
-			set_scaling_weight!(hcpt,_fval)
-		end
-	end
-	return nothing
-end
-
-function init_weights!(asg::SG, cpts::Set{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
-	allasg = collect(cpts)
-	for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
-		_hcptar = collect(hcptar)
-		#Threads.@threads for hcpt in hcptar
-		Threads.@threads for i = 1:length(_hcptar)
-			hcpt = _hcptar[i]
-			ID = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt)))
+			ID = idstring(hcpt)
 			_fval = fun(coords(hcpt),ID)
 			set_fval!(hcpt,_fval)
+			scalweight = deepcopy(_fval)
 			if level(hcpt) > 1
-				_fval -= interp_below(asg,hcpt)
+				interp_below!(scalweight,asg,hcpt)
+				mul!(scalweight,-1.0)
+				minus!(scalweight,fval(hcpt))
 			end
-			set_scaling_weight!(hcpt,_fval)
+			set_scaling_weight!(hcpt,scalweight)
 		end
 	end
+end
+
+function init_weights_inplace_ops!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
+	allasg = collect(asg)
+	init_weights_inplace_ops!(asg, allasg, fun)
 	return nothing
 end
 
-function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, retval_proto) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
-	allasg = collect(cpts)
-	for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
-		_hcptar = collect(hcptar)
-		#Threads.@threads for hcpt in hcptar
-		Threads.@threads for i = 1:length(_hcptar)
-			hcpt = _hcptar[i]
-			ID = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt)))
-			_fval = fun(coords(hcpt),ID)
-			if level(hcpt) > 1
-				ret = deepcopy(retval_proto)
-				interp_below!(ret,asg,hcpt)
-				_fval -= ret
-			end
-			set_scaling_weight!(hcpt,_fval)
-		end
-	end
-	return nothing
-end
-
-function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
-	@info "Starting $(length(asg)) simulatoin calls"
+function distributed_fvals!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+@info "Starting $(length(asg)) simulatoin calls"
 	hcpts = copy(cpts)
 	while !isempty(hcpts)
 		@sync begin
@@ -190,7 +128,7 @@ function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int})
 					break
 				end
 				hcpt = pop!(hcpts)
-				ID = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt)))
+				ID = idstring(hcpt)
 				val = coords(hcpt)
 				@async begin
 					_fval = remotecall_fetch(fun, pid, val, ID)
@@ -199,10 +137,39 @@ function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int})
 			end
 		end
 	end
+	return nothing
+end
+
+function distributed_init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+	distributed_fvals!(asg, cpts, fun, worker_ids)
 	@info "Calculating weights"
-	allasg = collect(cpts)
+	for i = 1:numlevels(asg)
+		hcptar = filter(x->level(x)==i,cpts)
+		Threads.@threads for hcpt in hcptar
+			ID = idstring(hcpt)
+			scalweight = deepcopy(_fval)
+			if level(hcpt) > 1
+				interp_below!(scalweight,asg,hcpt)
+				mul!(scalweight,-1.0)
+				minus!(scalweight,fval(hcpt))
+			end
+			set_scaling_weight!(hcpt,scalweight)
+		end
+	end
+	return nothing
+end
+
+function distributed_init_weights!(asg::SG, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+	allasg = collect(asg)
+	distributed_init_weights!(asg, allasg, fun, worker_ids)
+	return nothing
+end
+
+function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+	distributed_fvals!(asg, cpts, fun, worker_ids)
+	@info "Calculating weights"
 	@showprogress for i = 1:numlevels(asg)
-		hcptar = filter(x->level(x)==i,allasg)
+		hcptar = filter(x->level(x)==i,cpts)
 		Threads.@threads for hcpt in hcptar	
 			if level(hcpt) > 1
 				ret = deepcopy(fval(hcpt))
@@ -215,6 +182,12 @@ function init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int})
 			end
 		end
 	end
+	return nothing
+end
+
+function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+	allasg = collect(asg)
+	distributed_init_weights_inplace_ops!(asg, allasg, fun, worker_ids)
 	return nothing
 end
 

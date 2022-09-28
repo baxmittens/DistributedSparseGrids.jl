@@ -1,3 +1,27 @@
+using UnicodePlots
+using DistributedSparseGrids
+using StaticArrays
+
+
+N=5
+CT = Float64
+RT = Matrix{Float64}
+CPType = DistributedSparseGrids.CollocationPoint{N,CT}
+HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
+
+maxlvl = 20
+nrefsteps = 2
+tol = 1e-5
+pointprobs = SVector{N,Int}([1 for i = 1:N])
+wasg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointprobs)
+
+#x =  @SArray rand(5)
+#in_it = InterpolationIterator(asg,x,1)
+
+_cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(wasg))
+for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(wasg)); end
+
+
 using Distributed
 
 addprocs(150)

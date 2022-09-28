@@ -34,6 +34,9 @@ setparents!(hcpt::HCP, parents::SVector{N,HCP}) where {N,HCP <: AbstractHierarch
 setchildren!(hcpt::HCP, children::SVector{N,SVector{2,HCP}}) where {N,HCP <: AbstractHierarchicalCollocationPoint{N}} = begin hcpt.children = children; return nothing; end
 
 
+idstring(hcpt::HCP) where {N,HCP <: AbstractHierarchicalCollocationPoint{N}} = foldl((x,y)->x*"_"*y,map(string,i_multi(hcpt)))*"_"*foldl((x,y)->x*"_"*y,map(string,pt_idx(hcpt))) 
+
+
 function gen_set_child_code(::Type{Val{N}},::Type{Val{DIM}},::Type{Val{I}}) where {N,DIM,I}
 	str = "("
 	for dim = 1:N
