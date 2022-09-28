@@ -56,7 +56,7 @@ function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) w
 	fill!(res,0.0)
 	tmp = zero(res)
 	in_it = InterpolationIterator(asg,x,stoplevel)
-	for cpt_set) in in_it
+	for cpt_set in in_it
 		for hcpt in cpt_set
 			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, _maxp))
 			add!(res,tmp)
