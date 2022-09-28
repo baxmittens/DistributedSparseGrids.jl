@@ -46,7 +46,7 @@ function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT
 	in_it = InterpolationIterator(asg,x,stoplevel)
 	for cpt_set in in_it
 		for hcpt in cpt_set
-			res .+= scaling_weight(hcpt) .* basis_fun(hcpt, x, _maxp)
+			res .+= scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
 		end
 	end
 	return res
@@ -58,7 +58,7 @@ function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) w
 	in_it = InterpolationIterator(asg,x,stoplevel)
 	for cpt_set in in_it
 		for hcpt in cpt_set
-			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, _maxp))
+			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, 1))
 			add!(res,tmp)
 		end
 	end
@@ -221,15 +221,15 @@ function integrate(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationP
 	return res
 end
 
-function integrate(asg::SG,fun::Function) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	println("N=$N,CP=$CP,RT=$RT")
-	maxp = maxporder(asg)
-	res = zero(first(asg).scaling_weight)
-	for cpt in asg
-		res += scaling_weight(cpt) * integral_basis_fun(cpt) * fun(coords(cpt))
-	end
-	return res
-end
+#function integrate(asg::SG,fun::Function) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+#	println("N=$N,CP=$CP,RT=$RT")
+#	maxp = maxporder(asg)
+#	res = zero(first(asg).scaling_weight)
+#	for cpt in asg
+#		res += scaling_weight(cpt) * integral_basis_fun(cpt) * fun(coords(cpt))
+#	end
+#	return res
+#end
 
 function integrate(wasg::SG,skipdims::Vector{Int}) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	@assert maximum(skipdims) <= N && length(skipdims) < N
