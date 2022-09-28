@@ -5,7 +5,8 @@ using StaticArrays
 
 N=5
 CT = Float64
-RT = Matrix{Float64}
+#RT = Matrix{Float64}
+RT = Float64
 CPType = DistributedSparseGrids.CollocationPoint{N,CT}
 HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
 
@@ -21,6 +22,7 @@ wasg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointp
 _cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(wasg))
 for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(wasg)); end
 
+fun(x,ID) = x[1]
 
 using Distributed
 
