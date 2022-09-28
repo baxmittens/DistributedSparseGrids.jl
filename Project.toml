@@ -3,6 +3,12 @@ uuid = "963c640e-cdaa-5978-8b8a-59ae1a680e3d"
 authors = ["baxmittens <maximilian.bittens@bgr.de>","rleegates <robert.gates@gmail.com>"]
 version = "0.1.1"
 
+[deps]
+StaticArray = "90137ffa-7385-5640-81b9-e52037218182"
+
+[compat]
+StaticArrays = "^1.4.4"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
