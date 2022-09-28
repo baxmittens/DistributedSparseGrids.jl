@@ -25,7 +25,7 @@ for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(as
 fun(x,ID) = x[1]
 
 DistributedSparseGrids.init_weights!(asg, fun)
-
+integrate(asg::SG)
 using Distributed
 
 addprocs(150)

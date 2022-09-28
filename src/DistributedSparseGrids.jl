@@ -191,7 +191,6 @@ function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP
 end
 
 function max!(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	maxp = maxporder(asg)
 	res = zero(first(asg).scaling_weight)
 	add!(res,-Inf)
 	for cpt in asg
@@ -201,7 +200,6 @@ function max!(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{
 end
 
 function min!(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	maxp = maxporder(asg)
 	res = zero(first(asg).scaling_weight)
 	add!(res,Inf)
 	for cpt in asg
@@ -212,7 +210,6 @@ end
 
 function integrate(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	println("N=$N,CP=$CP,RT=$RT")
-	maxp = maxporder(asg)
 	res = zero(first(asg).scaling_weight)
 	for cpt in asg
 		res += scaling_weight(cpt) * integral_basis_fun(cpt)
