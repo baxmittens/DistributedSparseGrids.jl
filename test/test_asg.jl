@@ -22,10 +22,16 @@ asg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointpr
 _cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
 for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(asg)); end
 
-fun(x,ID) = x[1]
+fun(x,ID) = x[1]^2
 
 DistributedSparseGrids.init_weights!(asg, fun)
-integrate(asg::SG)
+DistributedSparseGrids.integrate(asg)
+fun(x,ID) = 2.0*x[1]^2
+using Distributed
+addprocs(2)
+works = workers()
+DistributedSparseGrids.distributed_init_weights!(asg, fun, works)
+DistributedSparseGrids.integrate(asg)
 using Distributed
 
 addprocs(150)

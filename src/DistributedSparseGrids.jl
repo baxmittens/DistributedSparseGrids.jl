@@ -141,7 +141,7 @@ function distributed_fvals!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{
 	return nothing
 end
 
-function distributed_init_weights!(asg::SG, cpts::Set{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+function distributed_init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	distributed_fvals!(asg, cpts, fun, worker_ids)
 	@info "Calculating weights"
 	for i = 1:numlevels(asg)
