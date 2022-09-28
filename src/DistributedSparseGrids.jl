@@ -15,7 +15,7 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
 	pointSetProperties::SVector{N,Int}
-	function AdaptiveHierarchicalSparseGrid{N,HCP}(pointSetProperties::SVector{N,Int},maxp::Int) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
+	function AdaptiveHierarchicalSparseGrid{N,HCP}(pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
 		return new{N,HCP}(Vector{PointDict{N,HCP}}(),pointSetProperties)
 	end
 end
@@ -30,7 +30,7 @@ function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG
 end
 
 function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},F<:Function}
-	asg = AHSG{N,HCP}(pointSetProperties,maxp)
+	asg = AHSG{N,HCP}(pointSetProperties)
 	init!(asg)
 	return asg
 end
