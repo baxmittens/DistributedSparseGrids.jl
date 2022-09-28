@@ -4,7 +4,7 @@ authors = ["baxmittens <maximilian.bittens@bgr.de>","rleegates <robert.gates@gma
 version = "0.1.1"
 
 [deps]
-StaticArray = "90137ffa-7385-5640-81b9-e52037218182"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
 StaticArrays = "^1.4.4"
