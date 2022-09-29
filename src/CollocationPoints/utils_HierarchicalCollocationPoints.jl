@@ -233,12 +233,11 @@ function Base.length(iter::AncestorIterator{HCP}) where {HCP<:AbstractHierarchic
 	return len
 end
 
-
 struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
 	cptset::Set{HCP}
 	x::Vector{Float64}
 	stoplevel::Int
-	function InterpolationIterator(root::HCP, x::AbstractVector{Float64}, stoplevel::Int) where {HCP<:AbstractHierarchicalCollocationPoint{N}}
+	function InterpolationIterator(root::HCP, x::AbstractVector{Float64}, stoplevel::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
 		return new{HCP}(Set{HCP}(root),x,stoplevel)
 	end
 end
