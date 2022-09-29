@@ -238,7 +238,9 @@ struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
 	x::Vector{Float64}
 	stoplevel::Int
 	function InterpolationIterator(root::HCP, x::AbstractVector{Float64}, stoplevel::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
-		return new{HCP}(Set{HCP}(root),x,stoplevel)
+		cptset = Set{HCP}()
+		push!(cptset,root)
+		return new{HCP}(cptset,x,stoplevel)
 	end
 end
 
@@ -264,7 +266,7 @@ function Base.iterate(iter::InterpolationIterator{HCP}) where {HCP<:AbstractHier
 end
 
 function Base.iterate(iter::InterpolationIterator{HCP},state::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
-	if isempty!(iter.cptset)
+	if !isempty(iter.cptset)
 		cpt = pop!(iter.cptset)
 		if level(cpt) < stoplevel(iter)
 			next_interpolation_descendants!(iter.cptset,cpt,coords(iter))
@@ -367,7 +369,7 @@ function next_interpolation_descendant(cpt::HCP,x::CT,dim::Int) where {N,CT,CP<:
 end
 
 
-function next_interpolation_descendants!(cptsset::Set{HCP},cpt::HCP,x::CT) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+function next_interpolation_descendants!(cptsset::Set{HCP},cpt::HCP,x::CT) where {N,CT,CP<:AbstractCollocationPoint,HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 	for dim = 1:N
 		push!(cptsset,next_interpolation_descendant(cpt,x[dim],dim))
 	end

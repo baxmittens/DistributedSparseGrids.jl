@@ -46,16 +46,17 @@ function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT
 	#cpts = collect(asg)
 	#filter!(x->level(x)<=stoplevel,allasg)
 	in_it = InterpolationIterator(asg,x,stoplevel)
-	#for cpt_set in in_it
-	next = iterate(in_it)
-	while next !== nothing
-		(cpt_set, state) = next
-		#for hcpt in cpt_set
-		for hcpt in cpt_set
-			res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
-		end
-		next = iterate(in_it,state)
+	for hcpt in in_it
+		res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
 	end
+	#for cpt_set in in_it
+	#next = iterate(in_it)
+	#while next !== nothing
+	#	(cpt_set, state) = next
+		#for hcpt in cpt_set
+	#	res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
+	#	next = iterate(in_it,state)
+	#end
 	
 	return res
 end
