@@ -43,11 +43,14 @@ include("./AdaptiveSparseGrids/scaling_basis.jl")
 function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	rcp = scaling_weight(first(asg))
 	res = zero(rcp)
-	in_it = InterpolationIterator(asg,x,stoplevel)
-	for cpt_set in in_it
-		for hcpt in cpt_set
+	cpts = collect(asg)
+	filter!(x->level(x)<=stoplevel,allasg)
+	#in_it = InterpolationIterator(asg,x,stoplevel)
+	#for cpt_set in in_it
+	for hcpt in cpts
+		#for hcpt in cpt_set
 			res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
-		end
+		#end
 	end
 	return res
 end
@@ -81,7 +84,7 @@ function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP
 		for hcpt in hcptar
 			ID = idstring(hcpt)
 			_fval = fun(coords(hcpt),ID)
-			set_fval!(hcpt,_fval)
+			set_fval!(hcpt,deepcopy(_fval))
 			if level(hcpt) > 1
 				_fval -= interp_below(asg,hcpt)
 			end

@@ -255,7 +255,7 @@ function Base.iterate(iter::InterpolationIterator{N,CT,V,CP,HCP}) where {N,CT,V<
 		root = get_root(iter)
 		next_level_iter_cpts = Set{HCP}()
 		push!(next_level_iter_cpts,root)
-		return next_level_iter_cpts,next_level_iter_cpts
+		return next_level_iter_cpts,copy(next_level_iter_cpts)
 	else
 		return nothing
 	end
@@ -263,7 +263,7 @@ end
 
 function Base.iterate(iter::InterpolationIterator{N,CT,V,CP,HCP},state::Set{HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 	next_level_iter_cpts = Set{HCP}()
-	next_level_cpts = Set{HCP}()
+	#next_level_cpts = Set{HCP}()
 	if stoplevel(iter) > level(first(state))
 		for cpt in state
 			if isrefined(cpt)
@@ -273,7 +273,7 @@ function Base.iterate(iter::InterpolationIterator{N,CT,V,CP,HCP},state::Set{HCP}
 			end
 		end
 		if !isempty(next_level_iter_cpts)
-			return next_level_iter_cpts,next_level_iter_cpts
+			return next_level_iter_cpts,copy(next_level_iter_cpts)
 		else
 			return nothing
 		end
