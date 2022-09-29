@@ -348,6 +348,7 @@ function next_interpolation_descendant(cpt::HCP,x::CT,dim::Int) where {N,CT,CP<:
 	elseif vldch2
 		return chldrn[2]
 	else
+		println("$cpt $x $dim")
 		error()
 	end
 end

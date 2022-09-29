@@ -234,7 +234,7 @@ function integrate(wasg::SG,skipdims::Vector{Int}) where {N,CP,RT,HCP<:AbstractH
 	_pointprobs = SVector{_N,Int}([wasg.pointSetProperties[i] for i in skipdims])
 	_CPType = CollocationPoint{_N,CT}
 	_HCPType = HierarchicalCollocationPoint{_N,_CPType,RT}
-	asg = init(AHSG{_N,_HCPType},_pointprobs,Maxp)
+	asg = init(AHSG{_N,_HCPType},_pointprobs)
 	__cpts = Set{HierarchicalCollocationPoint{_N,_CPType,RT}}(collect(asg))
 	pda = Vector{Dict{SVector{_N,Int},Dict{SVector{_N,Int},RT}}}()
 	push!(pda, Dict{SVector{_N,Int},Dict{SVector{_N,Int},RT}}())
