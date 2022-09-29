@@ -184,7 +184,7 @@ function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP
 	return nothing
 end
 
-function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+function distributed_init_weights_inplace_ops!(asg::SG, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	allasg = collect(asg)
 	distributed_init_weights_inplace_ops!(asg, allasg, fun, worker_ids)
 	return nothing
