@@ -56,7 +56,7 @@ function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT
 		end
 		next = iterate(in_it,state)
 	end
-	end
+	
 	return res
 end
 
