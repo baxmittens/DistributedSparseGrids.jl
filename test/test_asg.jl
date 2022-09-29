@@ -1,5 +1,7 @@
-using UnicodePlots
-using DistributedSparseGrids
+include("../src/DistributedSparseGrids.jl")
+
+#using UnicodePlots
+#using DistributedSparseGrids
 using StaticArrays
 
 
@@ -7,20 +9,20 @@ N=5
 CT = Float64
 #RT = Matrix{Float64}
 RT = Float64
-CPType = DistributedSparseGrids.CollocationPoint{N,CT}
-HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
+CPType = CollocationPoint{N,CT}
+HCPType = HierarchicalCollocationPoint{N,CPType,RT}
 
 #@time begin
 maxlvl = 20
 nrefsteps = 8
 tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
-asg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointprobs)
-_cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
-for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(asg)); end
+asg = init(AHSG{N,HCPType},pointprobs)
+_cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
+for i = 1:nrefsteps; union!(_cpts,generate_next_level!(asg)); end
 f(x::SVector{N,CT},ID::String) = 1/(sum(x.^2) + 0.3)
 
-init_weights!(asg, f)
+@time init_weights!(asg, f)
 integrate(asg)
 numpoints(asg)
 #end
