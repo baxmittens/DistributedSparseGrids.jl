@@ -249,7 +249,7 @@ coords(iter::InterpolationIterator) = iter.x
 coord(iter::InterpolationIterator,dim::Int) = iter.x[dim]
 Base.eltype(iter::InterpolationIterator{HCP}) where {HCP<:AbstractHierarchicalCollocationPoint} = HCP
 
-function Base.iterate(iter::InterpolationIterator{HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+function Base.iterate(iter::InterpolationIterator{HCP}) where {HCP<:AbstractHierarchicalCollocationPoint}
 	if stoplevel(iter) > 0
 		#root = get_root(iter)
 		#next_level_iter_cpts = Set{HCP}()
