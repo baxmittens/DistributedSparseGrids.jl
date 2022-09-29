@@ -2,10 +2,10 @@ include("../src/DistributedSparseGrids.jl")
 
 #using UnicodePlots
 #using DistributedSparseGrids
-using StaticArrays
+using StaticArrays 
 
 
-N=5
+N=7
 CT = Float64
 #RT = Matrix{Float64}
 RT = Float64
@@ -14,7 +14,7 @@ HCPType = HierarchicalCollocationPoint{N,CPType,RT}
 
 #@time begin
 maxlvl = 20
-nrefsteps = 8
+nrefsteps = 3
 tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
 asg = init(AHSG{N,HCPType},pointprobs)
@@ -23,9 +23,12 @@ for i = 1:nrefsteps; union!(_cpts,generate_next_level!(asg)); end
 f(x::SVector{N,CT},ID::String) = 1/(sum(x.^2) + 0.3)
 
 @time init_weights!(asg, f)
+
 integrate(asg)
 numpoints(asg)
 #end
+
+in_it = InterpolationIterator(asg,x,10)
 
 using Distributed
 addprocs(2)
