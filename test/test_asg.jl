@@ -22,20 +22,32 @@ asg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointpr
 _cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
 for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(asg)); end
 
-fun(x,ID) = x[1]^2
+fun1(x,ID) = x[1]^2
 
-DistributedSparseGrids.init_weights!(asg, fun)
+DistributedSparseGrids.init_weights!(asg, fun1)
 DistributedSparseGrids.integrate(asg)
-fun(x,ID) = 2.0*x[1]^2
+
 using Distributed
 addprocs(2)
 works = workers()
-DistributedSparseGrids.distributed_init_weights!(asg, fun, works)
+@everywhere begin
+    fun2(x,ID) = 2.0*x[1]^2
+    using StaticArrays
+end 
+DistributedSparseGrids.distributed_init_weights!(asg, fun2, works)
 DistributedSparseGrids.integrate(asg)
 using Distributed
 
-addprocs(150)
-worker_ids = workers()
+RT = Matrix{Float64}
+CPType = DistributedSparseGrids.CollocationPoint{N,CT}
+HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
+asg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointprobs)
+_cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
+for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(asg)); end
+fun3(x,ID) =ones(2,2)
+DistributedSparseGrids.init_weights_inplace_ops!(asg, fun3)
+DistributedSparseGrids.integrate(asg)
+
 
 @everywhere begin
 using UnicodePlots
