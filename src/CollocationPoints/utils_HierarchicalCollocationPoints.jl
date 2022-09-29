@@ -234,52 +234,66 @@ function Base.length(iter::AncestorIterator{HCP}) where {HCP<:AbstractHierarchic
 end
 
 
-struct InterpolationIterator{N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-	root_cpt::HCP
+struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
+	cptset::Set{HCP}
 	x::V
 	stoplevel::Int
-	function InterpolationIterator(root::HCP, x::V, stoplevel::Int) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-		return new{N,CT,V,CP,HCP}(root,x,stoplevel)
+	function InterpolationIterator(root::HCP, x::V, stoplevel::Int) where {HCP<:AbstractHierarchicalCollocationPoint{N}}
+		return new(Set{HCP}(root),x,stoplevel)
 	end
 end
 
 Base.length(iter::InterpolationIterator) = begin; count = 0; for l in iter; count+=1; end; return count; end
 stoplevel(iter::InterpolationIterator) = iter.stoplevel
-get_root(iter::InterpolationIterator) = iter.root_cpt
+#get_root(iter::InterpolationIterator) = iter.root_cpt
 coords(iter::InterpolationIterator) = iter.x
 coord(iter::InterpolationIterator,dim::Int) = iter.x[dim]
-Base.eltype(iter::InterpolationIterator{N,CT,V,CP,HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}} = Set{HCP}
+Base.eltype(iter::InterpolationIterator{HCP}) where {HCP<:AbstractHierarchicalCollocationPoint} = HCP
 
-function Base.iterate(iter::InterpolationIterator{N,CT,V,CP,HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+function Base.iterate(iter::InterpolationIterator{HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 	if stoplevel(iter) > 0
-		root = get_root(iter)
-		next_level_iter_cpts = Set{HCP}()
-		push!(next_level_iter_cpts,root)
-		return next_level_iter_cpts,copy(next_level_iter_cpts)
+		#root = get_root(iter)
+		#next_level_iter_cpts = Set{HCP}()
+		#push!(next_level_iter_cpts,root)
+		#return next_level_iter_cpts,copy(next_level_iter_cpts)
+		root = pop!(iter.cptset)
+		next_interpolation_descendants!(iter.cptset,root,coords(iter))
+		return root, 1
 	else
 		return nothing
 	end
 end
 
-function Base.iterate(iter::InterpolationIterator{N,CT,V,CP,HCP},state::Set{HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-	next_level_iter_cpts = Set{HCP}()
-	#next_level_cpts = Set{HCP}()
-	if stoplevel(iter) > level(first(state))
-		for cpt in state
-			if isrefined(cpt)
-				for dim = 1:N
-					push!(next_level_iter_cpts,next_interpolation_descendant(cpt,coord(iter,dim),dim))
-				end
-			end
+function Base.iterate(iter::InterpolationIterator{HCP},state::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
+	if isempty!(iter.cptset)
+		cpt = pop!(iter.cptset)
+		if level(cpt) < stoplevel(iter)
+			next_interpolation_descendants!(iter.cptset,cpt,coords(iter))
 		end
-		if !isempty(next_level_iter_cpts)
-			return next_level_iter_cpts,copy(next_level_iter_cpts)
-		else
-			return nothing
-		end
-	else
+		return cpt,1
+	else	
 		return nothing
 	end
+	
+	
+	#next_level_iter_cpts = Set{HCP}()
+	##next_level_cpts = Set{HCP}()
+	#if stoplevel(iter) > level(first(state))
+	#	for cpt in state
+	#		if isrefined(cpt)
+	#			for dim = 1:N
+	#				push!(next_level_iter_cpts,next_interpolation_descendant(cpt,coord(iter,dim),dim))
+	#			end
+	#		end
+	#	end
+	#	if !isempty(next_level_iter_cpts)
+	#		return next_level_iter_cpts,copy(next_level_iter_cpts)
+	#	else
+	#		return nothing
+	#	end
+	#else
+	#	return nothing
+	#end
 end
 
 #function Base.iterate(iter::InterpolationIterator{N,CT,V,CP,HCP}) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
@@ -350,6 +364,13 @@ function next_interpolation_descendant(cpt::HCP,x::CT,dim::Int) where {N,CT,CP<:
 	else
 		println("$cpt $x $dim")
 		error()
+	end
+end
+
+
+function next_interpolation_descendants!(cptsset::Set{HCP},cpt::HCP,x::CT) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+	for dim = 1:N
+		push!(cptsset,next_interpolation_descendant(cpt,x[dim],dim))
 	end
 end
 
