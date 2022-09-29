@@ -233,7 +233,7 @@ function Base.length(iter::AncestorIterator{HCP}) where {HCP<:AbstractHierarchic
 	return len
 end
 
-struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
+mutable struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
 	root::HCP
 	actlevel::Set{HCP}
 	nextlevel::Set{HCP}
