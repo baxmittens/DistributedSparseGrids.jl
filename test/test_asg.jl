@@ -10,28 +10,26 @@ RT = Float64
 CPType = DistributedSparseGrids.CollocationPoint{N,CT}
 HCPType = DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}
 
+#@time begin
 maxlvl = 20
-nrefsteps = 2
+nrefsteps = 8
 tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
 asg = DistributedSparseGrids.init(DistributedSparseGrids.AHSG{N,HCPType},pointprobs)
-
-#x =  @SArray rand(5)
-#in_it = InterpolationIterator(asg,x,1)
-
 _cpts = Set{DistributedSparseGrids.DistributedSparseGrids.HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
 for i = 1:nrefsteps; union!(_cpts,DistributedSparseGrids.generate_next_level!(asg)); end
+f(x::SVector{N,CT},ID::String) = 1/(sum(x.^2) + 0.3)
 
-fun1(x,ID) = x[1]^2
-
-DistributedSparseGrids.init_weights!(asg, fun1)
-DistributedSparseGrids.integrate(asg)
+init_weights!(asg, f)
+integrate(asg)
+numpoints(asg)
+#end
 
 using Distributed
 addprocs(2)
 works = workers()
 @everywhere begin
-    fun2(x,ID) = 2.0*x[1]^2
+    fun2(x,ID) = 1.0
     using StaticArrays
 end 
 DistributedSparseGrids.distributed_init_weights!(asg, fun2, works)
@@ -48,6 +46,10 @@ fun3(x,ID) =ones(2,2)
 DistributedSparseGrids.init_weights_inplace_ops!(asg, fun3)
 DistributedSparseGrids.integrate(asg)
 
+
+@everywhere fun4(x,ID) =ones(2,2)
+DistributedSparseGrids.distributed_init_weights_inplace_ops!(asg, fun4, works)
+DistributedSparseGrids.integrate(asg)
 
 @everywhere begin
 using UnicodePlots

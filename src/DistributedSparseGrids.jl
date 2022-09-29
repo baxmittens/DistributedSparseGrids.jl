@@ -1,4 +1,4 @@
-module DistributedSparseGrids
+#module DistributedSparseGrids
 
 using StaticArrays
 import StaticArrays: SVector
@@ -276,4 +276,4 @@ function integrate(wasg::SG,skipdims::Vector{Int}) where {N,CP,RT,HCP<:AbstractH
 end
 
 
-end # module
+#end # module
