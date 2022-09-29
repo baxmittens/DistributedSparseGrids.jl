@@ -239,7 +239,7 @@ struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
 	x::V
 	stoplevel::Int
 	function InterpolationIterator(root::HCP, x::V, stoplevel::Int) where {HCP<:AbstractHierarchicalCollocationPoint{N}}
-		return new(Set{HCP}(root),x,stoplevel)
+		return new{HCP}(Set{HCP}(root),x,stoplevel)
 	end
 end
 
