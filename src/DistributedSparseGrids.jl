@@ -87,7 +87,7 @@ function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP
 	for i = 1:numlevels(asg)	# do it level-wise since interp_below operates on the l-1-level interpolator
 		println("level $i")
 		hcptar = filter(x->level(x)==i,cpts)
-		for hcpt in hcptar
+		Threads.@threads for hcpt in hcptar
 			ID = idstring(hcpt)
 			_fval = fun(coords(hcpt),ID)
 			set_fval!(hcpt,deepcopy(_fval))
