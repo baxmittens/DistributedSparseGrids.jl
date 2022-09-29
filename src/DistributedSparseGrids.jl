@@ -106,7 +106,7 @@ function init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F) w
 			if level(hcpt) > 1
 				interp_below!(scalweight,asg,hcpt)
 				mul!(scalweight,-1.0)
-				minus!(scalweight,fval(hcpt))
+				add!(scalweight,fval(hcpt))
 			end
 			set_scaling_weight!(hcpt,scalweight)
 		end
