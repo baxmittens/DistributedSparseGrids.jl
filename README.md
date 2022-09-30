@@ -60,15 +60,16 @@ end
 # 	2->open point set
 #	3->left-open point set
 #	4->right-open point set
-asg1 = sparse_grid(2,@SVector [1,1]) 
-asg2 = sparse_grid(2,@SVector [2,2]) 
-asg3 = sparse_grid(2,@SVector [1,2]) 
-asg4 = sparse_grid(2,@SVector [2,1]) 
-asg5 = sparse_grid(2,@SVector [3,3]) 
-asg6 = sparse_grid(2,@SVector [4,4]) 
-asg7 = sparse_grid(2,@SVector [3,1]) 
-asg8 = sparse_grid(2,@SVector [2,3]) 
-asg9 = sparse_grid(2,@SVector [4,2]) 
+
+asg1 = sparse_grid(2, @SVector [1,1]) 
+asg2 = sparse_grid(2, @SVector [2,2]) 
+asg3 = sparse_grid(2, @SVector [1,2]) 
+asg4 = sparse_grid(2, @SVector [2,1]) 
+asg5 = sparse_grid(2, @SVector [3,3]) 
+asg6 = sparse_grid(2, @SVector [4,4]) 
+asg7 = sparse_grid(2, @SVector [3,1]) 
+asg8 = sparse_grid(2, @SVector [2,3]) 
+asg9 = sparse_grid(2, @SVector [4,2]) 
 ```
 
 <img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="500" height="500" />
@@ -77,35 +78,40 @@ asg9 = sparse_grid(2,@SVector [4,2])
 
 ```julia
 asg1 = sparse_grid(4,@SVector [1,1]) 
+
 #define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1")
 fun1(x::SVector{N,CT},ID::String) = sum(x.^2)
+
 # initialize weights
 @time init_weights!(asg, fun1)
+
 # integration
 integrate(asg)
+
 # interpolation
-x = rand(4)*2.0-1.0
+x = rand(4)*2.0 .- 1.0
 val = interpolate(asg,x)	
-val = interpolate_recursive(asg,x)
 ```
 
 ## Distributed function evaluation
-```julia
-N,CT,RT,HCPType,asg = scalar_sparse_grid()
-numpoints(asg)
 
+```julia
+asg1 = sparse_grid(4, @SVector [1,1,1,1]) 
+
+# add worker and register function to all workers
 using Distributed
 addprocs(2)
 ar_worker = workers()
 @everywhere begin
 	using StaticArrays
-    fun2(x::SVector{N,CT},ID::String) = 1.0
-end 
+    fun2(x::SVector{4,Float64},ID::String) = 1.0
+end
+
 # Evaluate the function on 2 workers
 distributed_init_weights!(asg, fun2, ar_worker)
-integrate(asg)
 ```
 
+## Using custom return types
 
 ```julia
 ```
