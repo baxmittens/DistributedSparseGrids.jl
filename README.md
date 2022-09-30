@@ -59,7 +59,7 @@ end
 pointprops = SVector{2,Int}(1,1)
 asg = sparse_grid(2,pointprops) 
 numpoints(asg) # returns 145
-```
+```![grid1](https://user-images.githubusercontent.com/100423479/193272039-eb2ed24f-cba7-41c3-bb99-aec8adeee993.png)
 
 ```julia
 DistributedSparseGrids
