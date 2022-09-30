@@ -40,25 +40,42 @@ include("./AdaptiveSparseGrids/refinement.jl")
 include("./AdaptiveSparseGrids/scaling_basis.jl")
 
 
-function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	rcp = scaling_weight(first(asg))
+#function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+#	rcp = scaling_weight(first(asg))
+#	res = zero(rcp)
+#	#cpts = collect(asg)
+#	#filter!(x->level(x)<=stoplevel,allasg)
+#	in_it = InterpolationIterator(asg,x,stoplevel)
+#	for hcpt in in_it
+#		res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
+#	end
+#	#for cpt_set in in_it
+#	#next = iterate(in_it)
+#	#while next !== nothing
+#	#	(cpt_set, state) = next
+#		#for hcpt in cpt_set
+#	#	res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
+#	#	next = iterate(in_it,state)
+#	#end
+#	
+#	return res
+#end
+function interpolate(asg::SG, hcpt::HCP, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	rcp = scaling_weight(hcpt)
 	res = zero(rcp)
-	#cpts = collect(asg)
-	#filter!(x->level(x)<=stoplevel,allasg)
-	in_it = InterpolationIterator(asg,x,stoplevel)
-	for hcpt in in_it
-		res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
+	if isrefined(hcpt)
+		for i = 1:N
+			ncp = next_interpolation_descendant(root,x,dim)	
+			res += interpolate(asg, hcpt, x, stoplevel)
+		end
 	end
-	#for cpt_set in in_it
-	#next = iterate(in_it)
-	#while next !== nothing
-	#	(cpt_set, state) = next
-		#for hcpt in cpt_set
-	#	res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
-	#	next = iterate(in_it,state)
-	#end
-	
+	res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
 	return res
+end
+
+function interpolate(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	root = get_root(asg)
+	return interpolate(asg, root, x, stoplevel) 
 end
 
 function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
