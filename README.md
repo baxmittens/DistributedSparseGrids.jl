@@ -19,52 +19,59 @@ import Pkg
 -	adaptive refinement
 -	distributed function evaluation with ```Distributed.remotecall_fetch```
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
+-	usage of arbitrary return types 
 -	integration
--	integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
-## Usage
+-	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
+## Usage
 
 ### Basic usage
 ```julia
 DistributedSparseGrids
 using StaticArrays 
 
-# Number of dimensions
-N=5
-# Collocation point coordinate type
-CT = Float64
-# Function return type
-RT = Float64
-# define collocation point
-CPType = CollocationPoint{N,CT}
-# define hierarchical collocation point
-HCPType = HierarchicalCollocationPoint{N,CPType,RT}
-# maximum depth of grid
-maxlvl = 10
-# define refine steps
-nrefsteps = 6
-# define tolerance
-tol = 1e-5
-# define point properties 
-#	1->closed point set
-# 	2->open point set
-#	3->left-open point set
-#	4->right-open point set
-pointprobs = SVector{N,Int}([1 for i = 1:N])
-# init grid
-asg = init(AHSG{N,HCPType},pointprobs)
-#set of all collocation points
-cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
-# refine nrefsteps times
-for i = 1:nrefsteps
-	union!(_cpts,generate_next_level!(asg))
+function scalar_sparse_grid()
+	# Number of dimensions
+	N=5
+	# Collocation point coordinate type
+	CT = Float64
+	# Function return type
+	RT = Float64
+	# define collocation point
+	CPType = CollocationPoint{N,CT}
+	# define hierarchical collocation point
+	HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+	# maximum depth of grid
+	maxlvl = 10
+	# define refine steps
+	nrefsteps = 6
+	# define tolerance
+	tol = 1e-5
+	# define point properties 
+	#	1->closed point set
+	# 	2->open point set
+	#	3->left-open point set
+	#	4->right-open point set
+	pointprobs = SVector{N,Int}([1 for i = 1:N])
+	# init grid
+	asg = init(AHSG{N,HCPType},pointprobs)
+	#set of all collocation points
+	cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
+	# refine nrefsteps times
+	for i = 1:nrefsteps
+		union!(cpts,generate_next_level!(asg))
+	end
+	return N,CT,RT,HCPType,asg
 end
-numpoints(asg)
+
+N,CT,RT,HCPType,asg = scalar_sparse_grid() 
+
+numpoints(asg) # returns 6993
 #define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1")
-f(x::SVector{N,CT},ID::String) = sum(x.^2)
+fun1(x::SVector{N,CT},ID::String) = sum(x.^2)
 
 # initialize weights
-@time init_weights!(asg, f)
+@time init_weights!(asg, fun1)
 
 #integrate
 integrate(asg)
@@ -73,8 +80,23 @@ x = rand(5)*2.0.-1.0
 interpolate(asg,x)
 ```
 
+## Distributed function evaluation
 ```julia
+N,CT,RT,HCPType,asg = scalar_sparse_grid()
+numpoints(asg)
+
+using Distributed
+addprocs(2)
+ar_worker = workers()
+@everywhere begin
+	using StaticArrays
+    fun2(x::SVector{N,CT},ID::String) = 1.0
+end 
+# Evaluate the function on 2 workers
+distributed_init_weights!(asg, fun2, works)
+integrate(asg)
 ```
+
 
 ```julia
 ```
