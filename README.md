@@ -134,7 +134,7 @@ This is already the case for many data types. Below  ```RT=Matrix{Float64}``` is
 pointprop = @SVector [1,2,3,4,1]
 asg = sparse_grid(5, pointprop, 6, Matrix{Float64}) 
 
-#define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1")
+#define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1_1_1_1_1_1_1" for the root poin in five dimensions)
 fun3(x::SVector{N,CT},ID::String) = ones(100,100).*x[1]
 
 # initialize weights
@@ -161,7 +161,7 @@ For Matrix{Float64} this interface is already implemented.
 @time init_weights_inplace_ops!(asg, fun3)
 ```
 
-### Distributed function evaluation an in-place operations
+### Distributed function evaluation and in-place operations
 
 ```julia
 # initialize weights
