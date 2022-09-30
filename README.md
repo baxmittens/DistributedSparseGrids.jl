@@ -33,7 +33,7 @@ import Pkg
 
 ## Point sets
 
-When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since on can choose for both children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
+When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since on can choose for both one-dimensional children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
 
 ```julia
 DistributedSparseGrids
@@ -60,63 +60,33 @@ end
 # 	2->open point set
 #	3->left-open point set
 #	4->right-open point set
-pointprops = SVector{2,Int}(1,1)
-asg = sparse_grid(2,pointprops) 
-numpoints(asg) # returns 145
+asg1 = sparse_grid(2,@SVector [1,1]) 
+asg2 = sparse_grid(2,@SVector [2,2]) 
+asg3 = sparse_grid(2,@SVector [1,2]) 
+asg4 = sparse_grid(2,@SVector [2,1]) 
+asg5 = sparse_grid(2,@SVector [3,3]) 
+asg6 = sparse_grid(2,@SVector [4,4]) 
+asg7 = sparse_grid(2,@SVector [3,1]) 
+asg8 = sparse_grid(2,@SVector [2,3]) 
+asg9 = sparse_grid(2,@SVector [4,2]) 
 ```
 
 <img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="500" height="500" />
 
+## Integration and Interpolation
+
 ```julia
-using DistributedSparseGrids
-using StaticArrays 
-
-function scalar_sparse_grid()
-	# Number of dimensions
-	N=5
-	# Collocation point coordinate type
-	CT = Float64
-	# Function return type
-	RT = Float64
-	# define collocation point
-	CPType = CollocationPoint{N,CT}
-	# define hierarchical collocation point
-	HCPType = HierarchicalCollocationPoint{N,CPType,RT}
-	# maximum depth of grid
-	maxlvl = 10
-	# define refine steps
-	nrefsteps = 6
-	# define point properties 
-	#	1->closed point set
-	# 	2->open point set
-	#	3->left-open point set
-	#	4->right-open point set
-	pointprobs = SVector{N,Int}([1 for i = 1:N])
-	# init grid
-	asg = init(AHSG{N,HCPType},pointprobs)
-	#set of all collocation points
-	cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
-	# refine nrefsteps times
-	for i = 1:nrefsteps
-		union!(cpts,generate_next_level!(asg))
-	end
-	return N,CT,RT,HCPType,asg
-end
-
-N,CT,RT,HCPType,asg = scalar_sparse_grid() 
-
-numpoints(asg) # returns 6993
+asg1 = sparse_grid(4,@SVector [1,1]) 
 #define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1")
 fun1(x::SVector{N,CT},ID::String) = sum(x.^2)
-
 # initialize weights
 @time init_weights!(asg, fun1)
-
-#integrate
+# integration
 integrate(asg)
-#interpolate
-x = rand(5)*2.0.-1.0
-interpolate(asg,x)
+# interpolation
+x = rand(4)*2.0-1.0
+val = interpolate(asg,x)	
+val = interpolate_recursive(asg,x)
 ```
 
 ## Distributed function evaluation
