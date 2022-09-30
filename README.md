@@ -20,8 +20,7 @@ import Pkg
 -	distributed function evaluation with ```Distributed.remotecall_fetch```
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
 -	integration
--	integration over $X_{\sim (i)}$
-
+-	integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 ## Usage
 
 
