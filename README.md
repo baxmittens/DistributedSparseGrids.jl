@@ -33,7 +33,7 @@ import Pkg
 
 ## Point sets
 
-When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. This results in two different sparse grids, the former with almost all points on the boundary, the latter with all points in the interior of the domain. Since on can choose for both children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
+When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since on can choose for both children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
 
 ```julia
 DistributedSparseGrids
@@ -68,7 +68,7 @@ numpoints(asg) # returns 145
 <img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="500" height="500" />
 
 ```julia
-DistributedSparseGrids
+using DistributedSparseGrids
 using StaticArrays 
 
 function scalar_sparse_grid()
