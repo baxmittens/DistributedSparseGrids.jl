@@ -64,8 +64,8 @@ function interpolate(asg::SG, hcpt::HCP, x::VCT, stoplevel::Int=numlevels(asg)) 
 	rcp = scaling_weight(hcpt)
 	res = zero(rcp)
 	if isrefined(hcpt)
-		for i = 1:N
-			ncp = next_interpolation_descendant(root,x,dim)	
+		for dim = 1:N
+			ncp = next_interpolation_descendant(hcpt,x[dim],dim)	
 			res += interpolate(asg, hcpt, x, stoplevel)
 		end
 	end
