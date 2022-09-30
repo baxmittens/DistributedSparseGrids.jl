@@ -15,6 +15,8 @@ import Pkg
 
 ## Usage
 
+
+### Basic usage
 ```julia
 DistributedSparseGrids
 using StaticArrays 
@@ -50,6 +52,7 @@ for i = 1:nrefsteps
 	union!(_cpts,generate_next_level!(asg))
 end
 numpoints(asg)
+#define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1")
 f(x::SVector{N,CT},ID::String) = sum(x.^2)
 
 # initialize weights
