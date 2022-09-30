@@ -27,7 +27,7 @@ children(hcpt::AbstractHierarchicalCollocationPoint, dim::Int) = hcpt.children[d
 child(hcpt::AbstractHierarchicalCollocationPoint, dim::Int, i::Int) = hcpt.children[dim][i]
 isleaf(hcpt::AbstractHierarchicalCollocationPoint) = all(map(x->!isvalid(x),children(hcpt)))
 
-function dim_children_valid(hcpt::HCP,dim::Int) where {HCP<:AbstractHierarchicalCollocationPoint
+function dim_children_valid(hcpt::HCP,dim::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
 	allvalid = true
 	for _child in children(hcpt,dim)
 		allvalid &= isvalid(_child)
