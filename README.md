@@ -13,6 +13,13 @@ To mitigate the "curse of dimensionality" that occurs in the integration or inte
 import Pkg
 ```
 
+## Implemented features
+
+-	local hierarchical Lagrangian basis
+-	adaptive refinement
+-	distributed function evaluation with ```julia Distributed.remotecall_fetch```
+-	multi-threaded calculation the basis scaling weights  with ```julia Threads.@threads```
+
 ## Usage
 
 
@@ -23,7 +30,7 @@ using StaticArrays
 
 # Number of dimensions
 N=5
-# Collocation point coordinate
+# Collocation point coordinate type
 CT = Float64
 # Function return type
 RT = Float64
@@ -31,8 +38,8 @@ RT = Float64
 CPType = CollocationPoint{N,CT}
 # define hierarchical collocation point
 HCPType = HierarchicalCollocationPoint{N,CPType,RT}
-# maximum level of grid
-maxlvl = 20
+# maximum depth of grid
+maxlvl = 10
 # define refine steps
 nrefsteps = 6
 # define tolerance
