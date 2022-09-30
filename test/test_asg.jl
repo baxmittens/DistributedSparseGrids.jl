@@ -14,7 +14,7 @@ HCPType = HierarchicalCollocationPoint{N,CPType,RT}
 
 #@time begin
 maxlvl = 20
-nrefsteps = 3
+nrefsteps = 8
 tol = 1e-5
 pointprobs = SVector{N,Int}([1 for i = 1:N])
 asg = init(AHSG{N,HCPType},pointprobs)
