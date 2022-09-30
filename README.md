@@ -61,7 +61,7 @@ asg = sparse_grid(2,pointprops)
 numpoints(asg) # returns 145
 ```
 
-<img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="600" height="600" />
+<img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="500" height="500" />
 
 ```julia
 DistributedSparseGrids
