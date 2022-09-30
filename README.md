@@ -21,11 +21,46 @@ import Pkg
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
 -	usage of arbitrary return types 
 -	integration
--	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
+-	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$.
 
 ## Usage
 
+
+
 ### Basic usage
+
+## Point sets
+
+```julia
+DistributedSparseGrids
+using StaticArrays 
+
+function sparse_grid(N::Int,pointprobs,nlevel=6,CT=Float64,RT=Float64)
+	# define collocation point
+	CPType = CollocationPoint{N,CT}
+	# define hierarchical collocation point
+	HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+	# init grid
+	asg = init(AHSG{N,HCPType},pointprobs)
+	#set of all collocation points
+	cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
+	# fully refine grid nlevel-1 times
+	for i = 1:nlevel-1
+		union!(cpts,generate_next_level!(asg))
+	end
+	return asg
+end
+
+# define point properties 
+#	1->closed point set
+# 	2->open point set
+#	3->left-open point set
+#	4->right-open point set
+pointprops = SVector{2,Int}(1,1)
+asg = sparse_grid(2,pointprops) 
+numpoints(asg) # returns 145
+```
+
 ```julia
 DistributedSparseGrids
 using StaticArrays 
@@ -45,8 +80,6 @@ function scalar_sparse_grid()
 	maxlvl = 10
 	# define refine steps
 	nrefsteps = 6
-	# define tolerance
-	tol = 1e-5
 	# define point properties 
 	#	1->closed point set
 	# 	2->open point set
@@ -93,7 +126,7 @@ ar_worker = workers()
     fun2(x::SVector{N,CT},ID::String) = 1.0
 end 
 # Evaluate the function on 2 workers
-distributed_init_weights!(asg, fun2, works)
+distributed_init_weights!(asg, fun2, ar_worker)
 integrate(asg)
 ```
 
