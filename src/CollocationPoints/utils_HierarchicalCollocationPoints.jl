@@ -27,8 +27,26 @@ children(hcpt::AbstractHierarchicalCollocationPoint, dim::Int) = hcpt.children[d
 child(hcpt::AbstractHierarchicalCollocationPoint, dim::Int, i::Int) = hcpt.children[dim][i]
 isleaf(hcpt::AbstractHierarchicalCollocationPoint) = all(map(x->!isvalid(x),children(hcpt)))
 
-isrefined(hcpt::AbstractHierarchicalCollocationPoint,dim::Int) = i_multi(hcpt,dim) == 2 ? hasvalid(children(hcpt,dim)) : all(map(isvalid,children(hcpt,dim)))
-isrefined(hcpt::AbstractHierarchicalCollocationPoint{N}) where {N} = all(map(x->isrefined(hcpt,x),1:N))
+function dim_children_valid(hcpt::HCP,dim::Int) where {HCP<:AbstractHierarchicalCollocationPoint
+	allvalid = true
+	for child in children(hcpt,dim)
+		allvalid &= isvalid(child)
+	end
+	return allvalid
+end
+
+function all_refined(hcpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
+	is_refined = true
+	for dim = 1:N
+		is_refined &= isrefined(hcpt,dim)
+	end
+	return is_refined
+end
+
+#isrefined(hcpt::AbstractHierarchicalCollocationPoint,dim::Int) = i_multi(hcpt,dim) == 2 ? hasvalid(children(hcpt,dim)) : all(map(isvalid,children(hcpt,dim)))
+isrefined(hcpt::AbstractHierarchicalCollocationPoint,dim::Int) = i_multi(hcpt,dim) == 2 ? hasvalid(children(hcpt,dim)) : dim_children_valid(HCP,dim)
+#isrefined(hcpt::AbstractHierarchicalCollocationPoint{N}) where {N} = all(map(x->isrefined(hcpt,x),1:N))
+isrefined(hcpt::AbstractHierarchicalCollocationPoint{N}) where {N} = all_refined(hcpt)
 
 setparents!(hcpt::HCP, parents::SVector{N,HCP}) where {N,HCP <: AbstractHierarchicalCollocationPoint{N}} = begin hcpt.parents = parents; return nothing; end
 setchildren!(hcpt::HCP, children::SVector{N,SVector{2,HCP}}) where {N,HCP <: AbstractHierarchicalCollocationPoint{N}} = begin hcpt.children = children; return nothing; end
