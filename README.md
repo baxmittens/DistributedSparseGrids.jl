@@ -17,8 +17,10 @@ import Pkg
 
 -	local hierarchical Lagrangian basis
 -	adaptive refinement
--	distributed function evaluation with ```julia Distributed.remotecall_fetch```
--	multi-threaded calculation the basis scaling weights  with ```julia Threads.@threads```
+-	distributed function evaluation with ```Distributed.remotecall_fetch```
+-	multi-threaded calculation of basis coefficients with ```Threads.@threads```
+-	integration
+-	integration $$\sim (i)$$
 
 ## Usage
 
