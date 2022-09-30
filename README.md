@@ -1,6 +1,6 @@
 # DistributedSparseGrids.jl
 
-A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-intensive objects generated on distributed workers.
+A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers.
 
 
 ## Introduction
@@ -130,7 +130,7 @@ deepcopy(a::T)
 This is already the case for many data types. Below  ```RT=Matrix{Float64}``` is used.
 
 ```julia
-# sparse grid with 5 dimensions and 6 levels
+# sparse grid with 5 dimensions and levels
 pointprop = @SVector [1,2,3,4,1]
 asg = sparse_grid(5, pointprop, 6, Matrix{Float64}) 
 
@@ -142,7 +142,7 @@ fun3(x::SVector{N,CT},ID::String) = ones(100,100).*x[1]
 ```
 ### In-place operations
 
-There are many mathematical operations executed which allocate memory while evaluting the hierarchical interpolator. Many of these allocations can be avoided by additionally implementing ```inplace-ops``` interface for data type ```T```.
+There are many mathematical operations executed which allocate memory while evaluting the hierarchical interpolator. Many of these allocations can be avoided by additionally implementing the ```inplace operations``` interface for data type ```T```.
 
 ```julia
 import LinearAlgebra
@@ -152,8 +152,6 @@ DistributedSparseGrids.add!(a::T, b::T)
 DistributedSparseGrids.add!(a::T, b::Float64) 
 LinearAlgebra.mul!(a::T, b::Float64) 
 LinearAlgebra.mul!(a:T, b::T, c::Float64)
-minus!(a::T, b::T)
-minus!(a::T, b::T)
 ```
 
 For Matrix{Float64} this interface is already implemented.
@@ -161,4 +159,11 @@ For Matrix{Float64} this interface is already implemented.
 ```julia
 # initialize weights
 @time init_weights_inplace_ops!(asg, fun3)
+```
+
+### Distributed function evaluation an in-place operations
+
+```julia
+# initialize weights
+@time distributed_init_weights_inplace_ops!(asg, fun3, ar_worker)
 ```
