@@ -71,7 +71,7 @@ function interpolate_recursive(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) w
 	return interpolate_recursive(asg, root, x, stoplevel) 
 end
 
-function interpolate_recursive!(res::RT, tmp::RT, asg::SG, root::HCP, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+function interpolate_recursive!(res::RT, tmp::RT, asg::SG, hcpt::HCP, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	bf = basis_fun(hcpt, x, 1)
 	if bf > 0.0
 		mul!(tmp,scaling_weight(hcpt),bf)
