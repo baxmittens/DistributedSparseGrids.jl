@@ -44,7 +44,7 @@ function all_refined(hcpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoi
 end
 
 #isrefined(hcpt::AbstractHierarchicalCollocationPoint,dim::Int) = i_multi(hcpt,dim) == 2 ? hasvalid(children(hcpt,dim)) : all(map(isvalid,children(hcpt,dim)))
-isrefined(hcpt::AbstractHierarchicalCollocationPoint,dim::Int) = i_multi(hcpt,dim) == 2 ? hasvalid(children(hcpt,dim)) : dim_children_valid(HCP,dim)
+isrefined(hcpt::AbstractHierarchicalCollocationPoint,dim::Int) = i_multi(hcpt,dim) == 2 ? hasvalid(children(hcpt,dim)) : dim_children_valid(hcpt,dim)
 #isrefined(hcpt::AbstractHierarchicalCollocationPoint{N}) where {N} = all(map(x->isrefined(hcpt,x),1:N))
 isrefined(hcpt::AbstractHierarchicalCollocationPoint{N}) where {N} = all_refined(hcpt)
 
