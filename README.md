@@ -29,7 +29,7 @@ import Pkg
 
 ### Point sets
 
-When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since on can choose for both one-dimensional children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
+When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since one can choose for both one-dimensional children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
 
 ```julia
 DistributedSparseGrids
@@ -73,7 +73,7 @@ asg9 = sparse_grid(2, @SVector [4,2])
 ### Integration and Interpolation
 
 ```julia
-asg = sparse_grid(4,@SVector [1,1,1,1]) 
+asg = sparse_grid(4, @SVector [1,1,1,1]) 
 
 #define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1")
 fun1(x::SVector{N,CT},ID::String) = sum(x.^2)
@@ -99,8 +99,8 @@ using Distributed
 addprocs(2)
 ar_worker = workers()
 @everywhere begin
-	using StaticArrays
-	fun2(x::SVector{4,Float64},ID::String) = 1.0
+    using StaticArrays
+    fun2(x::SVector{4,Float64},ID::String) = 1.0
 end
 
 # Evaluate the function on 2 workers
