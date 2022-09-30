@@ -54,11 +54,13 @@ function interpolate_recursive(asg::SG, hcpt::HCP, x::VCT, stoplevel::Int=numlev
 	rcp = scaling_weight(hcpt)
 	res = zero(rcp)
 	bf = basis_fun(hcpt, x, 1)
-	res += scaling_weight(hcpt) .* bf
-	if bf > 0.0 && level(hcpt) < stoplevel && isrefined(hcpt)
-		for dim = 1:N
-			ncp = next_interpolation_descendant(hcpt,x[dim],dim)	
-			res += interpolate_recursive(asg, ncp, x, stoplevel)
+	if bf > 0.0
+		res += scaling_weight(hcpt) .* bf
+		if level(hcpt) < stoplevel && isrefined(hcpt)
+			for dim = 1:N
+				ncp = next_interpolation_descendant(hcpt,x[dim],dim)	
+				res += interpolate_recursive(asg, ncp, x, stoplevel)
+			end
 		end
 	end
 	return res
@@ -67,6 +69,29 @@ end
 function interpolate_recursive(asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	root = get_root(asg)
 	return interpolate_recursive(asg, root, x, stoplevel) 
+end
+
+function interpolate_recursive!(res::RT, tmp::RT, asg::SG, root::HCP, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	bf = basis_fun(hcpt, x, 1)
+	if bf > 0.0
+		mul!(tmp,scaling_weight(hcpt),bf)
+		add!(res,tmp)
+		if level(hcpt) < stoplevel && isrefined(hcpt)
+			for dim = 1:N
+				ncp = next_interpolation_descendant(hcpt,x[dim],dim)	
+				interpolate_recursive!(res, tmp, asg, ncp, x, stoplevel)
+			end
+		end
+	end
+	return nothing
+end
+
+function interpolate_recursive!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	fill!(res,0.0)
+	tmp = deepcopy(res)
+	root = get_root(asg)
+	interpolate_recursive!(res, tmp, asg, root, x, stoplevel) 
+	return nothing
 end
 
 function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
@@ -83,13 +108,14 @@ function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) w
 end
 
 function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	interpolate!(retval,asg,coords(cpt),level(cpt)-1)
+	#interpolate!(retval,asg,coords(cpt),level(cpt)-1)
+	interpolate_recursive!(retval,asg,coords(cpt),level(cpt)-1)
 	return nothing
 end
 
 function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	return interpolate(asg,coords(cpt),level(cpt)-1)
-	#return interpolate_recursive(asg,coords(cpt),level(cpt)-1)
+	#return interpolate(asg,coords(cpt),level(cpt)-1)
+	return interpolate_recursive(asg,coords(cpt),level(cpt)-1)
 end
 
 function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
