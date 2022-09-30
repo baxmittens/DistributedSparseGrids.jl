@@ -16,6 +16,8 @@ import Pkg
 ## Implemented features
 
 -	local hierarchical Lagrangian basis
+-	grid construction by Clenshaw-Cutirs rule
+-	different pointsets
 -	adaptive refinement
 -	distributed function evaluation with ```Distributed.remotecall_fetch```
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
@@ -30,6 +32,8 @@ import Pkg
 ### Basic usage
 
 ## Point sets
+
+When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. This results in two different sparse grids, the former with almost all points on the boundary, the latter with all points in the interior of the domain. Since on can choose for both children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
 
 ```julia
 DistributedSparseGrids
