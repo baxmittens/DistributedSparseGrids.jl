@@ -98,6 +98,7 @@ function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:Abstrac
 end
 
 function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	#return interpolate(asg,coords(cpt),level(cpt)-1)
 	return interpolate(asg,coords(cpt),level(cpt)-1)
 end
 

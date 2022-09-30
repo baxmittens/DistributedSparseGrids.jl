@@ -5,7 +5,7 @@ include("../src/DistributedSparseGrids.jl")
 using StaticArrays 
 
 
-N=7
+N=5
 CT = Float64
 #RT = Matrix{Float64}
 RT = Float64
