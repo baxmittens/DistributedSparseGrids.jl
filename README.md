@@ -58,17 +58,22 @@ end
 #	3->left-open point set
 #	4->right-open point set
 
-asg1 = sparse_grid(2, @SVector [1,1]) 
-asg2 = sparse_grid(2, @SVector [2,2]) 
-asg3 = sparse_grid(2, @SVector [1,2]) 
-asg4 = sparse_grid(2, @SVector [2,1]) 
-asg5 = sparse_grid(2, @SVector [3,3]) 
-asg6 = sparse_grid(2, @SVector [4,4]) 
-asg7 = sparse_grid(2, @SVector [3,1]) 
-asg8 = sparse_grid(2, @SVector [2,3]) 
-asg9 = sparse_grid(2, @SVector [4,2]) 
+asg01 = sparse_grid(1, @SVector [1]) 
+asg02 = sparse_grid(1, @SVector [2]) 
+asg03 = sparse_grid(1, @SVector [3]) 
+
+asg04 = sparse_grid(2, @SVector [1,1]) 
+asg05 = sparse_grid(2, @SVector [2,2]) 
+asg06 = sparse_grid(2, @SVector [1,2]) 
+asg07 = sparse_grid(2, @SVector [2,1]) 
+asg08 = sparse_grid(2, @SVector [3,3]) 
+asg09 = sparse_grid(2, @SVector [4,4]) 
+asg10 = sparse_grid(2, @SVector [3,1]) 
+asg11 = sparse_grid(2, @SVector [2,3]) 
+asg12 = sparse_grid(2, @SVector [4,2]) 
 ```
 
+<img src="https://user-images.githubusercontent.com/100423479/193822819-90fe2b3f-674d-4914-889b-5be91089b2c0.png" width="600" height="300" />
 <img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="600" height="600" />
 
 ### Integration and Interpolation
