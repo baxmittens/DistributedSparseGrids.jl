@@ -190,3 +190,5 @@ cpts = generate_next_level!(asg, 1e-5, 16)
 init_weights!(asg, collect(cpts), fun1)
 end
 ```
+
+<img src="https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG" width="400" height="400" />
