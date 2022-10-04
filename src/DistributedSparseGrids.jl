@@ -56,7 +56,7 @@ function interpolate_recursive(asg::SG, hcpt::HCP, x::VCT, stoplevel::Int=numlev
 	bf = basis_fun(hcpt, x, 1)
 	if bf > 0.0
 		res += scaling_weight(hcpt) .* bf
-		if level(hcpt) < stoplevel && isrefined(hcpt)
+		if level(hcpt) < stoplevel #&& isrefined(hcpt)
 			for dim = 1:N
 				ncp = next_interpolation_descendant(hcpt,x[dim],dim)	
 				res += interpolate_recursive(asg, ncp, x, stoplevel)
@@ -76,7 +76,7 @@ function interpolate_recursive!(res::RT, tmp::RT, asg::SG, hcpt::HCP, x::VCT, st
 	if bf > 0.0
 		mul!(tmp,scaling_weight(hcpt),bf)
 		add!(res,tmp)
-		if level(hcpt) < stoplevel && isrefined(hcpt)
+		if level(hcpt) < stoplevel #&& isrefined(hcpt)
 			for dim = 1:N
 				ncp = next_interpolation_descendant(hcpt,x[dim],dim)	
 				interpolate_recursive!(res, tmp, asg, ncp, x, stoplevel)
