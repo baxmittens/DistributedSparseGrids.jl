@@ -15,9 +15,10 @@ import Pkg
 
 ## Implemented features
 
+-	Nested one-dimensional Clenshaw-Curtis rule
+-	Smolyak's sparse grid construction
 -	local hierarchical Lagrangian basis
--	grid construction by Clenshaw-Cutirs rule
--	different pointsets
+-	different pointsets (open, closed, halfopen)
 -	adaptive refinement
 -	distributed function evaluation with ```Distributed.remotecall_fetch```
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
