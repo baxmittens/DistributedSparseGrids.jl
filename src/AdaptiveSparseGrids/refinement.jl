@@ -1,3 +1,5 @@
+import LinearAlgebra: norm
+
 function refine(::Type{Val{DIM}}, cpt::CP, psp::Int) where {DIM,N,CP<:AbstractCollocationPoint{N}}
 	tmpch1,tmpch2 = invalid_collocation_point(CP),invalid_collocation_point(CP)
 	((cl,l_interv,llvloff),(cr,r_interv,rlvloff)) = next_points(coord(cpt,DIM),interval(cpt,DIM),psp,i_multi(cpt,DIM))
