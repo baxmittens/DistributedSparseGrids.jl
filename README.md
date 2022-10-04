@@ -174,6 +174,19 @@ For Matrix{Float64} this interface is already implemented.
 ### Adaptive Refinement
 
 ```julia
-# initialize weights
-@time distributed_init_weights_inplace_ops!(asg, fun3, ar_worker)
+# Sparse Grid with 4 initial levels
+pp = @SVector [1,1]
+asg = sparse_grid(2, pp, 4)
+
+# Function with curved singularity
+fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
+
+init_weights!(asg, fun1)
+
+# adaptive refine
+for i = 1:16
+# call generate_next_level! with tol=1e-5 and maxlevels=17
+cpts = generate_next_level!(asg, 1e-5, 16)
+init_weights!(asg, collect(cpts), fun1)
+end
 ```
