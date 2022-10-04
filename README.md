@@ -73,7 +73,7 @@ asg11 = sparse_grid(2, @SVector [2,3])
 asg12 = sparse_grid(2, @SVector [4,2]) 
 ```
 
-<img src="https://user-images.githubusercontent.com/100423479/193822819-90fe2b3f-674d-4914-889b-5be91089b2c0.png" width="600" height="300" />
+<img src="https://user-images.githubusercontent.com/100423479/193822819-90fe2b3f-674d-4914-889b-5be91089b2c0.png" width="600" height="200" />
 <img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="600" height="600" />
 
 ### Integration and Interpolation
