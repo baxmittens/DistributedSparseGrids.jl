@@ -275,7 +275,9 @@ function Base.iterate(iter::InterpolationIterator{HCP}) where {HCP<:AbstractHier
 	empty!(iter.actlevel)
 	empty!(iter.nextlevel)
 	if stoplevel(iter) > 0
-		next_interpolation_descendants!(iter.nextlevel,iter.root,coords(iter))
+		if stoplevel(iter) > 1
+			next_interpolation_descendants!(iter.nextlevel,iter.root,coords(iter))
+		end
 		return iter.root, 1
 	else
 		return nothing
