@@ -108,14 +108,14 @@ function interpolate!(res::RT, asg::SG, x::VCT, stoplevel::Int=numlevels(asg)) w
 end
 
 function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	#interpolate!(retval,asg,coords(cpt),level(cpt)-1)
-	interpolate_recursive!(retval,asg,coords(cpt),level(cpt)-1)
+	interpolate!(retval,asg,coords(cpt),level(cpt)-1)
+	#interpolate_recursive!(retval,asg,coords(cpt),level(cpt)-1)
 	return nothing
 end
 
 function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
-	#return interpolate(asg,coords(cpt),level(cpt)-1)
-	return interpolate_recursive(asg,coords(cpt),level(cpt)-1)
+	return interpolate(asg,coords(cpt),level(cpt)-1)
+	#return interpolate_recursive(asg,coords(cpt),level(cpt)-1)
 end
 
 function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}

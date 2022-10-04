@@ -5,7 +5,7 @@ A Julia library that implements an Adaptive Sparse Grid collocation method for i
 
 ## Introduction
 
-To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of high-dimensional functions using tensor-product discretizations, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
+To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of high-dimensional functions using tensor-product discretizations, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
 
 ## Install
 
@@ -164,6 +164,14 @@ For Matrix{Float64} this interface is already implemented.
 ```
 
 ### Distributed function evaluation and in-place operations
+
+```julia
+# initialize weights
+@time distributed_init_weights_inplace_ops!(asg, fun3, ar_worker)
+```
+
+
+### Adaptive Refinement
 
 ```julia
 # initialize weights
