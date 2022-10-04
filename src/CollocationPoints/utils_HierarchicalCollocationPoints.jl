@@ -256,16 +256,16 @@ mutable struct InterpolationIterator{HCP<:AbstractHierarchicalCollocationPoint}
 	actlevel::Set{HCP}
 	nextlevel::Set{HCP}
 	x::Vector{Float64}
-	stoplevel::Int
-	function InterpolationIterator(root::HCP, x::AbstractVector{Float64}, stoplevel::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
+	stplvl::Int
+	function InterpolationIterator(root::HCP, x::AbstractVector{Float64}, stplvl::Int) where {HCP<:AbstractHierarchicalCollocationPoint}
 		actlevel = Set{HCP}()
 		nextlevel = Set{HCP}()
-		return new{HCP}(root,actlevel,nextlevel,x,stoplevel)
+		return new{HCP}(root,actlevel,nextlevel,x,stplvl)
 	end
 end
 
 Base.length(iter::InterpolationIterator) = begin; count = 0; for l in iter; count+=1; end; return count; end
-stoplevel(iter::InterpolationIterator) = iter.stoplevel
+stoplevel(iter::InterpolationIterator) = iter.stplvl
 #get_root(iter::InterpolationIterator) = iter.root_cpt
 coords(iter::InterpolationIterator) = iter.x
 coord(iter::InterpolationIterator,dim::Int) = iter.x[dim]
@@ -297,7 +297,7 @@ function Base.iterate(iter::InterpolationIterator{HCP},state::Int) where {HCP<:A
 	end
 
 	cpt = pop!(iter.actlevel)
-	if level(cpt) < stoplevel(iter)
+	if isrefined(cpt) && level(cpt) < stoplevel(iter)
 		next_interpolation_descendants!(iter.nextlevel,cpt,coords(iter))
 	end
 	return cpt,1
