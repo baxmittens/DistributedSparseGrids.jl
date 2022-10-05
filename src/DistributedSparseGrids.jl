@@ -5,7 +5,7 @@ import StaticArrays: SVector
 using Distributed
 using ProgressMeter
 
-include("./CollocationPoints.jl")
+include(joinpath(".","CollocationPoints.jl"))
 
 abstract type AbstractSparseGrid{N} end
 abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocationPoint} <: AbstractSparseGrid{N} end
@@ -20,7 +20,7 @@ struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N
 	end
 end
 
-include("./AdaptiveSparseGrids/utils.jl")
+include(joinpath(".","AdaptiveSparseGrids","utils.jl"))
 
 function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG<:AbstractHierarchicalSparseGrid{N,HCP},F<:Function}
 	@assert isempty(asg.cpts)
@@ -35,10 +35,9 @@ function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,
 	return asg
 end
 
-include("./AdaptiveSparseGrids/inplace_ops.jl")
-include("./AdaptiveSparseGrids/refinement.jl")
-include("./AdaptiveSparseGrids/scaling_basis.jl")
-
+include(joinpath(".","AdaptiveSparseGrids","inplace_ops.jl"))
+include(joinpath(".","AdaptiveSparseGrids","refinement.jl"))
+include(joinpath(".","AdaptiveSparseGrids","scaling_basis.jl"))
 
 function interpolate(asg::SG, x::VCT, stplvl::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	rcp = scaling_weight(first(asg))
