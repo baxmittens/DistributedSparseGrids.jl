@@ -24,7 +24,7 @@ import Pkg
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
 -	usage of arbitrary return types 
 -	integration
--	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$.
+-	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
 ## Usage
 
