@@ -1,4 +1,4 @@
-#module DistributedSparseGrids
+module DistributedSparseGrids
 
 using StaticArrays
 import StaticArrays: SVector
@@ -276,7 +276,7 @@ end
 #	return res
 #end
 
-function integrate(wasg::SG,skipdims::Vector{Int}) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+function integrate(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	@assert maximum(skipdims) <= N && length(skipdims) < N
 	dims = setdiff(collect(1:N), skipdims)
 	_N = N-length(dims)
@@ -325,4 +325,4 @@ function integrate(wasg::SG,skipdims::Vector{Int}) where {N,CP,RT,HCP<:AbstractH
 end
 
 
-#end # module
+end # module
