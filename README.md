@@ -232,4 +232,7 @@ PlotlyJS.surface(asg::AbstractHierarchicalSparseGrid{2,HCP}, npts = 20; kwargs..
 PlotlyJS.scatter3d(sg::AbstractHierarchicalSparseGrid{3,HCP}, color_order::Bool=false, maxp::Int=1)
 ```
 
-## todo
+## Next steps
+
+- nonlinear basis functions
+- wavelet basis
