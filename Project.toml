@@ -16,6 +16,12 @@ FastGaussQuadrature = "442a2c76-b920-505d-bb47-c5924d526838"
 
 [compat]
 StaticArrays = "^1.4.4"
+UnicodePlots = "^3.1.3"
+Colors = "^0.12.8"
+PlotlyJS = "^0.18.9"
+ProgressMeter = "^1.7.2"
+FastGaussQuadrature = "^0.4.9"
+
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
