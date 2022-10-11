@@ -33,7 +33,7 @@ Computational integration or interpolation of high-dimensional functions is subj
 
 # Statement of need
 
-`DistributedSparseGrids.jl` is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment.
 
 # Introduction
 
@@ -44,6 +44,19 @@ by introducing an error-adaptive formulation of the method, which will serve as 
 collocation method described in this project. For more information about the theory of the method implemented, see `@gates2015multilevel`.
 
 # Features
+
+
+- Nested one-dimensional Clenshaw-Curtis rule
+- Smolyak's sparse grid construction
+- local hierarchical Lagrangian basis
+- different pointsets (open, closed, halfopen)
+- adaptive refinement
+- distributed function evaluation with ```Distributed.remotecall_fetch```
+- multi-threaded calculation of basis coefficients with ```Threads.@threads```
+- usage of arbitrary return types 
+- integration
+- experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
+
 
 # Citations
 
