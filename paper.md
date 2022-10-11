@@ -37,11 +37,11 @@ Computational integration or interpolation of high-dimensional functions is subj
 
 # Introduction
 
-Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided by `@smolyak1963quadrature`. In the last two decades collocation methods were prominent in the solution of
-stochastic partial differential equation as shown in `@babuvska2007stochastic` and `@nobile2008sparse`.
-`@ma2009adaptive` were able to once again increase efficiency of the collocation approach
+Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided by @smolyak1963quadrature. In the last two decades collocation methods were prominent in the solution of
+stochastic partial differential equation as shown in @babuvska2007stochastic and @nobile2008sparse.
+@ma2009adaptive were able to once again increase efficiency of the collocation approach
 by introducing an error-adaptive formulation of the method, which will serve as a basis for the
-collocation method described in this project. For more information about the theory of the method implemented, see `@gates2015multilevel`.
+collocation method described in this project. For more information about the theory of the method implemented, see @gates2015multilevel.
 
 # Features
 
