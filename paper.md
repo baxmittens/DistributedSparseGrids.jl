@@ -1,5 +1,5 @@
 ---
-title: 'DistributedSparseGrids.jl: A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers'
+title: 'DistributedSparseGrids.jl: A Julia library implementing an Adaptive Sparse Grid collocation method'
 tags:
   - Julia
   - stochastics
@@ -8,10 +8,10 @@ tags:
 authors:
   - name: Maximilian Bittens
     orcid: 0000-0001-9954-294X
-    equal-contrib: true
+#   equal-contrib: true
     affiliation: 1 # (Multiple affiliations must be quoted)
   - name: Robert L. Gates
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
+#   equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
     affiliation: 2
 affiliations:
  - name: Federal Institute for Geosciences and Natural Resources (BGR)
@@ -29,29 +29,11 @@ bibliography: paper.bib
 
 # Abstract
 
-Computational integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. Sparse-Grid approximation can mitigate the latter, especially if the evaluation of the underlying function is costly. In the following, a julia implementation of an local-lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-intensive objects generated on distributed workers.
+Computational integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. Sparse-Grid approximation can mitigate the latter, especially if the evaluation of the underlying function is costly. In the following, a julia implementation of an local-lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
 
 # Statement of need
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
-
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+`DistributedSparseGrids.jl` is a Julia package for integration and interpolation of functions with generic return types. This package is especially suitable if the function has a high response time and/or a memory-heavy response type.
 
 # Mathematics
 
