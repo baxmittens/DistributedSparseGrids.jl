@@ -33,11 +33,17 @@ Computational integration or interpolation of high-dimensional functions is subj
 
 # Statement of need
 
-`DistributedSparseGrids.jl` is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment. 
+`DistributedSparseGrids.jl` is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment.
 
-# State of the field
+# Introduction
 
+Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided by `@smolyak1963quadrature`. In the last two decades collocation methods were prominent in the solution of
+stochastic partial differential equation as shown in `@babuvska2007stochastic` and `@nobile2008sparse`.
+`@ma2009adaptive` were able to once again increase efficiency of the collocation approach
+by introducing an error-adaptive formulation of the method, which will serve as a basis for the
+collocation method described in this project. For more information about the theory of the method implemented, see `@gates2015multilevel`.
 
+# Features
 
 # Citations
 
