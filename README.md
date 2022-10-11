@@ -2,6 +2,7 @@
 
 A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers.
 
+For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl).
 
 ## Introduction
 
