@@ -1,6 +1,6 @@
-using AdaptiveSparseGrids
+using DistributedSparseGrids
 using Test
 
-@testset "AdaptiveSparseGrids.jl" begin
+@testset "DistributedSparseGrids.jl" begin
     # Write your own tests here.
 end

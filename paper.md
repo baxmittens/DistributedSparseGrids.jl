@@ -58,7 +58,7 @@ In the following, some key features of the implemented approach are listed.
 - integration
 - experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
-# Examples
+# Example
 
 Below an example of an adaptive sampling of a function with a curved singularity in 2D is provided. In \autoref{fig:example} an illustration of the sparse grid approximation is shown.
 
