@@ -29,21 +29,23 @@ bibliography: paper.bib
 
 # Abstract
 
-Computational integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. Sparse-Grid approximation can mitigate the latter, especially if the evaluation of the underlying function is costly. In the following, a Julia implementation of a local Lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
+Numerical integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. One remedy to this problem are sparse grid approximations. The additional construction effort is often times worth spending, especially for underlying functions whose evaluation is time-consuming. In the following, a Julia implementation of a local Lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
 
 # Statement of need
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment and, in addition, the solution is memory-heavy as well, like a Vector, Matrix, or, for example, a complete finite element solution.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment and, in addition, the solution is memory-heavy as well, like a Vector, Matrix, or, for example, a complete finite element solution.
 
 # Introduction
 
-Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided by @smolyak1963quadrature. In the last two decades collocation methods were prominent in the solution of
+Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided first by @smolyak1963quadrature. In the last two decades collocation methods were prominent in the solution of
 stochastic partial differential equation as shown in @babuvska2007stochastic and @nobile2008sparse.
 @ma2009adaptive were able to once again increase efficiency of the collocation approach
 by introducing an error-adaptive formulation of the method, which will serve as a basis for the
-collocation method described in this project. For more information about the theory of the method implemented, see @gates2015multilevel.
+collocation method described in this project. For more information about the theory of the method implemented, see e.g. @gates2015multilevel.
 
 # Features
+
+In the following, some key features of the implemented approach are listed.
 
 - Nested one-dimensional Clenshaw-Curtis rule
 - Smolyak's sparse grid construction
