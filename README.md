@@ -242,3 +242,7 @@ PlotlyJS.scatter3d(sg::AbstractHierarchicalSparseGrid{3,HCP}, color_order::Bool=
 
 - nonlinear basis functions
 - wavelet basis
+
+
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://baxmittens.github.io/DistributedSparseGrids.jl/dev/
