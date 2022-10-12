@@ -29,11 +29,11 @@ bibliography: paper.bib
 
 # Abstract
 
-Computational integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. Sparse-Grid approximation can mitigate the latter, especially if the evaluation of the underlying function is costly. In the following, a Julia implementation of an local-lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
+Computational integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. Sparse-Grid approximation can mitigate the latter, especially if the evaluation of the underlying function is costly. In the following, a Julia implementation of a local Lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
 
 # Statement of need
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment and, in addition, the solution is memory-heavy as well, like a Vector, Matrix, or, for example, a complete finite element solution.
 
 # Introduction
 
@@ -44,7 +44,6 @@ by introducing an error-adaptive formulation of the method, which will serve as 
 collocation method described in this project. For more information about the theory of the method implemented, see @gates2015multilevel.
 
 # Features
-
 
 - Nested one-dimensional Clenshaw-Curtis rule
 - Smolyak's sparse grid construction
@@ -57,20 +56,46 @@ collocation method described in this project. For more information about the the
 - integration
 - experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
+# Examples
 
-# Citations
+```julia
+DistributedSparseGrids
+using StaticArrays 
 
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
+function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
+  # define collocation point
+  CPType = CollocationPoint{N,CT}
+  # define hierarchical collocation point
+  HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+  # init grid
+  asg = init(AHSG{N,HCPType},pointprobs)
+  #set of all collocation points
+  cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
+  # fully refine grid nlevel-1 times
+  for i = 1:nlevel-1
+    union!(cpts,generate_next_level!(asg))
+  end
+  return asg
+end
 
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
+# Sparse Grid with 4 initial levels
+pp = @SVector [1,1]
+asg = sparse_grid(2, pp, 4)
 
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
+# Function with curved singularity
+fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
+
+init_weights!(asg, fun1)
+
+# adaptive refine
+for i = 1:20
+# call generate_next_level! with tol=1e-5 and maxlevels=20
+cpts = generate_next_level!(asg, 1e-5, 20)
+init_weights!(asg, collect(cpts), fun1)
+end
+```
+
+![Refined sparse grid.](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){ width=50% }
 
 # Figures
 
