@@ -60,7 +60,7 @@ In the following, some key features of the implemented approach are listed.
 
 # Examples
 
-Below an example of an adaptive sampling of a function with a curved singularity in 2D is provided. In figure \autoref{fig:example} an illustration of the sparse grid approximation is shown.
+Below an example of an adaptive sampling of a function with a curved singularity in 2D is provided. In \autoref{fig:example} an illustration of the sparse grid approximation is shown.
 
 ```julia
 using DistributedSparseGrids
@@ -92,7 +92,9 @@ ar_worker = addprocs(2)
 @everywhere begin
   using StaticArrays 
   # Function with curved singularity
-  fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
+  fun1(x::SVector{2,Float64},ID::String) =  
+    (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - 
+      (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
 end
 
 # calculate weights on master
