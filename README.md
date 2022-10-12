@@ -1,5 +1,9 @@
 # DistributedSparseGrids.jl
 
+<img src="https://user-images.githubusercontent.com/100423479/195380227-83249438-626a-4769-ad4c-6d3c27ccd3ab.png" width="400" height="400" />
+
+[![Documentation](https://github.com/baxmittens/DistributedSparseGrids.jl/actions/workflows/documentation.yml/badge.svg)](https://github.com/baxmittens/DistributedSparseGrids.jl/actions/workflows/documentation.yml)
+
 A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers.
 
 For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl).
