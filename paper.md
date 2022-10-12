@@ -60,12 +60,11 @@ In the following, some key features of the implemented approach are listed.
 
 # Examples
 
-Below a example of a sparse grid approximation of a function with a curved singularity in 2D is provided.
+Below an example of an adaptive sampling of a function with a curved singularity in 2D is provided. In figure \autoref{fig:example} an illustration of the sparse grid approximation is shown.
 
 ```julia
 using DistributedSparseGrids
 using Distributed
-
 
 function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
   # define collocation point
@@ -96,16 +95,18 @@ ar_worker = addprocs(2)
   fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
 end
 
+# calculate weights on master
 init_weights!(asg, fun1)
 
 # adaptive refine
 for i = 1:20
-# call generate_next_level! with tol=1e-5 and maxlevels=20
-cpts = generate_next_level!(asg, 1e-5, 20)
-distributed_init_weights!(asg, collect(cpts), fun1, ar_worker)
+  # call generate_next_level! with tol=1e-5 and maxlevels=20
+  cpts = generate_next_level!(asg, 1e-5, 20)
+  # calculate weights on all worker
+  distributed_init_weights!(asg, collect(cpts), fun1, ar_worker)
 end
 ```
 
-![Refined sparse grid.](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=80% width=80%}
+![Refined sparse grid.\label{fig:example}](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=80% width=80%}
 
 # References
