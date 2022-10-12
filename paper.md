@@ -60,9 +60,12 @@ In the following, some key features of the implemented approach are listed.
 
 # Examples
 
+Below a example of a sparse grid approximation of a function with a curved singularity in 2D is provided.
+
 ```julia
 using DistributedSparseGrids
-using StaticArrays 
+using Distributed
+
 
 function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
   # define collocation point
@@ -84,8 +87,14 @@ end
 pp = @SVector [1,1]
 asg = sparse_grid(2, pp, 4)
 
-# Function with curved singularity
-fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
+# add 2 worker
+ar_worker = addprocs(2)
+
+@everywhere begin
+  using StaticArrays 
+  # Function with curved singularity
+  fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
+end
 
 init_weights!(asg, fun1)
 
@@ -93,24 +102,10 @@ init_weights!(asg, fun1)
 for i = 1:20
 # call generate_next_level! with tol=1e-5 and maxlevels=20
 cpts = generate_next_level!(asg, 1e-5, 20)
-init_weights!(asg, collect(cpts), fun1)
+distributed_init_weights!(asg, collect(cpts), fun1, ar_worker)
 end
 ```
 
-![Refined sparse grid.](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=60% width=60%}
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
-
-# Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+![Refined sparse grid.](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=80% width=80%}
 
 # References
