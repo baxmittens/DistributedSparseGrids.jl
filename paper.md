@@ -97,7 +97,7 @@ init_weights!(asg, collect(cpts), fun1)
 end
 ```
 
-![Refined sparse grid.](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){ width=50% }
+![Refined sparse grid.](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){ width=80%,height=80%  }
 
 # Figures
 
