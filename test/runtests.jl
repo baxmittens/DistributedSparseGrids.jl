@@ -1,6 +1,8 @@
-using DistributedSparseGrids
+include("../src/DistributedSparseGrids.jl")
+using Main.DistributedSparseGrids
 using Test
 using Distributed
+using StaticArrays
 
 function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
   # define collocation point
@@ -44,4 +46,5 @@ for i = 1:5
   # calculate weights on all worker
   distributed_init_weights!(asg, collect(cpts), fun1, ar_worker)
 end
+
 end
