@@ -1,4 +1,9 @@
+<img align="right" src="https://user-images.githubusercontent.com/100423479/195380227-83249438-626a-4769-ad4c-6d3c27ccd3ab.png" width="200" height="200" />
+
 # DistributedSparseGrids.jl
+
+[![][docs-dev-img]][docs-dev-url]
+[![CI](https://github.com/baxmittens/DistributedSparseGrids.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/baxmittens/DistributedSparseGrids.jl/actions/workflows/CI.yml)
 
 A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers.
 
@@ -238,3 +243,7 @@ PlotlyJS.scatter3d(sg::AbstractHierarchicalSparseGrid{3,HCP}, color_order::Bool=
 
 - nonlinear basis functions
 - wavelet basis
+
+
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://baxmittens.github.io/DistributedSparseGrids.jl/dev/
