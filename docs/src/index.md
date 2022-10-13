@@ -1,1 +1,1 @@
-# XMLParser.jl
+# DistributedSparseGrids.jl

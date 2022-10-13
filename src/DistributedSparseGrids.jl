@@ -323,5 +323,6 @@ function integrate(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP<:AbstractCo
 	return asg
 end
 
+export CollocationPoint, HierarchicalCollocationPoint, AHSG, init, generate_next_level!, init_weights!, distributed_init_weights!, init_weights_inplace_ops!, distributed_init_weights_inplace_ops!, integrate, interpolate
 
 end # module
