@@ -1,3 +1,3 @@
 var documenterSearchIndex = {"docs":
-[{"location":"#XMLParser.jl","page":"Home","title":"XMLParser.jl","text":"","category":"section"}]
+[{"location":"#DistributedSparseGrids.jl","page":"Home","title":"DistributedSparseGrids.jl","text":"","category":"section"}]
 }
