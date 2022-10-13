@@ -1,6 +1,6 @@
 import Pkg; Pkg.add("Documenter")
 push!(LOAD_PATH,"../src/")
-include("DistributedSparseGrids.jl")
+include("../src/DistributedSparseGrids.jl")
 using Documenter, Main.DistributedSparseGrids
 makedocs(
 	sitename = "DistributedSparseGrids.jl",
