@@ -1,4 +1,5 @@
 import Pkg; Pkg.add("Documenter")
+Pkg.add("StaticArrays")
 push!(LOAD_PATH,"../src/")
 include("../src/DistributedSparseGrids.jl")
 using Documenter, Main.DistributedSparseGrids
