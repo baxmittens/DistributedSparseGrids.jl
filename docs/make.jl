@@ -4,6 +4,7 @@ Pkg.add("Colors")
 Pkg.add("PlotlyJS")
 Pkg.add("UnicodePlots")
 Pkg.add("FastGaussQuadrature")
+Pkg.add("ProgressMeter")
 
 push!(LOAD_PATH,"../src/")
 include("../src/DistributedSparseGrids.jl")#
