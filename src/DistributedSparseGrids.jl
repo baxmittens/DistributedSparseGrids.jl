@@ -256,6 +256,22 @@ function min!(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{
 	return res
 end
 
+"""
+    integrate(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+
+Computes the VTUHeader based on the headertype and a Base64 decoded input data array.
+
+# Constructor
+- `::Type{T}`: headertype, either UInt32 or UInt64
+- `input::Vector{UInt8}`: input data
+
+# Fields
+- `num_blocks::T` : number of blocks
+- `blocksize::T` : size of blocks
+- `last_blocksize::T` : size of last block (can be different)
+- `compressed_blocksizes::T` : size of compressed blocks
+"""	
+
 function integrate(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	println("N=$N,CP=$CP,RT=$RT")
 	res = zero(first(asg).scaling_weight)
