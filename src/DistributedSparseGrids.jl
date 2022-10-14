@@ -17,7 +17,6 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
     AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 
 """	
-
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
 	pointSetProperties::SVector{N,Int}
