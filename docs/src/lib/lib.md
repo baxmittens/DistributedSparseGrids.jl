@@ -17,6 +17,11 @@ Pages = ["lib.md"]
 
 ### General functions
 
+
+```@docs
+DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
+```
+
 ```@docs
 integrate
 ```
