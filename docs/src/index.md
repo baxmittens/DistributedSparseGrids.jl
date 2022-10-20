@@ -25,14 +25,23 @@ Pkg.install("DistributedSparseGrids")
 ## Implemented features
 
 -	Nested one-dimensional Clenshaw-Curtis rule
+
 -	Smolyak's sparse grid construction
+
 -	local hierarchical Lagrangian basis
+
 -	different pointsets (open, closed, halfopen)
+
 -	adaptive refinement
+
 -	distributed function evaluation with ```Distributed.remotecall_fetch```
+
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
+
 -	usage of arbitrary return types 
+
 -	integration
+
 -	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
 ## Usage
