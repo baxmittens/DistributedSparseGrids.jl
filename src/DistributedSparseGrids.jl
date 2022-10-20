@@ -12,11 +12,6 @@ abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocat
 
 const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}
 
-
-"""
-    AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
-
-"""	
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
 	pointSetProperties::SVector{N,Int}
@@ -34,6 +29,20 @@ function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG
 	return nothing
 end
 
+"""
+	init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int})
+
+Initialize the sparse grid. Returns a `N`-dimensional sparse grid with only the root point was created.
+
+
+# Constructor
+- `::Type{AHSG{N,HCP}}`: Type of AdaptiveHierarchicalSparseGrid (ASHG)
+- `cpts::Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`: Dict cointaining all collocation points
+
+# Example
+
+
+"""	
 function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},F<:Function}
 	asg = AHSG{N,HCP}(pointSetProperties)
 	init!(asg)
