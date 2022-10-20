@@ -1,2 +1,121 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · DistributedSparseGrids.jl</title><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>DistributedSparseGrids.jl</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Contents"><span>Contents</span></a></li></ul></li><li><a class="tocitem" href="lib/lib/">Library</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/baxmittens/DistributedSparseGrids.jl/blob/main/docs/src/index.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="DistributedSparseGrids.jl"><a class="docs-heading-anchor" href="#DistributedSparseGrids.jl">DistributedSparseGrids.jl</a><a id="DistributedSparseGrids.jl-1"></a><a class="docs-heading-anchor-permalink" href="#DistributedSparseGrids.jl" title="Permalink"></a></h1><p>A VTU library in the Julia language that implements an algebra for basic mathematical operations on VTU data (<a href="https://github.com/baxmittens/VTUFileHandler.jl">link to GitHub repository</a>).</p><h2 id="Contents"><a class="docs-heading-anchor" href="#Contents">Contents</a><a id="Contents-1"></a><a class="docs-heading-anchor-permalink" href="#Contents" title="Permalink"></a></h2><ul><li><a href="#DistributedSparseGrids.jl">DistributedSparseGrids.jl</a></li><li class="no-marker"><ul><li><a href="#Contents">Contents</a></li></ul></li><li><a href="lib/lib/#Library">Library</a></li><li class="no-marker"><ul><li><a href="lib/lib/#Contents">Contents</a></li><li><a href="lib/lib/#Functions">Functions</a></li></ul></li></ul></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="lib/lib/">Library »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 14 October 2022 07:54">Friday 14 October 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · DistributedSparseGrids.jl</title><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>DistributedSparseGrids.jl</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Introduction"><span>Introduction</span></a></li><li><a class="tocitem" href="#Contents"><span>Contents</span></a></li><li><a class="tocitem" href="#Install"><span>Install</span></a></li><li><a class="tocitem" href="#Implemented-features"><span>Implemented features</span></a></li><li><a class="tocitem" href="#Usage"><span>Usage</span></a></li></ul></li><li><a class="tocitem" href="lib/lib/">Library</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/baxmittens/DistributedSparseGrids.jl/blob/main/docs/src/index.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="DistributedSparseGrids.jl"><a class="docs-heading-anchor" href="#DistributedSparseGrids.jl">DistributedSparseGrids.jl</a><a id="DistributedSparseGrids.jl-1"></a><a class="docs-heading-anchor-permalink" href="#DistributedSparseGrids.jl" title="Permalink"></a></h1><p>A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers (<a href="https://github.com/baxmittens/DistributedSparseGrids.jl">link to GitHub repository</a>).</p><p>For an alternative implementation, see <a href="https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl">AdaptiveSparseGrids.jl</a>.</p><h2 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h2><p>To mitigate the &quot;curse of dimensionality&quot; that occurs in the integration or interpolation of high-dimensional functions using tensor-product discretizations, sparse grids use Smolyak&#39;s quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by <a href="https://www.sciencedirect.com/science/article/pii/S002199910900028X">Ma and Zabaras (2010)</a>, is implemented. For more information about the construction of Sparse Grids, see e.g. <a href="https://arxiv.org/abs/1509.01462">Gates and Bittens (2015)</a>.</p><h2 id="Contents"><a class="docs-heading-anchor" href="#Contents">Contents</a><a id="Contents-1"></a><a class="docs-heading-anchor-permalink" href="#Contents" title="Permalink"></a></h2><ul><li><a href="#DistributedSparseGrids.jl">DistributedSparseGrids.jl</a></li><li class="no-marker"><ul><li><a href="#Introduction">Introduction</a></li><li><a href="#Contents">Contents</a></li><li><a href="#Install">Install</a></li><li><a href="#Implemented-features">Implemented features</a></li><li><a href="#Usage">Usage</a></li></ul></li><li><a href="lib/lib/#Library">Library</a></li><li class="no-marker"><ul><li><a href="lib/lib/#Contents">Contents</a></li><li><a href="lib/lib/#Functions">Functions</a></li></ul></li></ul><h2 id="Install"><a class="docs-heading-anchor" href="#Install">Install</a><a id="Install-1"></a><a class="docs-heading-anchor-permalink" href="#Install" title="Permalink"></a></h2><pre><code class="language-julia hljs">import Pkg
+Pkg.install(&quot;DistributedSparseGrids&quot;)</code></pre><h2 id="Implemented-features"><a class="docs-heading-anchor" href="#Implemented-features">Implemented features</a><a id="Implemented-features-1"></a><a class="docs-heading-anchor-permalink" href="#Implemented-features" title="Permalink"></a></h2><p>-	Nested one-dimensional Clenshaw-Curtis rule -	Smolyak&#39;s sparse grid construction -	local hierarchical Lagrangian basis -	different pointsets (open, closed, halfopen) -	adaptive refinement -	distributed function evaluation with <code>Distributed.remotecall_fetch</code> -	multi-threaded calculation of basis coefficients with <code>Threads.@threads</code> -	usage of arbitrary return types  -	integration -	experimental: integration over <span>$X_{\sim (i)}$</span> (the <span>$X_{\sim (i)}$</span>  notation indicates the set of all variables except <span>$X_{i}$</span>).</p><h2 id="Usage"><a class="docs-heading-anchor" href="#Usage">Usage</a><a id="Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Usage" title="Permalink"></a></h2><h3 id="Point-sets"><a class="docs-heading-anchor" href="#Point-sets">Point sets</a><a id="Point-sets-1"></a><a class="docs-heading-anchor-permalink" href="#Point-sets" title="Permalink"></a></h3><p>When using sparse grids, one can choose whether the <span>$2d$</span> second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since one can choose for both one-dimensional children of the root point individually, there exist a multitude of different point sets for Sparse Grids.</p><pre><code class="language-julia hljs">DistributedSparseGrids
+using StaticArrays 
+
+function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
+	# define collocation point
+	CPType = CollocationPoint{N,CT}
+	# define hierarchical collocation point
+	HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+	# init grid
+	asg = init(AHSG{N,HCPType},pointprobs)
+	#set of all collocation points
+	cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
+	# fully refine grid nlevel-1 times
+	for i = 1:nlevel-1
+		union!(cpts,generate_next_level!(asg))
+	end
+	return asg
+end
+
+# define point properties 
+#	1-&gt;closed point set
+# 	2-&gt;open point set
+#	3-&gt;left-open point set
+#	4-&gt;right-open point set
+
+asg01 = sparse_grid(1, @SVector [1]) 
+asg02 = sparse_grid(1, @SVector [2]) 
+asg03 = sparse_grid(1, @SVector [3]) 
+
+asg04 = sparse_grid(2, @SVector [1,1]) 
+asg05 = sparse_grid(2, @SVector [2,2]) 
+asg06 = sparse_grid(2, @SVector [1,2]) 
+asg07 = sparse_grid(2, @SVector [2,1]) 
+asg08 = sparse_grid(2, @SVector [3,3]) 
+asg09 = sparse_grid(2, @SVector [4,4]) 
+asg10 = sparse_grid(2, @SVector [3,1]) 
+asg11 = sparse_grid(2, @SVector [2,3]) 
+asg12 = sparse_grid(2, @SVector [4,2]) </code></pre><p>&lt;img src=&quot;https://user-images.githubusercontent.com/100423479/193822819-90fe2b3f-674d-4914-889b-5be91089b2c0.png&quot; width=&quot;600&quot; height=&quot;200&quot; /&gt; &lt;img src=&quot;https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png&quot; width=&quot;600&quot; height=&quot;600&quot; /&gt;</p><h3 id="Integration-and-Interpolation"><a class="docs-heading-anchor" href="#Integration-and-Interpolation">Integration and Interpolation</a><a id="Integration-and-Interpolation-1"></a><a class="docs-heading-anchor-permalink" href="#Integration-and-Interpolation" title="Permalink"></a></h3><pre><code class="language-julia hljs">asg = sparse_grid(4, @SVector [1,1,1,1]) 
+
+#define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. &quot;1_1_1_1&quot;)
+fun1(x::SVector{N,CT},ID::String) = sum(x.^2)
+
+# initialize weights
+@time init_weights!(asg, fun1)
+
+# integration
+integrate(asg)
+
+# interpolation
+x = rand(4)*2.0 .- 1.0
+val = interpolate(asg,x)	</code></pre><h3 id="Distributed-function-evaluation"><a class="docs-heading-anchor" href="#Distributed-function-evaluation">Distributed function evaluation</a><a id="Distributed-function-evaluation-1"></a><a class="docs-heading-anchor-permalink" href="#Distributed-function-evaluation" title="Permalink"></a></h3><pre><code class="language-julia hljs">asg = sparse_grid(4, @SVector [1,1,1,1]) 
+
+# add worker and register function to all workers
+using Distributed
+addprocs(2)
+ar_worker = workers()
+@everywhere begin
+    using StaticArrays
+    fun2(x::SVector{4,Float64},ID::String) = 1.0
+end
+
+# Evaluate the function on 2 workers
+distributed_init_weights!(asg, fun2, ar_worker)</code></pre><h3 id="Using-custom-return-types"><a class="docs-heading-anchor" href="#Using-custom-return-types">Using custom return types</a><a id="Using-custom-return-types-1"></a><a class="docs-heading-anchor-permalink" href="#Using-custom-return-types" title="Permalink"></a></h3><p>For custom return type <code>T</code> to work, following functions have to be implemented</p><pre><code class="language-julia hljs">import Base: +,-,*,/,^,zero,zeros,one,ones,copy,deepcopy
+
++(a::T, b::T) 
++(a::T, b::Float64) 
+*(a::T, b::Float64) 
+-(a::T, b::Matrix{Float64})
+-(a::T, b::Float64) 
+zero(a::T) 
+zeros(a::T) 
+one(a::T) 
+one(a::T) 
+copy(a::T)
+deepcopy(a::T)</code></pre><p>This is already the case for many data types. Below  <code>RT=Matrix{Float64}</code> is used.</p><pre><code class="language-julia hljs"># sparse grid with 5 dimensions and levels
+pointprop = @SVector [1,2,3,4,1]
+asg = sparse_grid(5, pointprop, 6, Matrix{Float64}) 
+
+# define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. &quot;1_1_1_1_1_1_1_1_1_1&quot;
+# for the root poin in five dimensions)
+fun3(x::SVector{N,CT},ID::String) = ones(100,100).*x[1]
+
+# initialize weights
+@time init_weights!(asg, fun3)</code></pre><h3 id="In-place-operations"><a class="docs-heading-anchor" href="#In-place-operations">In-place operations</a><a id="In-place-operations-1"></a><a class="docs-heading-anchor-permalink" href="#In-place-operations" title="Permalink"></a></h3><p>There are many mathematical operations executed which allocate memory while evaluting the hierarchical interpolator. Many of these allocations can be avoided by additionally implementing the <code>inplace operations</code> interface for data type <code>T</code>.</p><pre><code class="language-julia hljs">import LinearAlgebra
+import LinearAlgebra: mul!
+
+DistributedSparseGrids.add!(a::T, b::T) 
+DistributedSparseGrids.add!(a::T, b::Float64) 
+LinearAlgebra.mul!(a::T, b::Float64) 
+LinearAlgebra.mul!(a:T, b::T, c::Float64)</code></pre><p>For Matrix{Float64} this interface is already implemented.</p><pre><code class="language-julia hljs"># initialize weights
+@time init_weights_inplace_ops!(asg, fun3)</code></pre><h3 id="Distributed-function-evaluation-and-in-place-operations"><a class="docs-heading-anchor" href="#Distributed-function-evaluation-and-in-place-operations">Distributed function evaluation and in-place operations</a><a id="Distributed-function-evaluation-and-in-place-operations-1"></a><a class="docs-heading-anchor-permalink" href="#Distributed-function-evaluation-and-in-place-operations" title="Permalink"></a></h3><pre><code class="language-julia hljs"># initialize weights
+@time distributed_init_weights_inplace_ops!(asg, fun3, ar_worker)</code></pre><h3 id="Adaptive-Refinement"><a class="docs-heading-anchor" href="#Adaptive-Refinement">Adaptive Refinement</a><a id="Adaptive-Refinement-1"></a><a class="docs-heading-anchor-permalink" href="#Adaptive-Refinement" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Sparse Grid with 4 initial levels
+pp = @SVector [1,1]
+asg = sparse_grid(2, pp, 4)
+
+# Function with curved singularity
+fun1(x::SVector{2,Float64},ID::String) =  (1.0-exp(-1.0*(abs(2.0 - (x[1]-1.0)^2.0 - (x[2]-1.0)^2.0) +0.01)))/(abs(2-(x[1]-1.0)^2.0-(x[2]-1.0)^2.0)+0.01)
+
+init_weights!(asg, fun1)
+
+# adaptive refine
+for i = 1:20
+# call generate_next_level! with tol=1e-5 and maxlevels=20
+cpts = generate_next_level!(asg, 1e-5, 20)
+init_weights!(asg, collect(cpts), fun1)
+end</code></pre><p>&lt;img src=&quot;https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG&quot; width=&quot;400&quot; height=&quot;400&quot; /&gt;</p><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><h4 id="d"><a class="docs-heading-anchor" href="#d">1d</a><a id="d-1"></a><a class="docs-heading-anchor-permalink" href="#d" title="Permalink"></a></h4><pre><code class="language-julia hljs"># grid plots
+PlotlyJS.scatter(sg::AbstractHierarchicalSparseGrid{1,HCP}, lvl_offset::Bool=false; kwargs...) 
+UnicodePlots.scatterplot(sg::AbstractHierarchicalSparseGrid{1,HCP}, lvl_offset::Bool=false)
+
+# response function plots
+UnicodePlots.lineplot(asg::AbstractHierarchicalSparseGrid{1,HCP}, npts = 1000, stoplevel::Int=numlevels(asg))
+PlotlyJS.surface(asg::SG, npts = 1000, stoplevel::Int=numlevels(asg); kwargs...)</code></pre><h4 id="d-2"><a class="docs-heading-anchor" href="#d-2">2d</a><a class="docs-heading-anchor-permalink" href="#d-2" title="Permalink"></a></h4><pre><code class="language-julia hljs"># grid plots
+PlotlyJS.scatter(sg::AbstractHierarchicalSparseGrid{2,HCP}, lvl_offset::Float64=0.0, color_order::Bool=false) 
+UnicodePlots.scatterplot(sg::AbstractHierarchicalSparseGrid{2,HCP})
+PlotlyJS.scatter3d(sg::AbstractHierarchicalSparseGrid{2,HCP}, color_order::Bool=false, maxp::Int=1)
+
+# response function plot
+PlotlyJS.surface(asg::AbstractHierarchicalSparseGrid{2,HCP}, npts = 20; kwargs...)</code></pre><h4 id="d-3"><a class="docs-heading-anchor" href="#d-3">3d</a><a class="docs-heading-anchor-permalink" href="#d-3" title="Permalink"></a></h4><pre><code class="language-julia hljs"># grid plot
+PlotlyJS.scatter3d(sg::AbstractHierarchicalSparseGrid{3,HCP}, color_order::Bool=false, maxp::Int=1)</code></pre></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="lib/lib/">Library »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 20 October 2022 10:45">Thursday 20 October 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
