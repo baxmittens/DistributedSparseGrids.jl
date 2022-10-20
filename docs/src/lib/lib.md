@@ -19,10 +19,16 @@ Pages = ["lib.md"]
 
 
 ```@docs
-DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
 init
+
+integrate
+
 ```
 
+### Utils
+
 ```@docs
-integrate
+DistributedSparseGrids.AHSG
 ```
+
+

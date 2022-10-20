@@ -36,11 +36,17 @@ Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the
 
 
 # Constructor
-- `::Type{AHSG{N,HCP}}`: Type of AdaptiveHierarchicalSparseGrid (ASHG)
+- `::Type{AHSG{N,HCP}}`: Define type of [`ASHG`](@ref)
 - `cpts::Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`: Dict cointaining all collocation points
 
 # Example
-
+N = 1
+pointprobs = @SVector [1]
+RT = Float64
+CT = Float64
+CPType = CollocationPoint{N,CT}
+HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+asg = init(AHSG{N,HCPType},pointprobs)
 
 """	
 function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},F<:Function}
@@ -53,6 +59,20 @@ include(joinpath(".","AdaptiveSparseGrids","inplace_ops.jl"))
 include(joinpath(".","AdaptiveSparseGrids","refinement.jl"))
 include(joinpath(".","AdaptiveSparseGrids","scaling_basis.jl"))
 
+"""
+	init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int})
+
+Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the root point has been created.
+
+
+# Constructor
+- `::Type{AHSG{N,HCP}}`: Type of AdaptiveHierarchicalSparseGrid (ASHG)
+- `cpts::Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`: Dict cointaining all collocation points
+
+# Example
+
+
+"""
 function interpolate(asg::SG, x::VCT, stplvl::Int=numlevels(asg)) where {N,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	rcp = scaling_weight(first(asg))
 	res = zero(rcp)
