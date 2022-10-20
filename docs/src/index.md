@@ -5,11 +5,6 @@ A Julia library that implements an Adaptive Sparse Grid collocation method for i
 
 For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl).
 
-## Introduction
-
-To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of high-dimensional functions using tensor-product discretizations, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
-
-
 ## Contents
 
 ```@contents
@@ -17,6 +12,9 @@ Pages = ["index.md", "lib/lib.md"]
 Depth = 2
 ```
 
+## Introduction
+
+To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of high-dimensional functions using tensor-product discretizations, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
 
 ## Install
 
@@ -208,8 +206,7 @@ init_weights!(asg, collect(cpts), fun1)
 end
 ```
 
-<img src="https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG" width="400" height="400" />
-
+![](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG "Function with curved singularity")
 
 ### Plotting
 
