@@ -82,6 +82,9 @@ asg11 = sparse_grid(2, @SVector [2,3])
 asg12 = sparse_grid(2, @SVector [4,2]) 
 ```
 
+![](./assets/ps1d.png)
+![](./assets/ps2d.png)
+
 ### Integration and Interpolation
 
 ```julia
@@ -201,6 +204,8 @@ cpts = generate_next_level!(asg, 1e-5, 20)
 init_weights!(asg, collect(cpts), fun1)
 end
 ```
+
+![](./assets/func.png)
 
 ### Plotting
 
