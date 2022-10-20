@@ -8,7 +8,7 @@ For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.c
 
 ```@contents
 Pages = ["index.md", "lib/lib.md"]
-Depth = 2
+Depth = 3
 ```
 
 ## Introduction

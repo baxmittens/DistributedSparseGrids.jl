@@ -1,4 +1,9 @@
+"""
+	const AHSG{N,HCP} = AdaptiveHierarchicalSparseGrid{N,HCP}
 
+Shortcut for AdaptiveHierarchicalSparseGrid
+
+"""	
 const AHSG{N,HCP} = AdaptiveHierarchicalSparseGrid{N,HCP}
 
 get_root(asg::AHSG) = first(values(first(values(asg.cpts[1]))))

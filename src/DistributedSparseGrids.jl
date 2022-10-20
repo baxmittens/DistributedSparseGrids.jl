@@ -32,7 +32,7 @@ end
 """
 	init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int})
 
-Initialize the sparse grid. Returns a `N`-dimensional sparse grid with only the root point was created.
+Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the root point has been created.
 
 
 # Constructor

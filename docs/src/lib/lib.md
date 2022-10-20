@@ -20,6 +20,7 @@ Pages = ["lib.md"]
 
 ```@docs
 DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
+init
 ```
 
 ```@docs
