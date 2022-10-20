@@ -1,6 +1,5 @@
 # DistributedSparseGrids.jl
 
-
 A Julia library that implements an Adaptive Sparse Grid collocation method for integrating memory-heavy objects generated on distributed workers ([link to GitHub repository](https://github.com/baxmittens/DistributedSparseGrids.jl)).
 
 For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl).
@@ -82,9 +81,6 @@ asg10 = sparse_grid(2, @SVector [3,1])
 asg11 = sparse_grid(2, @SVector [2,3]) 
 asg12 = sparse_grid(2, @SVector [4,2]) 
 ```
-
-<img src="https://user-images.githubusercontent.com/100423479/193822819-90fe2b3f-674d-4914-889b-5be91089b2c0.png" width="600" height="200" />
-<img src="https://user-images.githubusercontent.com/100423479/193283422-6901ef1c-e474-4a64-a143-7988c3e9be00.png" width="600" height="600" />
 
 ### Integration and Interpolation
 
@@ -205,8 +201,6 @@ cpts = generate_next_level!(asg, 1e-5, 20)
 init_weights!(asg, collect(cpts), fun1)
 end
 ```
-
-![](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG "Function with curved singularity")
 
 ### Plotting
 
