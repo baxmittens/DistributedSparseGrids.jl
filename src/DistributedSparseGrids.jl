@@ -8,6 +8,11 @@ using ProgressMeter
 include(joinpath(".","CollocationPoints.jl"))
 
 abstract type AbstractSparseGrid{N} end
+
+
+"""
+	AbstractHierarchicalSparseGrid{N,HCP}
+"""
 abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocationPoint} <: AbstractSparseGrid{N} end
 
 const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}
@@ -60,13 +65,12 @@ include(joinpath(".","AdaptiveSparseGrids","refinement.jl"))
 include(joinpath(".","AdaptiveSparseGrids","scaling_basis.jl"))
 
 """
-	init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int})
+	interpolate(asg::SG, x::VCT, stplvl::Int=numlevels(asg))
 
-Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the root point has been created.
+Interpolate at position `x`. 
 
-
-# Constructor
-- `::Type{AHSG{N,HCP}}`: Type of AdaptiveHierarchicalSparseGrid (ASHG)
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: initialized adaptive sparse grid
 - `cpts::Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`: Dict cointaining all collocation points
 
 # Example
