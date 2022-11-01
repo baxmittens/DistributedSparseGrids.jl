@@ -39,6 +39,17 @@ abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocat
 """
 const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}
 
+
+"""
+	AdaptiveHierarchicalSparseGrid{N,HCP}
+
+	Container for hierarchical collocation points 
+
+	# Fields
+
+	`cpts::Vector{PointDict{N,HCP}}` : [`PointDict`](@ref) with collocation points
+	`pointSetProperties::SVector{N,Int}` : Pointset properties
+"""
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
 	pointSetProperties::SVector{N,Int}

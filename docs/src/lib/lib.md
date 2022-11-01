@@ -15,6 +15,20 @@ Depth = 4
 Pages = ["lib.md"]
 ```
 
+### Typedefs
+
+```@docs
+DistributedSparseGrids.AbstractSparseGrid
+DistributedSparseGrids.AbstractHierarchicalSparseGrid
+DistributedSparseGrids.PointDict
+```
+
+### Structs
+
+```@docs
+DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
+```
+
 ### General functions
 
 
