@@ -7,14 +7,36 @@ using ProgressMeter
 
 include(joinpath(".","CollocationPoints.jl"))
 
-abstract type AbstractSparseGrid{N} end
 
+
+"""
+	AbstractSparseGrid{N}
+
+	Abstract Type
+	
+	`N` : Dimension of hierarchical sparse grid
+"""
+abstract type AbstractSparseGrid{N} end
 
 """
 	AbstractHierarchicalSparseGrid{N,HCP}
+
+	Abstract Type
+	
+	`N` : Dimension of hierarchical sparse grid
+	`HCP<:AbstractHierarchicalCollocationPoint` : Collocation point type
 """
 abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocationPoint} <: AbstractSparseGrid{N} end
 
+
+"""
+	PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}}
+
+	Typedef for `Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`
+	
+	`N` : Dimension of hierarchical sparse grid
+	`HCP<:AbstractHierarchicalCollocationPoint` : Collocation point type
+"""
 const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}
 
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
