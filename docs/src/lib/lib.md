@@ -36,7 +36,10 @@ DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
 init
 interpolate
 integrate
-
+init_weights!
+init_weights_inplace_ops!
+distributed_init_weights!
+distributed_init_weights_inplace_ops!
 ```
 
 ### Utils

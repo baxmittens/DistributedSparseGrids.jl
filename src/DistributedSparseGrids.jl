@@ -198,7 +198,7 @@ Computes all weights in `cpts`.
 # Arguments
 - `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
 - `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
-
+- `fun`::Function to be interpolated.
 
 """
 function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
@@ -225,7 +225,7 @@ Computes all weights in `asg`.
 
 # Arguments
 - `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
-
+- `fun`::Function to be interpolated.
 
 """
 function init_weights!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
@@ -237,12 +237,12 @@ end
 """
 	init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F)
 
-Computes all weights in `cpts` with in-place operations. In-place functions `mul!(::RT,::RT)`,`mul!(::RT,::Float64)`,`add!(::RT,::RT)` have to be defined.
+(Re-)Computes all weights in `cpts` with in-place operations. In-place functions `mul!(::RT,::RT)`,`mul!(::RT,::Float64)`,`add!(::RT,::RT)` have to be defined.
 
 # Arguments
 - `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
 - `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
-
+- `fun`::Function to be interpolated.
 
 """
 function init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
@@ -263,6 +263,17 @@ function init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F) w
 	end
 end
 
+"""
+	init_weights_inplace_ops!(asg::SG, fun::F)
+
+(Re-)Computes all weights in `asg` with in-place operations. In-place functions `mul!(::RT,::RT)`,`mul!(::RT,::Float64)`,`add!(::RT,::RT)` have to be defined.
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+
+
+
+"""
 function init_weights_inplace_ops!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	allasg = collect(asg)
 	init_weights_inplace_ops!(asg, allasg, fun)
@@ -291,6 +302,19 @@ function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_i
 	return nothing
 end
 
+
+"""
+	distributed_init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int})
+
+Computes all weights in `cpts` on all workers in `worker_ids`. 
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+- `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
+- `fun`::Function to be interpolated.
+- `worker_ids`: All available workers (can be added via `using Distributed; addprocs(...)`).
+
+"""
 function distributed_init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	distributed_fvals!(asg, cpts, fun, worker_ids)
 	@info "Calculating weights"
@@ -308,12 +332,35 @@ function distributed_init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F, w
 	return nothing
 end
 
+"""
+	distributed_init_weights!(asg::SG, fun::F, worker_ids::Vector{Int})
+
+Computes all weights in `asg` on all workers in `worker_ids`. 
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+- `fun`::Function to be interpolated.
+- `worker_ids`: All available workers (can be added via `using Distributed; addprocs(...)`).
+
+"""
 function distributed_init_weights!(asg::SG, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	allasg = collect(asg)
 	distributed_init_weights!(asg, allasg, fun, worker_ids)
 	return nothing
 end
 
+"""
+	distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int})
+
+Computes all weights in `cpts` on all workers in `worker_ids`. In-place functions `mul!(::RT,::RT)`,`mul!(::RT,::Float64)`,`add!(::RT,::RT)` have to be defined.
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+- `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
+- `fun`::Function to be interpolated.
+- `worker_ids`: All available workers (can be added via `using Distributed; addprocs(...)`).
+
+"""
 function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	distributed_fvals!(asg, cpts, fun, worker_ids)
 	@info "Calculating weights"
@@ -334,6 +381,18 @@ function distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP
 	return nothing
 end
 
+"""
+	distributed_init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int})
+
+Computes all weights in `cpts` on all workers in `worker_ids`. In-place functions `mul!(::RT,::RT)`,`mul!(::RT,::Float64)`,`add!(::RT,::RT)` have to be defined.
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+- `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
+- `fun`::Function to be interpolated.
+- `worker_ids`: All available workers (can be added via `using Distributed; addprocs(...)`).
+
+"""
 function distributed_init_weights_inplace_ops!(asg::SG, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	allasg = collect(asg)
 	distributed_init_weights_inplace_ops!(asg, allasg, fun, worker_ids)
