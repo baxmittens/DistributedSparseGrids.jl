@@ -5,11 +5,13 @@ Pkg.add("PlotlyJS")
 Pkg.add("UnicodePlots")
 Pkg.add("FastGaussQuadrature")
 Pkg.add("ProgressMeter")
+Pkg.add("DistributedSparseGrids")
+Pkg.develop("DistributedSparseGrids")
 
-push!(LOAD_PATH,"../src/")
-include("../src/DistributedSparseGrids.jl")#
+#push!(LOAD_PATH,"../src/")
+#include("../src/DistributedSparseGrids.jl")#
 
-using Documenter, Main.DistributedSparseGrids
+using Documenter, DistributedSparseGrids
 makedocs(
 	sitename = "DistributedSparseGrids.jl",
 	modules = [DistributedSparseGrids],
