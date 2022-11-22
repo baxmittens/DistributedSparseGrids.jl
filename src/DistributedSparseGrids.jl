@@ -47,7 +47,7 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
 
 	# Fields
 
-	`cpts::Vector{PointDict{N,HCP}}` : [`PointDict`](@ref) with collocation points
+	`cpts::Vector{PointDict{N,HCP}}` : [`DistributedSparseGrids.PointDict`](@ref) with collocation points
 	`pointSetProperties::SVector{N,Int}` : Pointset properties
 """
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
@@ -74,7 +74,7 @@ Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the
 
 
 # Constructor
-- `::Type{AHSG{N,HCP}}`: Define type of [`ASHG`](@ref)
+- `::Type{AHSG{N,HCP}}`: Define type of [`DistributedSparseGrids.ASHG`](@ref)
 - `cpts::Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`: Dict cointaining all collocation points
 
 # Example
