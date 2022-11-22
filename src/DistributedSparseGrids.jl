@@ -94,12 +94,12 @@ Pointset properties = [psp_1,...,psp_N], psp_i in [1,2,3,4].
 
 # Example
 
-N = 1
-pointprobs = @SVector [1]
-RT = Float64
-CT = Float64
-CPType = CollocationPoint{N,CT}
-HCPType = HierarchicalCollocationPoint{N,CPType,RT}
+N = 1;
+pointprobs = @SVector [1];
+RT = Float64;
+CT = Float64;
+CPType = CollocationPoint{N,CT};
+HCPType = HierarchicalCollocationPoint{N,CPType,RT};
 asg = init(AHSG{N,HCPType},pointprobs)
 
 """	
@@ -208,7 +208,7 @@ end
 """
 	init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F)
 
-Computes all weights in `cpts`. 
+(Re-)Computes all weights in `cpts`. 
 
 # Arguments
 - `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
@@ -236,7 +236,7 @@ end
 """
 	init_weights!(asg::SG, fun::F)
 
-Computes all weights in `asg`. 
+(Re-)Computes all weights in `asg`. 
 
 # Arguments
 - `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
