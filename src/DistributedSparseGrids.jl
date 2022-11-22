@@ -51,7 +51,7 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
 	`pointSetProperties::SVector{N,Int}` : Vector containing all pointset properties. 
 	
 	Pointset properties = [psp_1,...,psp_N], 
-	psp_i \in [1,2,3,4]. 
+	psp_i in [1,2,3,4]. 
 	1=>`closed point set`, 
 	2=>`open point set`, 
 	3=>`left-open point set`, 
