@@ -48,8 +48,14 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
 	# Fields
 
 	`cpts::Vector{PointDict{N,HCP}}` : [`DistributedSparseGrids.PointDict`](@ref) with collocation points
-	`pointSetProperties::SVector{N,Int}` : Pointset properties = [psp_1,...,psp_N], psp_i \in [1,2,3,4]. 
-		1=>`closed point set`, 2=>`open point set`, 3=>`left-open point set`, 4=>`right-open point set`
+	`pointSetProperties::SVector{N,Int}` : Vector containing all pointset properties. 
+	
+	Pointset properties = [psp_1,...,psp_N], 
+	psp_i \in [1,2,3,4]. 
+	1=>`closed point set`, 
+	2=>`open point set`, 
+	3=>`left-open point set`, 
+	4=>`right-open point set`.
 """
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
@@ -77,7 +83,13 @@ Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the
 
 # Constructor
 - `::Type{AHSG{N,HCP}}`: Define type of [`DistributedSparseGrids.ASHG`](@ref)
-- `pointSetProperties::SVector{N,Int}`: Vector containing all pointset properties, see 
+- `pointSetProperties::SVector{N,Int}`: Vector containing all pointset properties.
+
+Pointset properties = [psp_1,...,psp_N], psp_i \in [1,2,3,4]. 
+1=>`closed point set`, 
+2=>`open point set`, 
+3=>`left-open point set`, 
+4=>`right-open point set.`
 
 # Example
 N = 1
