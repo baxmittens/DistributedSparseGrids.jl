@@ -82,6 +82,7 @@ Initialize the sparse grid. Returns a `N`-dimensional sparse grid where only the
 
 
 # Constructor
+
 - `::Type{AHSG{N,HCP}}`: Define type of [`DistributedSparseGrids.ASHG`](@ref)
 - `pointSetProperties::SVector{N,Int}`: Vector containing all pointset properties.
 
@@ -92,6 +93,7 @@ Pointset properties = [psp_1,...,psp_N], psp_i in [1,2,3,4].
 4=>`right-open point set.`
 
 # Example
+
 N = 1
 pointprobs = @SVector [1]
 RT = Float64
@@ -433,17 +435,11 @@ end
 """
     integrate(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 
-Computes the VTUHeader based on the headertype and a Base64 decoded input data array.
+Integrates the sparse grid. Returns an instance of RT.
 
 # Constructor
-- `::Type{T}`: headertype, either UInt32 or UInt64
-- `input::Vector{UInt8}`: input data
+- `asg::SG`: adaptie sparse grid
 
-# Fields
-- `num_blocks::T` : number of blocks
-- `blocksize::T` : size of blocks
-- `last_blocksize::T` : size of last block (can be different)
-- `compressed_blocksizes::T` : size of compressed blocks
 """	
 function integrate(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	println("N=$N,CP=$CP,RT=$RT")
