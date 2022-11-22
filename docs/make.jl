@@ -9,7 +9,7 @@ Pkg.add("DistributedSparseGrids")
 Pkg.develop("DistributedSparseGrids")
 
 #push!(LOAD_PATH,"../src/")
-#include("../src/DistributedSparseGrids.jl")#
+#include("../src/DistributedSparseGrids.jl")
 
 using Documenter, DistributedSparseGrids
 makedocs(

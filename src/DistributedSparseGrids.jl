@@ -60,6 +60,7 @@ end
 
 include(joinpath(".","AdaptiveSparseGrids","utils.jl"))
 
+
 function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG<:AbstractHierarchicalSparseGrid{N,HCP},F<:Function}
 	@assert isempty(asg.cpts)
 	rcp = root_point(HCP)
@@ -105,8 +106,6 @@ Interpolate at position `x`.
 # Arguments
 - `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: initialized adaptive sparse grid
 - `cpts::Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`: Dict cointaining all collocation points
-
-# Example
 
 
 """
@@ -191,6 +190,17 @@ function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollo
 	#return interpolate_recursive(asg,coords(cpt),level(cpt)-1)
 end
 
+"""
+	init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F)
+
+Computes all weights in `cpts`. 
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+- `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
+
+
+"""
 function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	for i = 1:numlevels(asg)	# do it level-wise since interp_below operates on the l-1-level interpolator
 		println("level $i")
@@ -208,12 +218,33 @@ function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP
 	end
 end
 
+"""
+	init_weights!(asg::SG, fun::F)
+
+Computes all weights in `asg`. 
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+
+
+"""
 function init_weights!(asg::SG, fun::F) where {SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	allasg = collect(asg)
 	init_weights!(asg, allasg, fun)
 	return nothing
 end
 
+"""
+	init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F)
+
+Computes all weights in `cpts` with in-place operations. In-place functions `mul!(::RT,::RT)`,`mul!(::RT,::Float64)`,`add!(::RT,::RT)` have to be defined.
+
+# Arguments
+- `asg::SG<:AbstractHierarchicalSparseGrid{N,HCP}}`: adaptive sparse grid
+- `cpts::AbstractVector{HCP}`: all weights of the collocation points in `cpts` will be (re-)calculated.
+
+
+"""
 function init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	for i = 1:numlevels(asg)
 		hcptar = filter(x->level(x)==i,cpts)

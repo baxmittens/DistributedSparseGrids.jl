@@ -34,7 +34,7 @@ DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
 
 ```@docs
 init
-
+interpolate
 integrate
 
 ```
