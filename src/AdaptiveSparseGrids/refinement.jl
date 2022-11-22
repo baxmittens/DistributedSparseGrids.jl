@@ -53,6 +53,15 @@ function refine!(asg::AHSG{N,HCP}, hcpt::HCP) where {N,HCP<:AbstractHierarchical
 	return nchildren
 end
 
+"""
+    generate_next_level!(asg::AHSG{N,HCP}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
+
+Generates all collocation point of the next hierarchical level.
+
+# Constructor
+- `asg::AHSG{N,HCP}`: sparse grid
+
+"""	
 function generate_next_level!(asg::AHSG{N,HCP}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
 	nchildren = Set{HCP}()
 	asglvl = asg.cpts[end]
@@ -73,6 +82,17 @@ function generate_next_level!(asg::AHSG{N,HCP}) where {N,HCP<:AbstractHierarchic
 	return nchildren
 end
 
+"""
+    generate_next_level!(asg::AHSG{N,HCP}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
+
+Adaptively generate all collocation point of the next hierarchical level, where `norm(scaling_weight(cpt)) > tol && level(cpt)<maxlvl`.
+
+# Constructor
+- `asg::AHSG{N,HCP}`: sparse grid
+- `tol::CT`: tolerance
+- `maxlvl::Int`: maximum hierarchical level
+
+"""	
 function generate_next_level!(asg::AHSG{N,HCP}, tol::CT,maxlvl::Int) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 	nchildren = Set{HCP}()
 	asglvl = asg.cpts[end]

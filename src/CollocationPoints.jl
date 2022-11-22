@@ -36,6 +36,15 @@ end
 	end
 end
 
+"""
+    root_point(::Type{CollocationPoint{N,CT}}) where {N,CT<:Real}
+
+generates a root point.
+
+# Constructor
+- `::Type{CollocationPoint{N,CT}}`: a colloction point of dimension `N` and collocation type `CT`.
+
+"""	
 @generated function root_point(::Type{CollocationPoint{N,CT}}) where {N,CT<:Real}
 	rp,rp_interv = root_point(CT)
 	cpt = CollocationPoint{N,CT}(
