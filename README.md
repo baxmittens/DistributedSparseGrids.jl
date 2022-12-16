@@ -17,7 +17,7 @@ To mitigate the "curse of dimensionality" that occurs in the integration or inte
 
 ```julia
 import Pkg
-Pkg.install("DistributedSparseGrids")
+Pkg.add("DistributedSparseGrids")
 ```
 
 ## Implemented features
