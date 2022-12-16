@@ -244,6 +244,9 @@ PlotlyJS.scatter3d(sg::AbstractHierarchicalSparseGrid{3,HCP}, color_order::Bool=
 - nonlinear basis functions
 - wavelet basis
 
+## Contributions, report bugs and support
+
+Contributions to or questions about this project are welcome. Feel free to create a issue or a pull request on [GitHub](https://github.com/baxmittens/DistributedSparseGrids.jl).
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://baxmittens.github.io/DistributedSparseGrids.jl/dev/
