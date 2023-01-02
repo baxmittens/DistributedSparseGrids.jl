@@ -40,7 +40,7 @@ Pkg.add("DistributedSparseGrids")
 When using sparse grids, one can choose whether the $2d$ second-level collocation points should lay on the boundary of the domain or in the middle between the origin and the boundary. (There are other choices as well.) This results in two different sparse grids, the former with almost all points on the boundary and on the coordinate axes, the latter with all points in the interior of the domain. Since one can choose for both one-dimensional children of the root point individually, there exist a multitude of different point sets for Sparse Grids.
 
 ```julia
-DistributedSparseGrids
+using DistributedSparseGrids
 using StaticArrays 
 
 function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
