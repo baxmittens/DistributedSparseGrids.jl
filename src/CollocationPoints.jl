@@ -5,6 +5,19 @@ include("./CollocationPoints/tuple_generation.jl")
 abstract type AbstractCollocationPoint{N,CT<:Real} end
 abstract type AbstractHierarchicalCollocationPoint{N,CP<:AbstractCollocationPoint,RT} end
 
+
+"""
+	CollocationPoint{N,CT} <: AbstractCollocationPoint{N,CT}	
+	
+	A collocation point.
+
+	# Fields
+
+	`i_multi::SVector{N,Int}` : The i-th item of this Vector represents to the level of the collocation point in the i-th dimension.
+	`pt_idx::SVector{N,Int}` : The i-th item of this Vector represents to the point index of the collocation point in the i-th dimension.
+	`coords::SVector{N,CT}` : Coordinates of the collocation point.
+	`interv::SVector{N,SVector{2,CT}}` : The i-th item of the Vector defines the non-zero interval of the associated basis function in the i-th dimension.
+"""
 struct CollocationPoint{N,CT} <: AbstractCollocationPoint{N,CT}	
 	i_multi::SVector{N,Int}
 	pt_idx::SVector{N,Int}
@@ -58,7 +71,22 @@ generates a root point.
 	end
 end
 
-if  ~isdefined(:Main,:HierarchicalCollocationPoint) #top level hack
+
+#if  ~isdefined(:Main,:HierarchicalCollocationPoint) #top level hack
+
+"""
+	HierarchicalCollocationPoint{N,CP,RT} <: AbstractHierarchicalCollocationPoint{N,CP,RT}	
+	
+	A collocation point.
+
+	# Fields
+
+	`cpt::CP` : [`DistributedSparseGrids.CollocationPoint`](@ref)
+	`children::SVector{N,SVector{2,HierarchicalCollocationPoint{N,CP,RT}}}` : Container for at most two children per dimension
+	`parents::SVector{N,HierarchicalCollocationPoint{N,CP,RT}}` : Container for parents 
+	`fval::RT` : Function Value
+	`scaling_weight::RT` : Scaling Weight (function value minus l-1 level interpolator both at cpt.coords)
+"""
 mutable struct HierarchicalCollocationPoint{N,CP,RT} <: AbstractHierarchicalCollocationPoint{N,CP,RT}
 	cpt::CP
 	children::SVector{N,SVector{2,HierarchicalCollocationPoint{N,CP,RT}}}
@@ -72,7 +100,7 @@ mutable struct HierarchicalCollocationPoint{N,CP,RT} <: AbstractHierarchicalColl
 		return new{N,CP,RT}(cpt,children,parents)
 	end
 end
-end
+#end
 
 if  ~isdefined(:Main,:WaveletCollocationPoint) #top level hack
 mutable struct WaveletCollocationPoint{N,CP,RT,CT,Nv} <: AbstractHierarchicalCollocationPoint{N,CP,RT} 
