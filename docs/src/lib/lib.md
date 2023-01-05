@@ -26,6 +26,8 @@ DistributedSparseGrids.PointDict
 ### Structs
 
 ```@docs
+DistributedSparseGrids.CollocationPoint
+DistributedSparseGrids.HierarchicalCollocationPoint
 DistributedSparseGrids.AdaptiveHierarchicalSparseGrid
 ```
 
