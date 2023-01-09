@@ -186,10 +186,10 @@ function interpolate!(res::RT, asg::SG, x::VCT, stplvl::Int=numlevels(asg)) wher
 	tmp = zero(res)
 	in_it = InterpolationIterator(asg,x,stplvl)
 	for cpt_set in in_it
-		for hcpt in cpt_set
-			mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, 1))
-			add!(res,tmp)
-		end
+		#for hcpt in cpt_set
+		mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, 1))
+		add!(res,tmp)
+		#end
 	end
 	return nothing
 end
