@@ -219,7 +219,7 @@ end
 """
 function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid, F<:Function}
 	for i = 1:numlevels(asg)	# do it level-wise since interp_below operates on the l-1-level interpolator
-		println("level $i")
+		#println("level $i")
 		hcptar = filter(x->level(x)==i,cpts)
 		Threads.@threads for hcpt in hcptar
 		#for hcpt in hcptar
