@@ -51,14 +51,22 @@ In the following, some key features of the implemented approach are listed.
 
 [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example. Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used, which implements all operators needed to load complete result files into the sparse grid.
 
+### In-place operations
+
+Computing the weights for the hierarchical basis as well as performing interpolation and integration relies heavily on the use of *arithmetic operators*, which allocate memory. This can be a problem, especially if the result type is memory heavy. Therefore, [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines in-place variants to all of these actions given in-place variants of the arithmetic operators are defined. For further information see the [documentation](https://baxmittens.github.io/DistributedSparseGrids.jl/dev/#In-place-operations).
+
+### Distributed computing    
+
+If the runtime of the function to be evaluated is long, it may be necessary to distribute the load to several workers. Julia provides this functionality *out-of-the-box* via the ```Distributed``` interface. Due to the hierarchical construction of the basis and the level-wise adaptive refinement indicator, it seems necessary to include this interface in the sparse grid for a performant application of distributed computing. [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) uses all workers included by the ```addprocs``` command if the ```distributed_init_weights!``` function is used to determine the hierarchical weights.
+
+### Additional features  
+
 - Nested one-dimensional Clenshaw-Curtis rule
 - Smolyak's sparse grid construction
 - local hierarchical Lagrangian basis
 - different pointsets (open, closed, halfopen)
 - adaptive refinement
-- distributed function evaluation with ```Distributed.remotecall_fetch```
 - multi-threaded calculation of basis coefficients with ```Threads.@threads```
-- usage of arbitrary return types 
 - integration
 - experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
