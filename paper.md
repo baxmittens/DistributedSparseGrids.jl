@@ -47,13 +47,9 @@ collocation method described in this project. For more information about the the
 
 In the following, some key features of the implemented approach are listed.
 
-## Arbitrary return types
+### Arbitrary return types
 
-DistributedSparseGrids.jl defines an interface for
-```julia
-HierarchicalCollocationPoint{N,CP,RT}
-```
-where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is an arbitrary generic return type.
+DistributedSparseGrids.jl defines an interface for ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is an generic return type. ```RT``` can be conveniently defined as a type needed most suitable for studying the problem at hand. This can be a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example. There also exists a project named [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) @bittens2022vtufilehandler implementing the operators needed to load complete finite element results in the vtu-format @schroeder2000visualizing into the sparse grid.
 
 - Nested one-dimensional Clenshaw-Curtis rule
 - Smolyak's sparse grid construction
