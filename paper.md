@@ -49,8 +49,7 @@ In the following, some key features of the implemented approach are listed.
 
 ### Arbitrary return types
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example.
-Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used, which implements all operators needed to load complete result files into the sparse grid.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example.<br/> Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used, which implements all operators needed to load complete result files into the sparse grid.
 
 ### In-place operations
 
