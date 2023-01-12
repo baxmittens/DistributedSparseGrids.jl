@@ -47,6 +47,14 @@ collocation method described in this project. For more information about the the
 
 In the following, some key features of the implemented approach are listed.
 
+## Arbitrary return types
+
+DistributedSparseGrids.jl defines an interface for
+```julia
+HierarchicalCollocationPoint{N,CP,RT}
+```
+where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is an arbitrary generic return type.
+
 - Nested one-dimensional Clenshaw-Curtis rule
 - Smolyak's sparse grid construction
 - local hierarchical Lagrangian basis
