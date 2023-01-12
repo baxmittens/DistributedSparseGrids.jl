@@ -49,7 +49,8 @@ In the following, some key features of the implemented approach are listed.
 
 ### Arbitrary return types
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example. Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used, which implements all operators needed to load complete result files into the sparse grid.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example.
+Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used, which implements all operators needed to load complete result files into the sparse grid.
 
 ### In-place operations
 
@@ -57,7 +58,7 @@ Computing the weights for the hierarchical basis as well as performing interpola
 
 ### Distributed computing    
 
-If the runtime of the function to be evaluated is long, it may be necessary to distribute the load to several workers. Julia provides this functionality *out-of-the-box* via the ```Distributed``` interface. Due to the hierarchical construction of the basis and the level-wise adaptive refinement indicator, it seems necessary to include this interface in the sparse grid for a performant application of distributed computing. [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) uses all workers included by the ```addprocs``` command if the ```distributed_init_weights!``` function is used to determine the hierarchical weights.
+If the runtime of the function to be evaluated is long, it may be necessary to distribute the load to several workers. Julia provides this functionality *out-of-the-box* via the ```Distributed``` interface. Due to the hierarchical construction of the basis and the level-wise adaptive refinement indicator, it seems necessary to include this interface in the sparse grid for a performant application of distributed computing. [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) uses all workers included by the ```Distributed.addprocs``` command if the ```distributed_init_weights!``` function is used to determine the hierarchical weights.
 
 ### Additional features  
 
