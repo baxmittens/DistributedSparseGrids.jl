@@ -120,12 +120,12 @@ end
 
 
 function gen_possible_parent_cptids_code(::Type{Val{N}}) where {N}
-		str = "("
+		str = "(("
 	for dim = 1:N
 		str*="possible_parent_cptids(Val{$dim},id,psp[$dim])"
 		dim < N ? str*="," : nothing
 	end
-	str *= ")"
+	str *= ",))"
 	return Meta.parse(str)
 end
 
