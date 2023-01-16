@@ -212,6 +212,12 @@ for i = 1:20
 cpts = generate_next_level!(asg, 1e-5, 20)
 init_weights!(asg, collect(cpts), fun1)
 end
+
+# plot
+import PlotlyJS
+surfplot = PlotlyJS.surface(asg, 100)
+gridplot = PlotlyJS.scatter3d(asg)
+PlotlyJS.plot([surfplot, gridplot])
 ```
 
 ![](./assets/func.png)

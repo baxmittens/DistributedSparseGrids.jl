@@ -296,7 +296,7 @@ function init_weights_inplace_ops!(asg::SG, fun::F) where {SG<:AbstractHierarchi
 end
 
 function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
-@info "Starting $(length(asg)) simulatoin calls"
+@info "Starting $(length(cpts)) simulatoin calls"
 	hcpts = copy(cpts)
 	while !isempty(hcpts)
 		@sync begin

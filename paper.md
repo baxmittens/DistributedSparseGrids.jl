@@ -78,6 +78,7 @@ Below an example of an adaptive sampling of a function with a curved singularity
 using DistributedSparseGrids
 using Distributed
 using StaticArrays
+import PlotlyJS
 
 function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
   # define collocation point
@@ -120,6 +121,11 @@ for i = 1:20
   # calculate weights on all worker
   distributed_init_weights!(asg, collect(cpts), fun1, ar_worker)
 end
+
+# plot
+surfplot = PlotlyJS.surface(asg, 100)
+gridplot = PlotlyJS.scatter3d(asg)
+PlotlyJS.plot([surfplot, gridplot])
 ```
 
 ![Refined sparse grid.\label{fig:example}](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=80% width=80%}
