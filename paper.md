@@ -77,6 +77,7 @@ Below an example of an adaptive sampling of a function with a curved singularity
 ```julia
 using DistributedSparseGrids
 using Distributed
+using StaticArrays
 
 function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
   # define collocation point

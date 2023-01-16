@@ -43,13 +43,13 @@ When using sparse grids, one can choose whether the $2d$ second-level collocatio
 using DistributedSparseGrids
 using StaticArrays 
 
-function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
+function sparse_grid(N::Int,pointprops,nlevel=6,RT=Float64,CT=Float64)
 	# define collocation point
 	CPType = CollocationPoint{N,CT}
 	# define hierarchical collocation point
 	HCPType = HierarchicalCollocationPoint{N,CPType,RT}
 	# init grid
-	asg = init(AHSG{N,HCPType},pointprobs)
+	asg = init(AHSG{N,HCPType},pointprops)
 	#set of all collocation points
 	cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
 	# fully refine grid nlevel-1 times
@@ -144,8 +144,8 @@ This is already the case for many data types. Below  ```RT=Matrix{Float64}``` is
 
 ```julia
 # sparse grid with 5 dimensions and levels
-pointprop = @SVector [1,2,3,4,1]
-asg = sparse_grid(5, pointprop, 6, Matrix{Float64}) 
+pointprops = @SVector [1,2,3,4,1]
+asg = sparse_grid(5, pointprops, 6, Matrix{Float64}) 
 
 # define function: input are the coordinates x::SVector{N,CT} and an unique id ID::String (e.g. "1_1_1_1_1_1_1_1_1_1"
 # for the root poin in five dimensions)

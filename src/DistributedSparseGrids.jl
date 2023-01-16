@@ -6,7 +6,7 @@ using Distributed
 using ProgressMeter
 
 include(joinpath(".","CollocationPoints.jl"))
-
+include(joinpath(".","AdaptiveSparseGrids","plotting.jl"))
 
 
 """
