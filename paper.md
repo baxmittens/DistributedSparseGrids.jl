@@ -29,19 +29,19 @@ bibliography: paper.bib
 
 # Abstract
 
-Numerical integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. One remedy to this problem are sparse grid approximations. The additional construction effort is often times worth spending, especially for underlying functions whose evaluation is time-consuming. In the following, a Julia implementation of a local Lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
+Numerical integration or interpolation of high-dimensional functions is subject to the curse of dimensionality on full tensor grids. One remedy to this problem is sparse grid approximations. The additional construction effort is often worth spending, especially for underlying functions whose evaluation is time-consuming. In the following, a Julia implementation of a local Lagrangian adaptive hierarchical sparse grid collocation method is presented, which is suitable for memory-heavy objects generated on distributed workers.
 
 # Statement of need
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource-consuming, requiring it to be solved on either a server or cluster environment, or the solution is memory-heavy, like a Vector, Matrix, or, for example, a complete finite element solution.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integrating and interpolating functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, such as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl), or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource-consuming, requiring it to be solved on either a server or cluster environment, or the solution is memory-heavy, like a Vector, Matrix, or, for example, a complete finite element solution.
 
 # Introduction
 
-Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided first by @smolyak1963quadrature. In the last two decades collocation methods were prominent in the solution of
-stochastic partial differential equation as shown in @babuvska2007stochastic and @nobile2008sparse.
-@ma2009adaptive were able to once again increase efficiency of the collocation approach
+Sparse tensor product quadrature rules, mitigating the curse of dimensionality occurring in full tensor grid constructions, were provided first by @smolyak1963quadrature. In the last two decades, collocation methods have been prominent in solving
+stochastic partial differential equations, as shown in @babuvska2007stochastic and @nobile2008sparse.
+@ma2009adaptive were able to once again increase the efficiency of the collocation approach
 by introducing an error-adaptive formulation of the method, which will serve as a basis for the
-collocation method described in this project. For more information about the theory of the method implemented, see e.g. @gates2015multilevel.
+collocation method described in this project. For more information about the theory of the method implemented, see, e.g., @gates2015multilevel.
 
 # Features
 
@@ -53,11 +53,11 @@ In the following, some key features of the implemented approach are listed.
 
 ### In-place operations
 
-Computing the weights for the hierarchical basis as well as performing interpolation and integration relies heavily on the use of *arithmetic operators*, which allocate memory. This can be a problem, especially if the result type is memory heavy. Therefore, [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines in-place variants to all of these actions given in-place variants of the arithmetic operators are defined. For further information see the [documentation](https://baxmittens.github.io/DistributedSparseGrids.jl/dev/#In-place-operations).
+Computing the weights for the hierarchical basis as well as performing interpolation and integration relies heavily on the use of *arithmetic operators*, which allocate memory. This can be a problem, especially if the result type is memory heavy. Therefore, [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines in-place variants to all of these actions given in-place variants of the arithmetic operators are defined. For further information, see the [documentation](https://baxmittens.github.io/DistributedSparseGrids.jl/dev/#In-place-operations).
 
 ### Distributed computing    
 
-If the runtime of the function to be evaluated is long, it may be necessary to distribute the load to several workers. Julia provides this functionality *out-of-the-box* via the ```Distributed``` interface. Due to the hierarchical construction of the basis and the level-wise adaptive refinement indicator, it seems necessary to include this interface in the sparse grid for a performant application of distributed computing. [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) uses all workers included by the ```Distributed.addprocs``` command if the ```distributed_init_weights!``` function is used to determine the hierarchical weights.
+If the function's runtime to be evaluated is long, it may be necessary to distribute the load to several workers. Julia provides this functionality *out-of-the-box* via the ```Distributed``` interface. Due to the hierarchical construction of the basis and the level-wise adaptive refinement indicator, it seems necessary to include this interface in the sparse grid for a performant application of distributed computing. [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) uses all workers included by the ```Distributed.addprocs``` command if the ```distributed_init_weights!``` function is used to determine the hierarchical weights.
 
 ### Additional features  
 
