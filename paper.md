@@ -16,7 +16,7 @@ authors:
 affiliations:
  - name: Federal Institute for Geosciences and Natural Resources (BGR)
    index: 1
- - name: Zeiss
+ - name: None
    index: 2
 date: 11 October 2022
 bibliography: paper.bib

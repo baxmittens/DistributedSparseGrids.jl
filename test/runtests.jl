@@ -40,9 +40,9 @@ end
 init_weights!(asg, fun1)
 
 # adaptive refine
-for i = 1:12
+for i = 1:27
   # call generate_next_level! with tol=1e-5 and maxlevels=20
-  cpts = generate_next_level!(asg, 1e-4, 12)
+  cpts = generate_next_level!(asg, 1e-4, 30)
   # calculate weights on all worker
   distributed_init_weights!(asg, collect(cpts), fun1, ar_worker)
 end
