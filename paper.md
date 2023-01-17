@@ -33,7 +33,7 @@ Numerical integration or interpolation of high-dimensional functions is subject 
 
 # Statement of need
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource consuming, requiring it to be solve on either a server or cluster enviroment and, in addition, the solution is memory-heavy as well, like a Vector, Matrix, or, for example, a complete finite element solution.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integration and interpolation of functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl) or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource-consuming, requiring it to be solved on either a server or cluster environment, or the solution is memory-heavy, like a Vector, Matrix, or, for example, a complete finite element solution.
 
 # Introduction
 
@@ -87,7 +87,7 @@ function sparse_grid(N::Int,pointprobs,nlevel=6,RT=Float64,CT=Float64)
   HCPType = HierarchicalCollocationPoint{N,CPType,RT}
   # init grid
   asg = init(AHSG{N,HCPType},pointprobs)
-  #set of all collocation points
+  # set of all collocation points
   cpts = Set{HierarchicalCollocationPoint{N,CPType,RT}}(collect(asg))
   # fully refine grid nlevel-1 times
   for i = 1:nlevel-1

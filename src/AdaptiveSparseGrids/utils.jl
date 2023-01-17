@@ -127,7 +127,7 @@ function Base.iterate(hcpts::PointDict{N,HCP}) where {N,HCP<: AbstractHierarchic
 end
 
 Base.eltype(asg::AHSG{N,HCP}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}} = HCP
-Base.length(asg::AHSG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}} = numpoints(asg)
+Base.length(asg::AHSG) = numpoints(asg)
 function Base.iterate(asg::AHSG{N,HCP}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
 	res_level_dict,state_level = iterate(asg.cpts)
 	res_level = values(res_level_dict)

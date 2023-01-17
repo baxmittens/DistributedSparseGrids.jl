@@ -67,7 +67,7 @@ end
 include(joinpath(".","AdaptiveSparseGrids","utils.jl"))
 
 
-function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG<:AbstractHierarchicalSparseGrid{N,HCP},F<:Function}
+function init!(asg::SG) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	@assert isempty(asg.cpts)
 	rcp = root_point(HCP)
 	push!(asg,rcp)
@@ -102,7 +102,7 @@ HCPType = HierarchicalCollocationPoint{N,CPType,RT};
 asg = init(AHSG{N,HCPType},pointprobs)
 
 """	
-function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N},F<:Function}
+function init(::Type{AHSG{N,HCP}}, pointSetProperties::SVector{N,Int}) where {N,HCP<:AbstractHierarchicalCollocationPoint{N}}
 	asg = AHSG{N,HCP}(pointSetProperties)
 	init!(asg)
 	return asg
