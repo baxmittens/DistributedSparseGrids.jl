@@ -521,6 +521,6 @@ function integrate(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP<:AbstractCo
 end
 
 include(joinpath(".","AdaptiveSparseGrids","plotting.jl"))
-export CollocationPoint, HierarchicalCollocationPoint, AHSG, init, generate_next_level!, init_weights!, distributed_init_weights!, init_weights_inplace_ops!, distributed_init_weights_inplace_ops!, integrate, interpolate, integrate_inplace_ops
+export CollocationPoint, HierarchicalCollocationPoint, AHSG, init, generate_next_level!, init_weights!, distributed_init_weights!, init_weights_inplace_ops!, distributed_init_weights_inplace_ops!, integrate, interpolate, interpolate!, integrate_inplace_ops
 
 end # module
