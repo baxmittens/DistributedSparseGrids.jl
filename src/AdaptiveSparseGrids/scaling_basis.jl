@@ -309,56 +309,56 @@ function intersect_intervals(a::SVector{2,F}, b::SVector{2,F}) where {F}
 end
 
 
-function inner_basis_fun(icpt::HCP, jcpt::HCP, _dim::Int, maxp::Int=3, level_1_constant::Bool=true, variant::Int=1) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-#function integral_basis_fun(cpt::CollocationPoint{N,CT,Nv}, _dim::Int, maxp::Int=3, level_1_constant::Bool=true, weightorder::Int=0, variant::Int=1) where {N,CT<:Real,Nv}
-	#interv = cpt.interv[_dim]
-	i_interv = interval(icpt,_dim)
-	j_interv = interval(jcpt,_dim)
-	if variant == 0
-		icptord = polyorder_v0(icpt, _dim, maxp)
-		jcptord = polyorder_v0(jcpt, _dim, maxp)
-	elseif variant == 1
-		icptord = polyorder_v1(icpt, _dim, maxp)
-		jcptord = polyorder_v1(jcpt, _dim, maxp)
-	else
-		error()
-	end
-	o = icptord + jcptord
-	nip = ceil(Int,(o+1)/2)
-	xip_unit, wip = gausslegendre(nip)
-	res = zero(CT)
-	if icptord != 1 && jcptord != 1
-		int_intv = intersect_intervals(i_interv, j_interv)
-		res += inner_basis_fun(icpt, jcpt, _dim, int_intv, xip_unit, wip, maxp, level_1_constant)
-	elseif icptord == 1 && jcptord != 1
-		(ia,ib) = split_interval(i_interv)
-		aint_intv = intersect_intervals(ia, j_interv)
-		bint_intv = intersect_intervals(ib, j_interv)
-		int_intv_i = (intersect_intervals(ia, j_interv), intersect_intervals(ib, j_interv))
-		for intv in int_intv_i
-			res += inner_basis_fun(icpt, jcpt, _dim, intv, xip_unit, wip, maxp, level_1_constant)
-		end
-	elseif icptord != 1 && jcptord == 1
-		(ja,jb) = split_interval(j_interv)
-		aint_intv = intersect_intervals(i_interv, ja)
-		bint_intv = intersect_intervals(i_interv, jb)
-		int_intv_j = (intersect_intervals(i_interv, ja), intersect_intervals(i_interv, jb))
-		for intv in int_intv_j
-			res += inner_basis_fun(icpt, jcpt, _dim, intv, xip_unit, wip, maxp, level_1_constant)
-		end
-	elseif icptord == 1 && jcptord == 1
-		(ia,ib) = split_interval(i_interv)
-		(ja,jb) = split_interval(j_interv)
-		int_intv_ij = 	(intersect_intervals(ia, ja), intersect_intervals(ib, ja),
-						 intersect_intervals(ia, jb), intersect_intervals(ib, jb))
-		for intv in int_intv_ij
-			res += inner_basis_fun(icpt, jcpt, _dim, intv, xip_unit, wip, maxp, level_1_constant)
-		end
-	else
-		error()
-	end
-	return res
-end
+#function inner_basis_fun(icpt::HCP, jcpt::HCP, _dim::Int, maxp::Int=3, level_1_constant::Bool=true, variant::Int=1) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+##function integral_basis_fun(cpt::CollocationPoint{N,CT,Nv}, _dim::Int, maxp::Int=3, level_1_constant::Bool=true, weightorder::Int=0, variant::Int=1) where {N,CT<:Real,Nv}
+#	#interv = cpt.interv[_dim]
+#	i_interv = interval(icpt,_dim)
+#	j_interv = interval(jcpt,_dim)
+#	if variant == 0
+#		icptord = polyorder_v0(icpt, _dim, maxp)
+#		jcptord = polyorder_v0(jcpt, _dim, maxp)
+#	elseif variant == 1
+#		icptord = polyorder_v1(icpt, _dim, maxp)
+#		jcptord = polyorder_v1(jcpt, _dim, maxp)
+#	else
+#		error()
+#	end
+#	o = icptord + jcptord
+#	nip = ceil(Int,(o+1)/2)
+#	xip_unit, wip = gausslegendre(nip)
+#	res = zero(CT)
+#	if icptord != 1 && jcptord != 1
+#		int_intv = intersect_intervals(i_interv, j_interv)
+#		res += inner_basis_fun(icpt, jcpt, _dim, int_intv, xip_unit, wip, maxp, level_1_constant)
+#	elseif icptord == 1 && jcptord != 1
+#		(ia,ib) = split_interval(i_interv)
+#		aint_intv = intersect_intervals(ia, j_interv)
+#		bint_intv = intersect_intervals(ib, j_interv)
+#		int_intv_i = (intersect_intervals(ia, j_interv), intersect_intervals(ib, j_interv))
+#		for intv in int_intv_i
+#			res += inner_basis_fun(icpt, jcpt, _dim, intv, xip_unit, wip, maxp, level_1_constant)
+#		end
+#	elseif icptord != 1 && jcptord == 1
+#		(ja,jb) = split_interval(j_interv)
+#		aint_intv = intersect_intervals(i_interv, ja)
+#		bint_intv = intersect_intervals(i_interv, jb)
+#		int_intv_j = (intersect_intervals(i_interv, ja), intersect_intervals(i_interv, jb))
+#		for intv in int_intv_j
+#			res += inner_basis_fun(icpt, jcpt, _dim, intv, xip_unit, wip, maxp, level_1_constant)
+#		end
+#	elseif icptord == 1 && jcptord == 1
+#		(ia,ib) = split_interval(i_interv)
+#		(ja,jb) = split_interval(j_interv)
+#		int_intv_ij = 	(intersect_intervals(ia, ja), intersect_intervals(ib, ja),
+#						 intersect_intervals(ia, jb), intersect_intervals(ib, jb))
+#		for intv in int_intv_ij
+#			res += inner_basis_fun(icpt, jcpt, _dim, intv, xip_unit, wip, maxp, level_1_constant)
+#		end
+#	else
+#		error()
+#	end
+#	return res
+#end
 
 #function basis_fun(hcpt::HCP, dim::Int, x::CT, maxp::Int=3, level_1_constant::Bool=true) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 #	interv = interval(hcpt,dim)
@@ -391,13 +391,13 @@ end
 #	return res
 #end
 
-function inner_basis_fun(icpt::HCP, jcpt::HCP, maxp::Int=3) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-	res = one(CT)
-	for d = 1:N
-		res *= inner_basis_fun(icpt, jcpt, d, maxp, true)
-	end
-	return res
-end
+#function inner_basis_fun(icpt::HCP, jcpt::HCP, maxp::Int=3) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+#	res = one(CT)
+#	for d = 1:N
+#		res *= inner_basis_fun(icpt, jcpt, d, maxp, true)
+#	end
+#	return res
+#end
 
 function basis_fun(hcpt::HCP, dim::Int, x::CT, maxp::Int=3, level_1_constant::Bool=true) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 	interv = interval(hcpt,dim)
