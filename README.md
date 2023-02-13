@@ -14,7 +14,7 @@ For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.c
 Any integral 
 
 $$
-  \int_{[a_1,b_1]}\cdot\cdot\cdot\int_{[a_n,b_n]} f(x_1,...,x_n) \mathrm{d}x_1\cdot\cdot\cdot\mathrm{d}x_n
+  \int_{a_1}^{b_1}\cdot\cdot\cdot\int_{a_n}^{b_n} f(x_1,...,x_n) \, \mathrm{d}x_1\cdot\cdot\cdot\mathrm{d}x_n
 $$
 
 can be mapped onto the hypercube $[-1,1]^n$ by means of coordinate transformation.
