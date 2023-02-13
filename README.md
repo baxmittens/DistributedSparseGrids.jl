@@ -39,7 +39,7 @@ Pkg.add("DistributedSparseGrids")
 -	adaptive refinement
 -	distributed function evaluation with ```Distributed.remotecall_fetch```
 -	multi-threaded calculation of basis coefficients with ```Threads.@threads```
--	usage of arbitrary return types 
+-	usage of arbitrary input, collocation point, and return types 
 -	integration
 -	experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
@@ -50,6 +50,7 @@ Pkg.add("DistributedSparseGrids")
 -	The quality of the error prediction depends on the number of collocation points. Therefore, for only a few collocation points, adaptive refinement may fail. Therefore it is recommended to generate some initial levels before using adaptive refinement (see examples).
 -	The interpolation is based on a local Lagrangian basis. Functions with discontinuities cannot be approximated.
 -	Sparse grid interpolation and integration will work best with a number of dimension between 1 and 6.
+-	The domain of the sparse grid is always $[-1,1]^n$. The user is responsible to map the input onto this domain.
 
 ### Point sets
 
