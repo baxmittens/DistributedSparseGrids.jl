@@ -48,7 +48,7 @@ while true
   if isempty(cpts11) && isempty(cpts12) && isempty(cpts13)
     break
   end
-  # calculate weights on all worker
+  # calculate weights
   init_weights!(asg11, collect(cpts11), norml1d)
   init_weights!(asg12, collect(cpts12), norml1d)
   init_weights!(asg13, collect(cpts13), norml1d)
@@ -79,7 +79,7 @@ while true
   if isempty(cpts21) && isempty(cpts22)
     break
   end
-  # calculate weights on all worker
+  # calculate weights
   init_weights!(asg21, collect(cpts21), norml2d)
   init_weights!(asg22, collect(cpts22), norml2d)
 end
@@ -104,7 +104,7 @@ while true
   if isempty(cpts31)
     break
   end
-  # calculate weights on all worker
+  # calculate weights
   init_weights!(asg31, collect(cpts31), norml3d)
 end
 
