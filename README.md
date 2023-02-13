@@ -11,16 +11,17 @@ For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.c
 
 ## Introduction
 
+Efficient methods for the numerical integration or interpolation of one-dimensional functions can be directly applied to the multidimensional case via [tensor-product constructions](https://math.stackexchange.com/questions/813831/what-is-a-tensor-product-chebyshev-grid). But, the higher the number of dimensions, the less efficient this approach is. A problem which is also known as the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality).
+
 Any integral 
 
 $$
-  \int_{a_1}^{b_1}\cdot\cdot\cdot\int_{a_n}^{b_n} f(x_1,...,x_n) \, \mathrm{d}x_1\cdot\cdot\cdot\mathrm{d}x_n
+  \int_{a_1}^{b_1}\cdot\cdot\cdot\int_{a_n}^{b_n} f(x_1,...,x_n) \mathrm{d}x_1\cdot\cdot\cdot\mathrm{d}x_n
 $$
 
-can be mapped onto the hypercube $[-1,1]^n$ by means of coordinate transformation.
+can be mapped onto the hypercube $[-1,1]^n$ by means of coordinate transformation. Therefore, the problem of integrating high-dimensional function can be studied on the hypercube $[-1,1]^n$.
 
-
-To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of high-dimensional functions using tensor-product discretizations, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
+To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of high-dimensional functions on the hypercube, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
 
 ## Install
 
