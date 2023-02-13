@@ -21,7 +21,7 @@ $$
 
 can be mapped onto the hypercube $[-1,1]^n$ by means of coordinate transformation. Therefore, the problem of integrating multidimensional functions can be studied on the hypercube without loss of generality.
 
-To mitigate the "curse of dimensionality" that occurs in the integration or interpolation of multidimensional functions on the hypercube, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
+To mitigate the curse of dimensionality that occurs in the integration or interpolation of multidimensional functions on the hypercube, sparse grids use Smolyak's quadrature rule. This is particularly useful if the evaluation of the underlying function is costly. In this library, an Adaptive Sparse Grid Collocation method with a local hierarchical Lagrangian basis, first proposed by [Ma and Zabaras (2010)](https://www.sciencedirect.com/science/article/pii/S002199910900028X), is implemented. For more information about the construction of Sparse Grids, see e.g. [Gates and Bittens (2015)](https://arxiv.org/abs/1509.01462).
 
 ## Install
 

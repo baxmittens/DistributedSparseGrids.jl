@@ -9,52 +9,52 @@ include(joinpath(".","CollocationPoints.jl"))
 
 
 """
-	AbstractSparseGrid{N}
+AbstractSparseGrid{N}
 
-	Abstract Type
+Abstract Type
 	
-	`N` : Dimension of hierarchical sparse grid
+`N` : Dimension of hierarchical sparse grid
 """
 abstract type AbstractSparseGrid{N} end
 
 """
-	AbstractHierarchicalSparseGrid{N,HCP}
+AbstractHierarchicalSparseGrid{N,HCP}
 
-	Abstract Type
+Abstract Type
 	
-	`N` : Dimension of hierarchical sparse grid
-	`HCP<:AbstractHierarchicalCollocationPoint` : Collocation point type
+`N` : Dimension of hierarchical sparse grid
+`HCP<:AbstractHierarchicalCollocationPoint` : Collocation point type
 """
 abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocationPoint} <: AbstractSparseGrid{N} end
 
 
 """
-	PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}}
+PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}}
 
-	Typedef for `Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`
+Typedef for `Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`
 	
-	`N` : Dimension of hierarchical sparse grid
-	`HCP<:AbstractHierarchicalCollocationPoint` : Collocation point type
+`N` : Dimension of hierarchical sparse grid
+`HCP<:AbstractHierarchicalCollocationPoint` : Collocation point type
 """
 const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}
 
 
 """
-	AdaptiveHierarchicalSparseGrid{N,HCP}
+AdaptiveHierarchicalSparseGrid{N,HCP}
 
-	Container for hierarchical collocation points 
+Container for hierarchical collocation points 
 
-	# Fields
+# Fields
 
-	`cpts::Vector{PointDict{N,HCP}}` : [`DistributedSparseGrids.PointDict`](@ref) with collocation points
-	`pointSetProperties::SVector{N,Int}` : Vector containing all pointset properties. 
+`cpts::Vector{PointDict{N,HCP}}` : [`DistributedSparseGrids.PointDict`](@ref) with collocation points
+`pointSetProperties::SVector{N,Int}` : Vector containing all pointset properties. 
 	
-	Pointset properties = [psp_1,...,psp_N], 
-	psp_i in [1,2,3,4]. 
-	1=>`closed point set`, 
-	2=>`open point set`, 
-	3=>`left-open point set`, 
-	4=>`right-open point set`.
+Pointset properties = [psp_1,...,psp_N], 
+psp_i in [1,2,3,4]. 
+1=>`closed point set`, 
+2=>`open point set`, 
+3=>`left-open point set`, 
+4=>`right-open point set`.
 """
 struct AdaptiveHierarchicalSparseGrid{N,HCP} <: AbstractHierarchicalSparseGrid{N,HCP}
 	cpts::Vector{PointDict{N,HCP}}
