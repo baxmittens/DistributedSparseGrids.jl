@@ -9,7 +9,7 @@ include(joinpath(".","CollocationPoints.jl"))
 
 
 """
-AbstractSparseGrid{N}
+	AbstractSparseGrid{N}
 
 Abstract Type
 	
@@ -18,7 +18,7 @@ Abstract Type
 abstract type AbstractSparseGrid{N} end
 
 """
-AbstractHierarchicalSparseGrid{N,HCP}
+	AbstractHierarchicalSparseGrid{N,HCP}
 
 Abstract Type
 	
@@ -29,7 +29,7 @@ abstract type AbstractHierarchicalSparseGrid{N,HCP<:AbstractHierarchicalCollocat
 
 
 """
-PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}}
+	PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}}
 
 Typedef for `Dict{SVector{N,Int},Dict{SVector{N,Int},HCP}}`
 	
@@ -40,7 +40,7 @@ const PointDict{ N, HCP <: AbstractHierarchicalCollocationPoint{N}} = Dict{SVect
 
 
 """
-AdaptiveHierarchicalSparseGrid{N,HCP}
+	AdaptiveHierarchicalSparseGrid{N,HCP}
 
 Container for hierarchical collocation points 
 
