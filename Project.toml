@@ -22,6 +22,7 @@ Colors = "^0.12.8"
 PlotlyJS = "^0.18.9"
 ProgressMeter = "^1.7.2"
 FastGaussQuadrature = "^0.4.9"
+AltInplaceOpsInterface = "0.0.1"
 julia = "1"
 
 
