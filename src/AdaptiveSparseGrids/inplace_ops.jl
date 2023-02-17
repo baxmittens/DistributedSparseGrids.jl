@@ -1,6 +1,6 @@
 import LinearAlgebra
 import LinearAlgebra: mul!
-import AltInplaceOperationInterface: add!, minus!, pow!, max!, min!
+import AltInplaceOpsInterface: add!, minus!, pow!, max!, min!
 
 add!(a::Matrix{Float64}, b::Matrix{Float64}) = a .+= b
 add!(a::Matrix{Float64}, b::Float64) = a .+= b
