@@ -178,13 +178,13 @@ There are many mathematical operations executed which allocate memory while eval
 ```julia
 import LinearAlgebra, AltInplaceOpsInterface 
 
+LinearAlgebra.mul!(a::T, b::Float64) 
+LinearAlgebra.mul!(a:T, b::T, c::Float64)
 AltInplaceOpsInterface.add!(a::T, b::T) 
 AltInplaceOpsInterface.add!(a::T, b::Float64) 
 AltInplaceOpsInterface.minus!(a::T, b::Float64) 
 AltInplaceOpsInterface.minus!(a::T, b::T) 
-AltInplaceOpsInterface.pow!(a::T, b::Float64) 
-LinearAlgebra.mul!(a::T, b::Float64) 
-LinearAlgebra.mul!(a:T, b::T, c::Float64)
+AltInplaceOpsInterface.pow!(a::T, b::Float64)
 ```
 
 For Matrix{Float64} this interface is already implemented.
