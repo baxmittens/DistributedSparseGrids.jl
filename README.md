@@ -176,11 +176,13 @@ fun3(x::SVector{N,CT},ID::String) = ones(100,100).*x[1]
 There are many mathematical operations executed which allocate memory while evaluting the hierarchical interpolator. Many of these allocations can be avoided by additionally implementing the ```inplace operations``` interface for data type ```T```.
 
 ```julia
-import LinearAlgebra
-import LinearAlgebra: mul!
+import LinearAlgebra, AltInplaceOpsInterface 
 
-DistributedSparseGrids.add!(a::T, b::T) 
-DistributedSparseGrids.add!(a::T, b::Float64) 
+AltInplaceOpsInterface.add!(a::T, b::T) 
+AltInplaceOpsInterface.add!(a::T, b::Float64) 
+AltInplaceOpsInterface.minus!(a::T, b::Float64) 
+AltInplaceOpsInterface.minus!(a::T, b::T) 
+AltInplaceOpsInterface.pow!(a::T, b::Float64) 
 LinearAlgebra.mul!(a::T, b::Float64) 
 LinearAlgebra.mul!(a:T, b::T, c::Float64)
 ```
