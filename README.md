@@ -11,7 +11,7 @@ For an alternative implementation, see [AdaptiveSparseGrids.jl](https://github.c
 
 ## Introduction
 
-Efficient methods for the numerical integration (or interpolation) of one-dimensional functions can be directly applied to the multidimensional case via [tensor-product constructions](https://math.stackexchange.com/questions/813831/what-is-a-tensor-product-chebyshev-grid). But, the higher the number of dimensions, the less efficient this approach is. A problem which is also known as the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality).
+Efficient methods for the numerical integration (or interpolation) of one-dimensional functions can be directly applied to the multidimensional case via [tensor-product constructions](https://math.stackexchange.com/questions/813831/what-is-a-tensor-product-chebyshev-grid). However, the higher the number of dimensions, the less efficient this approach is. A problem which is also known as the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality).
 
 Any integral 
 

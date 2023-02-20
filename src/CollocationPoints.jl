@@ -77,15 +77,15 @@ end
 """
 	HierarchicalCollocationPoint{N,CP,RT} <: AbstractHierarchicalCollocationPoint{N,CP,RT}	
 	
-	A collocation point.
+A collocation point.
 
-	# Fields
+# Fields
 
-	`cpt::CP` : [`DistributedSparseGrids.CollocationPoint`](@ref)
-	`children::SVector{N,SVector{2,HierarchicalCollocationPoint{N,CP,RT}}}` : Container for at most two children per dimension
-	`parents::SVector{N,HierarchicalCollocationPoint{N,CP,RT}}` : Container for parents 
-	`fval::RT` : Function Value
-	`scaling_weight::RT` : Scaling Weight (function value minus l-1 level interpolator both at cpt.coords)
+`cpt::CP` : [`DistributedSparseGrids.CollocationPoint`](@ref)
+`children::SVector{N,SVector{2,HierarchicalCollocationPoint{N,CP,RT}}}` : Container for at most two children per dimension
+`parents::SVector{N,HierarchicalCollocationPoint{N,CP,RT}}` : Container for parents 
+`fval::RT` : Function Value
+`scaling_weight::RT` : Scaling Weight (function value minus l-1 level interpolator both at cpt.coords)
 """
 mutable struct HierarchicalCollocationPoint{N,CP,RT} <: AbstractHierarchicalCollocationPoint{N,CP,RT}
 	cpt::CP
