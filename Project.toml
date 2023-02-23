@@ -1,7 +1,7 @@
 name = "DistributedSparseGrids"
 uuid = "963c640e-cdaa-5978-8b8a-59ae1a680e3d"
 authors = ["baxmittens <maximilian.bittens@bgr.de>","rleegates <robert.gates@gmail.com>"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"

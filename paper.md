@@ -128,6 +128,6 @@ gridplot = PlotlyJS.scatter3d(asg)
 PlotlyJS.plot([surfplot, gridplot])
 ```
 
-![Refined sparse grid.\label{fig:example}](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=80% width=80%}
+![Refined sparse grid.\label{fig:example}](https://user-images.githubusercontent.com/100423479/193813765-0b7ce7b2-639a-48d3-831d-7bd5639c9fd3.PNG){height=70% width=70%}
 
 # References
