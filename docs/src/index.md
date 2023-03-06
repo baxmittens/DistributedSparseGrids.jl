@@ -167,14 +167,18 @@ fun3(x::SVector{N,CT},ID::String) = ones(100,100).*x[1]
 ```
 ### In-place operations
 
-There are many mathematical operations executed which allocate memory while evaluting the hierarchical interpolator. Many of these allocations can be avoided by additionally implementing the ```inplace operations``` interface for data type ```T```.
+There are many mathematical operations executed which allocate memory while evaluating the hierarchical interpolator. Many of these allocations can be avoided by additionally implementing the ```in-place operations``` interface for data type ```T```. At the moment, this feature is provided through the interface package [AltInplaceOpsInterface.jl](https://github.com/baxmittens/AltInplaceOpsInterface.jl) and `LinearAlgebra.mul!` (the code was initially written for Julia 0.6). In future releases, this interface could be rendered obsolete due to implementing [standard julia interface function and proper broadcasting](https://docs.julialang.org/en/v1/manual/interfaces/), but some research is probably still needed to implement this properly.
 
 ```julia
 import LinearAlgebra
 import LinearAlgebra: mul!
+import AltInplaceOpsInterface
 
-DistributedSparseGrids.add!(a::T, b::T) 
-DistributedSparseGrids.add!(a::T, b::Float64) 
+AltInplaceOpsInterface.add!(a::T, b::T) 
+AltInplaceOpsInterface.add!(a::T, b::Float64)
+AltInplaceOpsInterface.minus!(a::T, b::T) 
+AltInplaceOpsInterface.minus!(a::T, b::Float64)  
+AltInplaceOpsInterface.pow!(a::T, b::Float64)  
 LinearAlgebra.mul!(a::T, b::Float64) 
 LinearAlgebra.mul!(a:T, b::T, c::Float64)
 ```
