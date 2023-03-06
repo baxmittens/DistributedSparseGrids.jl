@@ -128,7 +128,7 @@ function interpolate(asg::SG, x::VCT, stplvl::Int=numlevels(asg)) where {N,CT,VC
 	res = zero(rcp)
 	in_it = InterpolationIterator(asg,x,stplvl)
 	for hcpt in in_it
-		res += scaling_weight(hcpt) .* basis_fun(hcpt, x, 1)
+		res += scaling_weight(hcpt) * basis_fun(hcpt, x, 1)
 	end
 	return res
 end
