@@ -193,12 +193,12 @@ function PlotlyJS.scatter3d(sg::SG, color_order::Bool=false, maxp::Int=1) where 
 end
 
 include(joinpath("../support","ndgrid.jl"))
-function PlotlyJS.surface(asg::SG, npts = 20; kwargs...) where {CT,CP<:AbstractCollocationPoint{2,CT},HCP<:AbstractHierarchicalCollocationPoint{2,CP},SG<:AbstractHierarchicalSparseGrid{2,HCP}}
+function PlotlyJS.surface(asg::SG, npts = 20, postfun=x->x; kwargs...) where {CT,CP<:AbstractCollocationPoint{2,CT},HCP<:AbstractHierarchicalCollocationPoint{2,CP},SG<:AbstractHierarchicalSparseGrid{2,HCP}}
 	pts = range(-1.,stop=1.,length=npts)
 	xpts, ypts = ndgrid(pts,pts)
 	zz = similar(xpts)
 	for i = 1:npts, j=1:npts
-		zz[i,j] = interpolate(asg, [xpts[i,j], ypts[i,j]])
+		zz[i,j] = postfun(interpolate(asg, [xpts[i,j], ypts[i,j]]))
 	end
 	p = PlotlyJS.surface(x=xpts,y=ypts,z=zz; kwargs...)
 end
@@ -213,11 +213,11 @@ function surface_wavelet(asg::SG, npts = 20; kwargs...) where {CT,CP<:AbstractCo
 	p = PlotlyJS.surface(x=xpts,y=ypts,z=zz; kwargs...)
 end
 
-function PlotlyJS.surface(asg::SG, npts = 1000, stoplevel::Int=numlevels(asg); kwargs...) where {CT,CP<:AbstractCollocationPoint{1,CT},HCP<:AbstractHierarchicalCollocationPoint{1,CP},SG<:AbstractHierarchicalSparseGrid{1,HCP}}
+function PlotlyJS.surface(asg::SG, npts = 1000, postfun=x->x, stoplevel::Int=numlevels(asg); kwargs...) where {CT,CP<:AbstractCollocationPoint{1,CT},HCP<:AbstractHierarchicalCollocationPoint{1,CP},SG<:AbstractHierarchicalSparseGrid{1,HCP}}
 	xpts = collect(range(-1.,stop=1.,length=npts))
 	ypts = similar(xpts)
 	for i = 1:npts
-		ypts[i] = interpolate(asg, [xpts[i]], stoplevel)
+		ypts[i] = postfun(interpolate(asg, [xpts[i]], stoplevel))
 	end
 	p = PlotlyJS.scatter(x=xpts,y=ypts; kwargs...)
 end
