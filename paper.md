@@ -33,7 +33,7 @@ Numerical integration or interpolation of high-dimensional functions is subject 
 
 # Statement of need
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integrating and interpolating functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, such as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl), or [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment which is suitable if the solution of the underlying (discretized) physical problem is time and resource-consuming, requiring it to be solved on either a server or cluster environment, or the solution is memory-heavy, like a Vector, Matrix, or, for example, a complete finite element solution.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) is a Julia package for integrating and interpolating functions with generic return types. There are other approaches to sparse grid approximation written in the Julia language, such as [SparseGrids.jl](https://github.com/robertdj/SparseGrids.jl), [AdaptiveSparseGrids.jl](https://github.com/jacobadenbaum/AdaptiveSparseGrids.jl), [GalerkinSparseGrids.jl](https://github.com/ABAtanasov/GalerkinSparseGrids.jl), and [Tasmanian.jl](https://github.com/floswald/Tasmanian.jl). However, there is no Julia package available at the moment that is suitable if the solution of the underlying (discretized) physical problem is time and resource-consuming, requiring it to be solved on either a server or cluster environment, or the solution is memory-heavy, like a Vector, Matrix, or, for example, a complete finite element solution.
 
 # Introduction
 
@@ -49,11 +49,11 @@ In the following, some key features of the implemented approach are listed.
 
 ### Arbitrary return types
 
-[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}``` where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}```` or a ```Matrix{Float64}```, for example.<br/> Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used, which implements all operators needed to use complete result files with the sparse grid.
+[DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines a ```HierarchicalCollocationPoint{N,CP,RT}```, where ```N``` is the number of dimensions, ```CP <: AbstractCollocationPoint{N,CT<:Real}```, and ```RT``` is a generic return type. ```RT``` can be conveniently defined as the type most suitable for studying the problem at hand, such as a ```Float64```, a ````Vector{Float64}````, or a ```Matrix{Float64}```, for example.<br/> Suppose the underlying physical problem stores its data in the VTU file format [@schroeder2000visualizing]. In that case, the Julia project [VTUFileHandler.jl](https://github.com/baxmittens/VTUFileHandler.jl) [@bittens2022vtufilehandler] can be used; it implements all operators needed to use complete result files with the sparse grid.
 
 ### In-place operations
 
-Computing the weights for the hierarchical basis as well as performing interpolation and integration relies heavily on the use of *arithmetic operators*, which allocate memory. This can be a problem, especially if the result type is memory heavy. Therefore, [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines in-place variants to all of these actions given in-place variants of the arithmetic operators are defined. For further information, see the [documentation](https://baxmittens.github.io/DistributedSparseGrids.jl/dev/#In-place-operations).
+Computing the weights for the hierarchical basis as well as performing interpolation and integration relies heavily on the use of *arithmetic operators*, which allocate memory. This can be a problem, especially if the result type is memory heavy. Therefore, [DistributedSparseGrids.jl](https://github.com/baxmittens/DistributedSparseGrids.jl) defines in-place variants to all of these actions given in-place variants for the arithmetic operators are defined. For further information, see the [documentation](https://baxmittens.github.io/DistributedSparseGrids.jl/dev/#In-place-operations).
 
 ### Distributed computing    
 
@@ -63,16 +63,16 @@ If the function's runtime to be evaluated is long, it may be necessary to distri
 
 - Nested one-dimensional Clenshaw-Curtis rule
 - Smolyak's sparse grid construction
-- local hierarchical Lagrangian basis
-- different pointsets (open, closed, halfopen)
-- adaptive refinement
-- multi-threaded calculation of basis coefficients with ```Threads.@threads```
-- integration
-- experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
+- Local hierarchical Lagrangian basis
+- Different pointsets (open, closed, halfopen)
+- Adaptive refinement
+- Multi-threaded calculation of basis coefficients with ```Threads.@threads```
+- Integration
+- Experimental: integration over $X_{\sim (i)}$ (the $X_{\sim (i)}$  notation indicates the set of all variables except $X_{i}$).
 
 # Example
 
-Below an example of an adaptive sampling of a function with a curved singularity in 2D is provided. In \autoref{fig:example} an illustration of the sparse grid approximation is shown.
+Below, an example of an adaptive sampling of a function with a curved singularity in 2D is provided. \autoref{fig:example} shows an illustration of the sparse grid approximation.
 
 ```julia
 using DistributedSparseGrids
