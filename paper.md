@@ -14,9 +14,9 @@ authors:
 #   equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
     affiliation: 2
 affiliations:
- - name: Federal Institute for Geosciences and Natural Resources (BGR)
+ - name: Federal Institute for Geosciences and Natural Resources (BGR), Germany
    index: 1
- - name: None
+ - name: Independent Researcher, Germany
    index: 2
 date: 11 October 2022
 bibliography: paper.bib
