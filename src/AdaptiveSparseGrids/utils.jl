@@ -188,4 +188,15 @@ function InterpolationIterator(asg::AHSG{N,HCP}, x::V, stoplevel::Int=numlevels(
 	return InterpolationIterator(get_root(asg),x,stoplevel)
 end
 
-
+function average_scaling_weight(asg::AHSG{N,HCP},lvl::Int) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+    avg_val = similar(scaling_weight(first(asg)))
+    n = 0
+    for cpts in asg
+        if level(cpts) == lvl
+            n += 1
+            add!(avg_val, scaling_weight(cpts))
+        end
+    end
+    mul!(avg_val, 1.0/n)
+    return avg_val
+end

@@ -93,12 +93,32 @@ Adaptively generate all collocation point of the next hierarchical level, where 
 - `maxlvl::Int`: maximum hierarchical level
 
 """	
-function generate_next_level!(asg::AHSG{N,HCP}, tol::CT,maxlvl::Int) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+function generate_next_level!(asg::AHSG{N,HCP}, tol::Float64, maxlvl::Int) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
 	nchildren = Set{HCP}()
 	asglvl = asg.cpts[end]
 	for dict_ptidx in values(asglvl)
 		for cpt in values(dict_ptidx)
 			if !isrefined(cpt) && norm(scaling_weight(cpt)) > tol && level(cpt)<maxlvl
+				ncpts = refine!(asg,cpt)
+				for cptdim in ncpts
+					for hcpt in cptdim
+						if isvalid(hcpt)
+							push!(nchildren,hcpt)
+						end
+					end
+				end
+			end
+		end
+	end
+	return nchildren
+end
+
+function generate_next_level!(asg::AHSG{N,HCP}, decide::F, maxlvl::Int) where {N,CT,RT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT},F<:Function}
+	nchildren = Set{HCP}()
+	asglvl = asg.cpts[end]
+	for dict_ptidx in values(asglvl)
+		for cpt in values(dict_ptidx)
+			if !isrefined(cpt) && decide(scaling_weight(cpt)) && level(cpt)<maxlvl
 				ncpts = refine!(asg,cpt)
 				for cptdim in ncpts
 					for hcpt in cptdim
