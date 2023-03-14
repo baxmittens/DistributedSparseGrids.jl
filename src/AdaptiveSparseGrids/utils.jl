@@ -190,13 +190,18 @@ end
 
 function average_scaling_weight(asg::AHSG{N,HCP},lvl::Int) where {N,CT,V<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
     avg_val = similar(scaling_weight(first(asg)))
+    tmp = similar(scaling_weight(first(asg)))
     n = 0
     for cpts in asg
         if level(cpts) == lvl
             n += 1
-            add!(avg_val, scaling_weight(cpts))
+            fill!(tmp, 0.0)
+            add!(tmp, avg_val)
+            pow!(tmp, 2.0)
+            add!(avg_val, tmp)
         end
     end
+    pow!(avg_val, 0.5)
     mul!(avg_val, 1.0/n)
     return avg_val
 end
