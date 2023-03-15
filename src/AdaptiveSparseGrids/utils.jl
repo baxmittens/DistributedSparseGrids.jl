@@ -198,10 +198,11 @@ function average_scaling_weight(asg::AHSG{N,HCP},lvl::Int) where {N,CT,V<:Abstra
             fill!(tmp, 0.0)
             add!(tmp, scaling_weight(cpts))
             pow!(tmp, 2.0)
+            pow!(tmp, 0.5)
             add!(avg_val, tmp)
         end
     end
-    pow!(avg_val, 0.5)
+    #pow!(avg_val, 0.5)
     mul!(avg_val, 1.0/n)
     return avg_val
 end
