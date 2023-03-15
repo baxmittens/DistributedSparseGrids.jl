@@ -224,11 +224,14 @@ function init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F) where {N, HCP
 		#for hcpt in hcptar
 			ID = idstring(hcpt)
 			_fval = fun(coords(hcpt),ID)
-			set_fval!(hcpt,deepcopy(_fval))
+			set_fval!(hcpt,_fval)
 			if level(hcpt) > 1
-				_fval -= interp_below(asg,hcpt)
+				sw = _fval - interp_below(asg,hcpt)
+				set_scaling_weight!(hcpt,sw)
+			else
+				set_scaling_weight!(hcpt,_fval)
 			end
-			set_scaling_weight!(hcpt,_fval)
+			
 		end
 	end
 end
@@ -267,13 +270,15 @@ function init_weights_inplace_ops!(asg::SG, cpts::AbstractVector{HCP}, fun::F) w
 			ID = idstring(hcpt)
 			_fval = fun(coords(hcpt),ID)
 			set_fval!(hcpt,_fval)
-			scalweight = deepcopy(_fval)
 			if level(hcpt) > 1
+				scalweight = deepcopy(_fval)
 				interp_below!(scalweight,asg,hcpt)
 				mul!(scalweight,-1.0)
 				add!(scalweight,fval(hcpt))
+				set_scaling_weight!(hcpt,scalweight)
+			else
+				set_scaling_weight!(hcpt,fval(hcpt))
 			end
-			set_scaling_weight!(hcpt,scalweight)
 		end
 	end
 end
@@ -337,11 +342,12 @@ function distributed_init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F, w
 		hcptar = filter(x->level(x)==i,cpts)
 		Threads.@threads for hcpt in hcptar
 			ID = idstring(hcpt)
-			ret = deepcopy(fval(hcpt))
 			if level(hcpt) > 1
-				ret -= interp_below(asg,hcpt)
+				ret = fval(hcpt) - interp_below(asg,hcpt)
+				set_scaling_weight!(hcpt,ret)
+			else
+				set_scaling_weight!(hcpt,fval(hcpt))
 			end
-			set_scaling_weight!(hcpt,ret)
 		end
 	end
 	return nothing
