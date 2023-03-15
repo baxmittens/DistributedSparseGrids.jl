@@ -196,7 +196,7 @@ function average_scaling_weight(asg::AHSG{N,HCP},lvl::Int) where {N,CT,V<:Abstra
         if level(cpts) == lvl
             n += 1
             fill!(tmp, 0.0)
-            add!(tmp, avg_val)
+            add!(tmp, scaling_weight(cpts))
             pow!(tmp, 2.0)
             add!(avg_val, tmp)
         end
