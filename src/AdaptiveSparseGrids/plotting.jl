@@ -197,7 +197,7 @@ function PlotlyJS.surface(asg::SG, npts = 20, postfun=x->x; kwargs...) where {CT
 	pts = range(-1.,stop=1.,length=npts)
 	xpts, ypts = ndgrid(pts,pts)
 	zz = similar(xpts)
-	tmp = similar(first(asg))
+	tmp = similar(scaling_weight(first(asg)))
 	for i = 1:npts, j=1:npts
 		fill!(tmp,0.0)
 		interpolate!(tmp,asg, [xpts[i,j], ypts[i,j]])
