@@ -305,6 +305,7 @@ function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_i
 	hcpts = copy(cpts)
 	while !isempty(hcpts)
 		@sync begin
+			println(worker_ids)
 			for pid in worker_ids
 				if isempty(hcpts)
 					break
@@ -312,12 +313,15 @@ function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_i
 				hcpt = pop!(hcpts)
 				ID = idstring(hcpt)
 				val = coords(hcpt)
+				println("remotecall")
 				@async begin
 					_fval = remotecall_fetch(fun, pid, val, ID)
 					set_fval!(hcpt,_fval)
 				end	
 			end
+			println("waitforsync")
 		end
+		println("sync")
 	end
 	return nothing
 end
