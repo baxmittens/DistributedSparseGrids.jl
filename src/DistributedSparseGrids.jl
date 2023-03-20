@@ -300,28 +300,38 @@ function init_weights_inplace_ops!(asg::SG, fun::F) where {SG<:AbstractHierarchi
 	return nothing
 end
 
+#function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
+#@info "Starting $(length(cpts)) simulatoin calls"
+#	hcpts = copy(cpts)
+#	while !isempty(hcpts)
+#		@sync begin
+#			for pid in worker_ids
+#				if isempty(hcpts)
+#					break
+#				end
+#				hcpt = pop!(hcpts)
+#				ID = idstring(hcpt)
+#				val = coords(hcpt)
+#				@async begin
+#					_fval = remotecall_fetch(fun, pid, val, ID)
+#					set_fval!(hcpt,_fval)
+#				end	
+#			end
+#		end
+#	end
+#	return nothing
+#end
+
 function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
-@info "Starting $(length(cpts)) simulatoin calls"
-	hcpts = copy(cpts)
-	while !isempty(hcpts)
-		@sync begin
-			println(worker_ids)
-			for pid in worker_ids
-				if isempty(hcpts)
-					break
-				end
-				hcpt = pop!(hcpts)
-				ID = idstring(hcpt)
-				val = coords(hcpt)
-				println("remotecall")
-				@async begin
-					_fval = remotecall_fetch(fun, pid, val, ID)
-					set_fval!(hcpt,_fval)
-				end	
-			end
-			println("waitforsync")
+	@info "Starting $(length(cpts)) simulatoin calls"
+	wp = WorkerPool(worker_ids);
+	for cpt in cpts
+		@async begin
+			ID = idstring(hcpt)
+			val = coords(hcpt)
+			_fval = remotecall_fetch(fun, pid, val, ID)
+			set_fval!(hcpt,_fval)
 		end
-		println("sync")
 	end
 	return nothing
 end
