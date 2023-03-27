@@ -329,7 +329,7 @@ function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_i
 	@sync begin
 		for hcpt in cpts
 			@async begin
-				println("async remotecall")
+				#println("async remotecall")
 				ID = idstring(hcpt)
 				val = coords(hcpt)
 				_fval = remotecall_fetch(fun, wp, val, ID)
