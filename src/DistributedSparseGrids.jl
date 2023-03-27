@@ -325,12 +325,14 @@ end
 function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	@info "Starting $(length(cpts)) simulatoin calls"
 	wp = WorkerPool(worker_ids);
-	@sync for hcpt in cpts
-		@async begin
-			ID = idstring(hcpt)
-			val = coords(hcpt)
-			_fval = remotecall_fetch(fun, wp, val, ID)
-			set_fval!(hcpt,_fval)
+	@sync begin
+		for hcpt in cpts
+			@async begin
+				ID = idstring(hcpt)
+				val = coords(hcpt)
+				_fval = remotecall_fetch(fun, wp, val, ID)
+				set_fval!(hcpt,_fval)
+			end
 		end
 	end
 	return nothing
