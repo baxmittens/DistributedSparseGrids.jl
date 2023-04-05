@@ -328,6 +328,9 @@ function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_i
 	wp = WorkerPool(workers())
 	@sync begin
 		for hcpt in cpts
+			while !isready(wp)
+				sleep(0.001)
+			end
 			@async begin
 				#println("async remotecall")
 				ID = idstring(hcpt)
