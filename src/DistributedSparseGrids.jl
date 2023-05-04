@@ -325,8 +325,8 @@ end
 function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_ids::Vector{Int}) where {N, HCP<:AbstractHierarchicalCollocationPoint{N}, SG<:AbstractHierarchicalSparseGrid{N,HCP}, F<:Function}
 	nvals = length(cpts)
 	@info "Starting $nvals simulatoin calls"
-	#wp = WorkerPool(worker_ids);
-	wp = WorkerPool(workers())
+	wp = WorkerPool(worker_ids);
+	#wp = WorkerPool(workers())
 	@sync begin
 		@showprogress for hcpt in cpts
 			while !isready(wp)
