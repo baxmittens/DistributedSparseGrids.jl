@@ -57,7 +57,7 @@ function next_points(pct::CT,p_interv::Union{Tuple{CT,CT},SVector{2,CT}},PSP::In
 	return (lp,lp_interv,llvloff),(rp,rp_interv,rlvloff)
 end
 
-function next_level_pt_idx(pt_idx::Int,PSP::Int) where {CT<:Real}
+function next_level_pt_idx(pt_idx::Int,PSP::Int)# where {CT<:Real}
 	if !isclosed(PSP,-1)
 		pt_idx_nl = pt_idx*2
 	else
