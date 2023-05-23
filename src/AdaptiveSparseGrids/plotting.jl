@@ -5,7 +5,7 @@ import PlotlyJS
 import PlotlyJS: GenericTrace
 import UnicodePlots
 
-function PlotlyJS.scatter(sg::SG, lvl_offset::Float64=0.0, color_order::Bool=false, maxp::Int=1) where {CT,CP<:AbstractCollocationPoint{2,CT},HCP<:AbstractHierarchicalCollocationPoint{2,CP},SG<:AbstractHierarchicalSparseGrid{2,HCP}}
+function PlotlyJS.scatter(sg::SG, lvl_offset::Float64=0.0, offset::Float64=0.0, color_order::Bool=false, maxp::Int=1) where {CT,CP<:AbstractCollocationPoint{2,CT},HCP<:AbstractHierarchicalCollocationPoint{2,CP},SG<:AbstractHierarchicalSparseGrid{2,HCP}}
 	if color_order
 		colors = cols = colormap("Reds", N*maxp+1)
 	else
@@ -33,7 +33,7 @@ function PlotlyJS.scatter(sg::SG, lvl_offset::Float64=0.0, color_order::Bool=fal
 		
 		push!(xvals[l],coord(hcpt,1))
 		push!(yvals[l],coord(hcpt,2))
-		push!(zvals[l],level(hcpt)*lvl_offset)
+		push!(zvals[l],level(hcpt)*lvl_offset + offset)
 		#push!(zvals,interpolate(sg, [xvals[end], yvals[end]]))
 		push!(text[l],string(pt_idx(hcpt))*"^"*string(i_multi(hcpt)))
 		if !color_order
