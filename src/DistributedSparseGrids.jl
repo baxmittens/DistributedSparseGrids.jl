@@ -552,3 +552,89 @@ include(joinpath(".","AdaptiveSparseGrids","plotting.jl"))
 export CollocationPoint, HierarchicalCollocationPoint, AHSG, init, generate_next_level!, init_weights!, distributed_init_weights!, init_weights_inplace_ops!, distributed_init_weights_inplace_ops!, integrate, interpolate, interpolate!, integrate_inplace_ops
 
 end # module
+
+#set_scaling_weight!(first(asg),zero(rpsw))
+#for hcpt in wasg
+#	res = one(rpsw)
+#	for d in dims
+#		mul!(res,res,integral_basis_fun(hcpt, d))
+#	end
+#	mul!(res,res,scaling_weight(hcpt))
+#	_lvl = sum(i_multi(hcpt)[skipdims])-_N+1
+#	imult = i_multi(hcpt)[skipdims]
+#	ptid = pt_idx(hcpt)[skipdims]
+#	collocp = asg.cpts[_lvl][imult][ptid]
+#	add!(collocp.scaling_weight, res)
+#	if isrefined(hcpt)
+#		if !isrefined(collocp)
+#			refine!(asg, collocp)
+#			for childcp in collocp.children
+#				set_scaling_weight!(childcp,zero(rpsw))
+#			end
+#		end
+#	end
+#end
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#dims = setdiff(collect(1:N), skipdims)
+#_N = N-length(dims)
+#_pointprobs = SVector{_N,Int}([wasg.pointSetProperties[i] for i in skipdims])
+#_CPType = CollocationPoint{_N,CT}
+#_HCPType = HierarchicalCollocationPoint{_N,_CPType,RT}
+#asg = init(AHSG{_N,_HCPType},_pointprobs)
+##__cpts = Set{HierarchicalCollocationPoint{_N,_CPType,RT}}(collect(asg))
+##pda = Vector{Dict{SVector{_N,Int},Dict{SVector{_N,Int},RT}}}()
+#push!(pda, Dict{SVector{_N,Int},Dict{SVector{_N,Int},RT}}())
+##for i = 1:length(wasg.cpts)-1
+#	#union!(__cpts,generate_next_level!(asg))
+##	push!(pda, Dict{SVector{_N,Int},Dict{SVector{_N,Int},RT}}())
+##end
+##for hcpt in wasg
+##    if isrefined(hcpt)
+##    end
+##end
+#rpsw = scaling_weight(first(wasg))
+#i = 1
+#for hcpt in wasg
+#    i += 1
+#    #println(hcpt)
+#    res = one(rpsw)
+#    for d in dims
+#        mul!(res,res,integral_basis_fun(hcpt, d))
+#	end
+#    mul!(res,res,scaling_weight(hcpt))
+#    _lvl = sum(i_multi(hcpt)[skipdims])-_N+1
+#	if haskey(pda[_lvl],i_multi(hcpt)[skipdims]) 
+#		if haskey(pda[_lvl][i_multi(hcpt)[skipdims]],pt_idx(hcpt)[skipdims])
+#			add!(pda[_lvl][i_multi(hcpt)[skipdims]][pt_idx(hcpt)[skipdims]],res)
+#		else
+#			pda[_lvl][i_multi(hcpt)[skipdims]][pt_idx(hcpt)[skipdims]] = res
+#		end
+#	else
+#		pda[_lvl][i_multi(hcpt)[skipdims]] = Dict{SVector{_N,Int},RT}()
+#		pda[_lvl][i_multi(hcpt)[skipdims]][pt_idx(hcpt)[skipdims]] = res
+#	end
+#    if i > 1
+#        break
+#    end
+#end
+#for (_lvl,_dict1) in enumerate(pda)
+#	for (_i_multi,_dict2) in _dict1
+#        for (_pt_idx,sw) in _dict2
+#			println(_lvl," ",_i_multi," ",_pt_idx)#," ",sw)
+#			#set_scaling_weight!(asg.cpts[_lvl][_i_multi][_pt_idx],sw)
+#		end
+#	end 
+#end

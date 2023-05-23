@@ -203,6 +203,19 @@ function PlotlyJS.surface(asg::SG, npts = 20, postfun=x->x; kwargs...) where {CT
 	p = PlotlyJS.surface(x=xpts,y=ypts,z=zz; kwargs...)
 end
 
+function surface_inplace_ops(asg::SG, npts = 20, postfun=x->x; kwargs...) where {CT,CP<:AbstractCollocationPoint{2,CT},HCP<:AbstractHierarchicalCollocationPoint{2,CP},SG<:AbstractHierarchicalSparseGrid{2,HCP}}
+	pts = range(-1.,stop=1.,length=npts)
+	xpts, ypts = ndgrid(pts,pts)
+	zz = similar(xpts)
+	rcp = first(asg)
+	for i = 1:npts, j=1:npts
+		tmp = zero(scaling_weight(rcp))
+		interpolate!(tmp, asg, [xpts[i,j], ypts[i,j]])
+		zz[i,j] = postfun(tmp)
+	end
+	p = PlotlyJS.surface(x=xpts,y=ypts,z=zz; kwargs...)
+end
+
 function surface_wavelet(asg::SG, npts = 20; kwargs...) where {CT,CP<:AbstractCollocationPoint{2,CT},HCP<:AbstractHierarchicalCollocationPoint{2,CP},SG<:AbstractHierarchicalSparseGrid{2,HCP}}
 	pts = range(-1.,stop=1.,length=npts)
 	xpts, ypts = ndgrid(pts,pts)
