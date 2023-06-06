@@ -452,6 +452,7 @@ function derivative_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) whe
 	if i_multi(cpt)[_dim] == 1
 		return CT(0.0)
 	else
+		i_interv = interval(cpt,_dim)
 		if x <= coord(cpt, _dim)
 			return abs(i_interv[1]-i_interv[2])
 		else
