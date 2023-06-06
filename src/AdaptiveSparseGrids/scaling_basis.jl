@@ -217,6 +217,23 @@ function hat(cpt::HCP, dim::Int, x::CT) where {N,CT,CP<:AbstractCollocationPoint
 end
 
 
+function derivative_hat(cpt::HCP, dim::Int, x::CT) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+#function hat(cpt::CollocationPoint{N,CT,Nv}, dim::Int, x::CT) where {N, CT<:Real,Nv}
+	interv = interval(cpt, dim)
+	if interv[1] <= x <= interv[2]
+		xcpt = coord(cpt, dim)
+		if x <= xcpt && (xcpt - interv[1]) > eps()
+			res = (1 - interv[1]) / (xcpt - interv[1])
+			return res
+		else
+			res = - (1 - xcpt) / (interv[2] - xcpt)
+			return res
+		end
+	else
+		return zero(CT)
+	end
+end
+
 
 
 import FastGaussQuadrature: gausslegendre
@@ -449,15 +466,16 @@ function derivative_basis_fun(hcpt::HCP,_dim::Int,x::CT) where {N,CT,CP<:Abstrac
 end
 
 function derivative_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) where {N,CT}
-	if i_multi(cpt)[_dim] == 1
-		return CT(0.0)
-	else
-		i_interv = interval(cpt,_dim)
-		c = coord(cpt, _dim)
-		if x <= c
-			return c-i_interv[1]
-		else
-			return c-i_interv[2]
-		end
-	end
+	#if i_multi(cpt)[_dim] == 1
+	#	return CT(0.0)
+	#else
+	#	i_interv = interval(cpt,_dim)
+	#	c = coord(cpt, _dim)
+	#	if x <= c
+	#		return c-i_interv[1]
+	#	else
+	#		return c-i_interv[2]
+	#	end
+	#end
+	return derivative_hat(cpt(hcpt), _dim, x)
 end
