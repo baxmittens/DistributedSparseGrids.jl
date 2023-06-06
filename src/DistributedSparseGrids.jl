@@ -588,8 +588,8 @@ function ∇(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:AbstractHierarchica
 	res = [zero(rcp) for i in 1:N]
 	in_it = InterpolationIterator(asg,p)
 	for hcpt in in_it
-		for dim in 1:N
-			res[dim] += scaling_weight(hcpt) * derivative_basis_fun(hcpt, dim, p[dim])
+		for _dim in 1:N
+			res[_dim] += scaling_weight(hcpt) * derivative_basis_fun(hcpt, _dim, p[_dim])
 		end
 	end
 	return res
