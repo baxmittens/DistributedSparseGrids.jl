@@ -586,7 +586,7 @@ end
 function ∇(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	rcp = scaling_weight(first(asg))
 	res = [zero(rcp) for i in 1:N]
-	in_it = InterpolationIterator(asg,p,stplvl)
+	in_it = InterpolationIterator(asg,p)
 	for hcpt in in_it
 		for dim in 1:N
 			res[dim] += scaling_weight(hcpt) * derivative_basis_fun(hcpt, p[dim])
