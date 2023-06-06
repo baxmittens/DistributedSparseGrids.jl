@@ -462,5 +462,9 @@ end
 
 
 function derivative_basis_fun(hcpt::HCP,_dim::Int,x::CT) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-	return derivative_hat(hcpt, _dim, x)
+	if i_multi(cpt)[_dim] == 1
+		return CT(0.0)
+	else
+		return derivative_hat(hcpt, _dim, x)
+	end
 end
