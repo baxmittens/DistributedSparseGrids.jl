@@ -226,7 +226,7 @@ function derivative_hat(cpt::HCP, dim::Int, x::CT) where {N,CT,CP<:AbstractCollo
 			res = (1 - interv[1]) / (xcpt - interv[1])
 			return res
 		else
-			res = - (1 - xcpt) / (interv[2] - xcpt)
+			res = - 1.0 / (interv[2] - xcpt)
 			return res
 		end
 	else
