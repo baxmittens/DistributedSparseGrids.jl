@@ -465,7 +465,7 @@ function derivative_basis_fun(hcpt::HCP,_dim::Int,x::CT) where {N,CT,CP<:Abstrac
 	return derivative_basis_fun(cpt(hcpt), _dim, x)
 end
 
-function derivative_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) where {N,CT}
+function derivative_basis_fun(_cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) where {N,CT}
 	#if i_multi(cpt)[_dim] == 1
 	#	return CT(0.0)
 	#else
@@ -477,5 +477,5 @@ function derivative_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) whe
 	#		return c-i_interv[2]
 	#	end
 	#end
-	return derivative_hat(cpt(hcpt), _dim, x)
+	return derivative_hat(_cpt, _dim, x)
 end
