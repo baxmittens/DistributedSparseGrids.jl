@@ -223,10 +223,10 @@ function derivative_hat(cpt::HCP, dim::Int, x::CT) where {N,CT,CP<:AbstractCollo
 	if interv[1] <= x <= interv[2]
 		xcpt = coord(cpt, dim)
 		if x <= xcpt && (xcpt - interv[1]) > eps()
-			res = 1.0 / (xcpt - interv[1])
+			res = (1.0 - interv[1]) / (xcpt - interv[1])
 			return res
 		else
-			res = - 1.0 / (interv[2] - xcpt)
+			res = - (1.0 - interv[1]) / (interv[2] - xcpt)
 			return res
 		end
 	else
