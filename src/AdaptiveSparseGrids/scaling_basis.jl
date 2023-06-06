@@ -442,3 +442,20 @@ function integral_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int) where {N,CT}
 		return abs(i_interv[1]-i_interv[2])/CT(2.0)
 	end
 end
+
+
+function derivative_basis_fun(hcpt::HCP,_dim::Int) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+	return derivative_basis_fun(cpt(hcpt),_dim)
+end
+
+function derivative_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) where {N,CT}
+	if i_multi(cpt)[_dim] == 1
+		return CT(0.0)
+	else
+		if x <= coord(cpt, dim)
+			return CT(1.0)
+		else
+			return CT(-1.0)
+		end
+	end
+end

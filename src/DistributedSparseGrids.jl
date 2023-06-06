@@ -583,6 +583,20 @@ function integrate_inplace_ops(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP
 	return asg
 end
 
+function ∇(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	rcp = scaling_weight(first(asg))
+	res = zeros(rcp,N)
+	in_it = InterpolationIterator(asg,x,stplvl)
+	for hcpt in in_it
+		for dim in 1:N
+			res[dim] += scaling_weight(hcpt) * derivative_basis_fun(hcpt, x[dim])
+		end
+	end
+	return res
+end
+
+grad(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}} = ∇(asg,p)
+
 include(joinpath(".","AdaptiveSparseGrids","plotting.jl"))
 export CollocationPoint, HierarchicalCollocationPoint, AHSG, init, generate_next_level!, init_weights!, distributed_init_weights!, init_weights_inplace_ops!, distributed_init_weights_inplace_ops!, integrate, interpolate, interpolate!, integrate_inplace_ops
 
