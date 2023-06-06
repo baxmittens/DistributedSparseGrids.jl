@@ -444,8 +444,8 @@ function integral_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int) where {N,CT}
 end
 
 
-function derivative_basis_fun(hcpt::HCP,_dim::Int) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
-	return derivative_basis_fun(cpt(hcpt),_dim)
+function derivative_basis_fun(hcpt::HCP,_dim::Int,x::CT) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP}}
+	return derivative_basis_fun(cpt(hcpt),_dim,c)
 end
 
 function derivative_basis_fun(cpt::CollocationPoint{N,CT}, _dim::Int, x::CT) where {N,CT}
