@@ -583,23 +583,6 @@ function integrate_inplace_ops(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP
 	return asg
 end
 
-function grad2(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:DistributedSparseGrids.AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:DistributedSparseGrids.AbstractHierarchicalSparseGrid{N,HCP}}
-	rcp = DistributedSparseGrids.scaling_weight(first(asg))
-	res = [zero(rcp) for i in 1:N]
-	in_it = DistributedSparseGrids.InterpolationIterator(asg,p)
-	for hcpt in in_it
-		for _dim in 1:N			
-			i_int = DistributedSparseGrids.interval(hcpt, _dim)
-			bf = DistributedSparseGrids.basis_fun(hcpt, _dim, p[_dim])
-			if  bf > 0.0 && bf < 1.0
-				#println("$(DistributedSparseGrids.cpt(hcpt)) $(DistributedSparseGrids.scaling_weight(hcpt)) $(DistributedSparseGrids.derivative_basis_fun(hcpt, _dim, p[_dim])) $(DistributedSparseGrids.basis_fun(hcpt, _dim, p[_dim])) $(DistributedSparseGrids.interval(hcpt, _dim)) ")
-				res[_dim] += DistributedSparseGrids.scaling_weight(hcpt) * DistributedSparseGrids.derivative_basis_fun(hcpt, _dim, p[_dim])
-			end 
-		end
-	end
-	return res
-end
-
 function ∇(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	rcp = scaling_weight(first(asg))
 	res = [zero(rcp) for i in 1:N]
