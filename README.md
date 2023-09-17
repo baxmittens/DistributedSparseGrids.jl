@@ -1,4 +1,3 @@
-<meta name="google-site-verification" content="google-site-verification: googled9c637c7b07ae311.html">
 <img align="right" src="https://user-images.githubusercontent.com/100423479/195380227-83249438-626a-4769-ad4c-6d3c27ccd3ab.png" width="200" height="200" />
 
 # DistributedSparseGrids.jl
