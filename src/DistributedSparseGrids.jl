@@ -353,6 +353,7 @@ function distributed_fvals!(asg::SG, cpts::AbstractVector{HCP}, fun::F, worker_i
 				_fval = remotecall_fetch(fun, wp, val, ID)
 				set_fval!(hcpt,_fval)
 			end
+			sleep(0.001) # sleep...otherwise @async thread cannot start
 		end
 	end
 	return nothing
