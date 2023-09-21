@@ -504,6 +504,19 @@ function integrate_inplace_ops(asg::SG) where {N,CP,RT,HCP<:AbstractHierarchical
 	return res
 end
 
+function integrate_inplace_ops(asg::SG, res::RT, tmp::RT) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	println("N=$N,CP=$CP,RT=$RT")
+	res = fill!(res,0.0)
+	tmp = fill(tmp,0.0)
+	for cpt in asg
+		bf = integral_basis_fun(cpt)
+		sw = scaling_weight(cpt)
+		mul!(tmp, sw, bf)
+		add!(res, tmp) 
+	end
+	return res
+end
+
 #function integrate(asg::SG,fun::Function) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 #	println("N=$N,CP=$CP,RT=$RT")
 #	maxp = maxporder(asg)
