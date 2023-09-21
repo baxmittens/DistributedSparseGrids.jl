@@ -194,6 +194,20 @@ function interpolate!(res::RT, asg::SG, x::VCT, stplvl::Int=numlevels(asg)) wher
 	return nothing
 end
 
+function interpolate!(res::RT, tmp::RT, asg::SG, x::VCT, stplvl::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	fill!(res,0.0)
+	fill!(tmp,0.0)
+	in_it = InterpolationIterator(asg,x,stplvl)
+	#for cpt_set in in_it
+	for hcpt in in_it
+		#for hcpt in cpt_set
+		mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, 1))
+		add!(res,tmp)
+		#end
+	end
+	return nothing
+end
+
 function interp_below!(retval::RT, asg::SG, cpt::HCP) where {N,RT,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
 	interpolate!(retval,asg,coords(cpt),level(cpt)-1)
 	#interpolate_recursive!(retval,asg,coords(cpt),level(cpt)-1)
