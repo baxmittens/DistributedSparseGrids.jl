@@ -587,7 +587,7 @@ function integrate_inplace_ops(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP
 	rpsw = scaling_weight(first(wasg))
 	set_scaling_weight!(first(asg),zero(rpsw))
 	for hcpt in wasg
-		res = one(rpsw)
+		res = one.(rpsw)
 		for d in dims
 			mul!(res,res,integral_basis_fun(hcpt, d))
 		end
