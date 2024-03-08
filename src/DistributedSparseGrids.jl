@@ -630,7 +630,7 @@ end
 
 grad(asg::SG, p::AbstractVector) where {N,CP,RT,HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}} = ∇(asg,p)
 
-include(joinpath(".","AdaptiveSparseGrids","plotting.jl"))
+#include(joinpath(".","AdaptiveSparseGrids","plotting.jl"))
 export CollocationPoint, HierarchicalCollocationPoint, AHSG, init, generate_next_level!, init_weights!, distributed_init_weights!, init_weights_inplace_ops!, distributed_init_weights_inplace_ops!, integrate, interpolate, interpolate!, integrate_inplace_ops, ∇, grad
 
 end # module
