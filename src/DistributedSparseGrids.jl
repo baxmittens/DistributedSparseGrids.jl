@@ -589,9 +589,11 @@ function integrate_inplace_ops(wasg::SG,skipdims::Vector{Int}) where {N,RT,CT,CP
 	for hcpt in wasg
 		res = one.(rpsw)
 		for d in dims
-			mul!(res,res,integral_basis_fun(hcpt, d))
+			#mul!(res,res,integral_basis_fun(hcpt, d))
+			mul!(res,integral_basis_fun(hcpt, d))
 		end
-		mul!(res,res,scaling_weight(hcpt))
+		#mul!(res,res,scaling_weight(hcpt))
+		mul!(res,scaling_weight(hcpt))
 		_lvl = sum(i_multi(hcpt)[skipdims])-_N+1
 		imult = i_multi(hcpt)[skipdims]
 		ptid = pt_idx(hcpt)[skipdims]
