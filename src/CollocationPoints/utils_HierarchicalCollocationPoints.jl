@@ -300,7 +300,7 @@ function Base.iterate(iter::InterpolationIterator{HCP},state::Int) where {HCP<:A
 	if basis_fun(cpt, coords(iter), 1) > 0.0 && isrefined(cpt) && level(cpt) < stoplevel(iter)
 		next_interpolation_descendants!(iter.nextlevel,cpt,coords(iter))
 	end
-	return cpt,1
+	return cpt, 1
 
 end
 

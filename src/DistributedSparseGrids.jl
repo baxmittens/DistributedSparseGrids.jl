@@ -219,6 +219,33 @@ function interp_below(asg::SG, cpt::HCP) where {N,HCP<:AbstractHierarchicalCollo
 	#return interpolate_recursive(asg,coords(cpt),level(cpt)-1)
 end
 
+
+function interpolate_chunk!(res::RT, tmp::RT, x::VCT, chunk::Vector{HCP}) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}}
+	fill!(res,0.0)
+	fill!(tmp,0.0)
+	for hcpt in chunk
+		mul!(tmp,scaling_weight(hcpt),basis_fun(hcpt, x, 1))
+		add!(res,tmp)		
+	end
+	return nothing
+end
+
+function interpolate!(res::RT, tres::Vector{RT}, ttmp::Vector{RT}, asg::SG, x::VCT, stplvl::Int=numlevels(asg)) where {N,RT,CT,VCT<:AbstractVector{CT},CP<:AbstractCollocationPoint{N,CT}, HCP<:AbstractHierarchicalCollocationPoint{N,CP,RT}, SG<:AbstractHierarchicalSparseGrid{N,HCP}}
+	fill!(res,0.0)
+	use_n_threads = length(tres)
+	in_it = InterpolationIterator(asg,x,stplvl)
+	chunks = Iterators.partition(in_it, length(in_it) ÷ use_n_threads+1)
+	tasks = map(enumerate(chunks)) do (i,chunk)
+    	Threads.@spawn interpolate_chunk!(tres[i], ttmp[i], x, chunk)
+    end
+    fetch.(tasks)
+    for chunkres in tres
+    	add!(res,chunkres)
+    end
+	return nothing
+end
+
+
 """
 	init_weights!(asg::SG, cpts::AbstractVector{HCP}, fun::F)
 
