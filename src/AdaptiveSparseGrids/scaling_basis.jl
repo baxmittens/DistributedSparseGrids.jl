@@ -237,7 +237,7 @@ end
 
 
 
-import FastGaussQuadrature: gausslegendre
+#import FastGaussQuadrature: gausslegendre
 
 #function integral_basis_fun(_cpt::HCP, _dim::Int, interv::SVector{2,F}, xip_unit, wip, maxp::Int=3, level_1_constant::Bool=true, weightorder::Int=0) where {N,CT,CP<:AbstractCollocationPoint{N,CT},HCP<:AbstractHierarchicalCollocationPoint{N,CP},F}
 #	res = zero(CT)
